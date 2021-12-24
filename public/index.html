@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <link href='http://cdn.repository.webfont.com/webfonts/nomal/147114/19650/619f914bf629d80de0ee8fc1.css'
+    rel='stylesheet' type='text/css' />
+  <!-- instant.page：通过预加载，提高网页加载速度的 JavaScript 库。它支持移动端和 PC 端，在 PC 端时当鼠标悬浮在链接上和在移动端时链接可见后立即预加载 -->
+  <script src="//instant.page/5.1.0" type="module"
+    integrity="sha384-by67kQnR+pyfy8yWP4kPO12fHKRLHZPfEsiSXR8u2IKcTdxD805MGUXBzVPnkLHw"></script>
+
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
+</html>

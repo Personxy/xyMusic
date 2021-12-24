@@ -1,0 +1,65 @@
+{
+  "id": "3031855",
+  "name": "播放顺序",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-yy",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1621429",
+      "name": "播放暂停",
+      "font_class": "bofangzanting",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "15262786",
+      "name": "1_music82",
+      "font_class": "1_music82",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
+    },
+    {
+      "icon_id": "15262807",
+      "name": "1_music83",
+      "font_class": "1_music83",
+      "unicode": "e6ac",
+      "unicode_decimal": 59052
+    },
+    {
+      "icon_id": "15262830",
+      "name": "1_music81",
+      "font_class": "1_music81",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
+    {
+      "icon_id": "18963668",
+      "name": "随机播放",
+      "font_class": "suijibofang",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    },
+    {
+      "icon_id": "18963837",
+      "name": "顺序播放",
+      "font_class": "shunxubofang",
+      "unicode": "e6a1",
+      "unicode_decimal": 59041
+    },
+    {
+      "icon_id": "18965480",
+      "name": "单曲循环",
+      "font_class": "danquxunhuan",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
+    },
+    {
+      "icon_id": "18965481",
+      "name": "列表循环",
+      "font_class": "liebiaoxunhuan",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    }
+  ]
+}
