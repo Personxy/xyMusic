@@ -38,7 +38,7 @@
           <!-- 收藏按钮 -->
           <div>
             <div class="collect"
-                 v-if="playlist.creator.userId == userInfo.userId"
+                 v-if="userInfo && playlist.creator.userId == userInfo.userId"
                  style="width: 110px; color: #b2b2b2">
               <img src="../../../assets/images/收藏.svg"
                    alt="" />
@@ -56,7 +56,7 @@
                          trigger="click">
             <div slot="reference">
               <div class="collect"
-                   v-if="
+                   v-if="userInfo&&
                   playlist.subscribed &&
                   playlist.creator.userId != userInfo.userId
                 ">
@@ -70,7 +70,7 @@
           <!-- 显示未收藏 -->
           <div class="collect"
                @click="changcollect"
-               v-if="
+               v-if="userInfo&&
               !playlist.subscribed && playlist.creator.userId != userInfo.userId
             ">
             <img src="../../../assets/images/收藏.svg"
@@ -121,6 +121,11 @@ export default {
       'currenturl',
       'playsonglist',
     ]),
+  },
+  data () {
+    return {
+      index: 0
+    }
   },
   methods: {
     // 收藏歌单与否
@@ -198,26 +203,40 @@ export default {
       this.$store.dispatch('clearplaysonglist');
       // console.log(this.playsonglist);
       this.$store.dispatch('saveplaysonglist', this.songs);
+
       // 获取当前列表第一首
       const res = await this.$http.get('/song/url', {
         params: {
-          id: this.songs[0].id,
+          id: this.songs[this.index].id,
           cookie: this.cookie,
         },
       });
       // console.log(res.data.data[0].url);
-      if (!res.data.data[0].url) return this.$message.error('没有播放来源！');
-      this.$store.dispatch('savecurrenturl', res.data.data[0].url);
-      this.$store.dispatch("saveplaystatus", true)
-      //获取歌曲详情
-      const resdata = await this.$http.get('/song/detail', {
-        params: {
-          ids: this.songs[0].id,
-        },
-      });
-      // console.log(resdata);
-      // 存入歌曲详情
-      this.$store.dispatch('savesongDetails', resdata.data.songs[0]);
+      if (!res.data.data[0].url)
+      {
+        this.index++
+        this.$message.error("没有版权即将播放下一首！")
+        setTimeout(() => {
+          this.playallmusic()
+          // console.log(this.index);
+          // this.$message.error('没有播放来源！');
+        }, 3000);
+      } else
+      {
+        this.$store.dispatch('savecurrenturl', res.data.data[0].url);
+        this.$store.dispatch("saveplaystatus", true)
+        //获取歌曲详情
+        const resdata = await this.$http.get('/song/detail', {
+          params: {
+            ids: this.songs[this.index].id,
+          },
+        });
+        // console.log(resdata);
+        // 存入歌曲详情
+        this.$store.dispatch('savesongDetails', resdata.data.songs[0]);
+        this.index = 0
+      }
+
     },
     //添加当前歌单到播放列表
     addsheettoplaylist () {

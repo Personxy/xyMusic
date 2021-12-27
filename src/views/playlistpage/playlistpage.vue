@@ -1,9 +1,12 @@
 <template>
   <div class="playlistpage">
     <!-- 歌单信息 -->
-    <listinfo :playlist="playlist" :songs="songs" />
+    <listinfo :playlist="playlist"
+              :songs="songs" />
     <!-- 歌单导航 -->
-    <listnav :songs="songs" v-loading="loading" :likeplaylist="likeplaylist" />
+    <listnav :songs="songs"
+             v-loading="loading"
+             :likeplaylist="likeplaylist" />
   </div>
 </template>
 <script>
@@ -15,7 +18,7 @@ export default {
     listinfo,
     listnav,
   },
-  data() {
+  data () {
     return {
       // 歌单详情
       playlist: {
@@ -29,7 +32,7 @@ export default {
   },
   methods: {
     //获取歌单详情
-    async getplaylistinfo() {
+    async getplaylistinfo () {
       const res = await this.$http.get('/playlist/detail', {
         params: {
           id: this.$route.params.id,
@@ -40,7 +43,7 @@ export default {
       this.playlist = res.data.playlist;
     },
     // 获取所有歌曲
-    async getallplaylist() {
+    async getallplaylist () {
       this.loading = true;
       const resdata = await this.$http.get('/playlist/track/all', {
         params: {
@@ -55,7 +58,8 @@ export default {
     },
 
     //获取喜欢的歌曲列表
-    async getlikelist() {
+    async getlikelist () {
+      if (!this.userInfo) return
       const res = await this.$http.get('/likelist', {
         params: {
           uid: this.userInfo.userInfo,
@@ -66,23 +70,25 @@ export default {
       this.likeplaylist = res.data.ids;
     },
   },
-  created() {
+  created () {
     this.getplaylistinfo();
     this.getallplaylist();
     this.getlikelist();
   },
-  beforeUpdate() {
+  beforeUpdate () {
     // 对比喜欢的音乐和当前歌单添加 likemusicflag属性
     this.likeplaylist.forEach((item2, index2, arr2) => {
       this.songs.forEach((item, index, arr) => {
-        if (arr2[index2] == arr[index].id) {
+        if (arr2[index2] == arr[index].id)
+        {
           arr[index].likemusicflag = true;
           // console.log(arr[index]);
         }
       });
     });
     this.songs.forEach((element) => {
-      if (!element.likemusicflag) {
+      if (!element.likemusicflag)
+      {
         element.likemusicflag = false;
       }
     });
@@ -90,7 +96,7 @@ export default {
   },
   // 监听路由
   watch: {
-    $route() {
+    $route () {
       // console.log(to);
       // console.log(from);
       this.getplaylistinfo();

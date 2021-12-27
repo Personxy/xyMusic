@@ -118,6 +118,10 @@ export default {
 
 <style lang="less" scoped>
 .playlistnow {
+  ::-webkit-scrollbar-thumb {
+    // 滚动条颜色
+    background: #fdfdfd !important;
+  }
   .playlist {
     width: 45vh;
     height: 82.7vh;

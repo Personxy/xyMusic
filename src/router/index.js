@@ -12,7 +12,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '',
-    redirect: '/home/findmusic',
+    redirect: '/home/findmusic/personrecom',
   },
   {
     path: '/home',
@@ -24,6 +24,39 @@ const routes = [
         name: 'findmusic',
         path: '/home/findmusic',
         component: () => import('../views/findmusic/findmusic'),
+        children: [
+          //个性推荐
+          {
+            name: 'personrecom',
+            path: '/home/findmusic/personrecom',
+            component: () =>
+              import('../views/findmusic/personrecom/personrecom.vue'),
+          },
+          // 歌单
+          {
+            name: 'songlist',
+            path: '/home/findmusic/songlist',
+            component: () => import('../views/findmusic/songlist/songlist.vue'),
+          },
+          // 排行榜
+          {
+            name: 'ranking',
+            path: '/home/findmusic/ranking',
+            component: () => import('../views/findmusic/ranking/ranking.vue'),
+          },
+          // 歌手
+          {
+            name: 'singer',
+            path: '/home/findmusic/singer',
+            component: () => import('../views/findmusic/singer/singer.vue'),
+          },
+          // 最新音乐
+          {
+            name: 'newmusic',
+            path: '/home/findmusic/newmusic',
+            component: () => import('../views/findmusic/newmusic/newmusic.vue'),
+          },
+        ],
       },
       //博客模块
       {
