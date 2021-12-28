@@ -4,16 +4,21 @@
       <!-- 顶部导航 -->
       <el-header>
         <div class="logobox">
-          <img class="logo" src="../assets/images/logo1.png" alt="" />
+          <img class="logo"
+               src="../assets/images/logo1.png"
+               alt="" />
         </div>
         <a class="home">羊羊音乐</a>
         <!-- 后退和前进按钮 -->
-        <a href="" class="back">
+        <span href=""
+              class="back"
+              @click="goBack">
           <div class="arrowleft"></div>
-        </a>
-        <a href="" class="advance">
+        </span>
+        <span href=""
+              class="advance">
           <div class="arrowlright"></div>
-        </a>
+        </span>
         <!-- 搜索页面 -->
         <search />
         <!-- 点击出现登陆面板或在此显示用户头像 -->
@@ -49,17 +54,22 @@ import musicplay from '../components/xymusic/musicplay/musicplay';
 export default {
   name: 'xymusic',
   components: { Aside, Login, loginbar, search, musicplay },
-  data() {
+  data () {
     return {
       searchdata: '',
     };
   },
   computed: {
     // 控制登录面板是否打开
-    loginbarflag() {
+    loginbarflag () {
       return this.$store.state.loginflag;
     },
     ...mapGetters(['userInfo']),
+  },
+  methods: {
+    goBack () {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    }
   },
 };
 </script>
@@ -70,9 +80,12 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  color: #ffffff;
-  font-family: 'jdlibianjian2bfc78d6df23eaa';
   font-size: 30px;
+  color: #ffffff;
+  .home {
+    margin-left: 10px;
+    font-family: "jdzhonyuanjian2ca53a9b9923eaa";
+  }
 }
 .logobox {
   background-color: #ffffff;
@@ -83,6 +96,7 @@ export default {
 }
 .back,
 .advance {
+  cursor: pointer;
   width: 22px;
   height: 22px;
   background-color: #d93b3b;
@@ -104,6 +118,9 @@ export default {
   top: 6px;
   left: 9px;
 }
+.el-main {
+  height: 85vh;
+}
 .arrowlright {
   width: 7px;
   height: 7px;
@@ -118,9 +135,6 @@ export default {
   margin-left: 10px;
 }
 
-.home {
-  margin-left: 10px;
-}
 .logo {
   width: 100%;
   height: 100%;

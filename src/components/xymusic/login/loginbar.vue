@@ -39,7 +39,7 @@ export default {
       //清除cookie
       this.$store.dispatch("saveCookie", null);
       //回到发现模块
-      this.$router.push('/home/findmusic')
+      this.$router.push('/home/findmusic/personrecom')
     },
   },
   computed: {

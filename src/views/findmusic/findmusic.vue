@@ -17,4 +17,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.findmusic {
+  height: 80vh;
+}
 </style>

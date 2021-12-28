@@ -77,7 +77,8 @@ export default {
 <style lang="less" scoped>
 .banner {
   margin-top: 30px;
-
+  padding-right: 200px;
+  padding-left: 60px;
   .el-image {
     border-radius: 10px;
   }

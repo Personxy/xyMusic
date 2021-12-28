@@ -137,7 +137,7 @@ export default {
   font-size: 12px;
   position: absolute;
   left: 10px;
-  top: 16px;
+  top: 17px;
 }
 .searchbox {
   height: 420px;
