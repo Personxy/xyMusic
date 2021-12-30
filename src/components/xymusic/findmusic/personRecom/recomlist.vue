@@ -60,7 +60,7 @@ export default {
           timeStamp: Date.now()
         }
       })
-      console.log(res);
+      // console.log(res);
       res.data.recommend = res.data.recommend.slice(0, 9)
       this.recomelist = res.data.recommend
     },
@@ -71,7 +71,7 @@ export default {
           limit: 9
         }
       })
-      console.log(res);
+      // console.log(res);
       this.recomelist = res.data.result
     },
     // 跳转到歌单详情

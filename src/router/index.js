@@ -12,7 +12,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '',
-    redirect: '/home/findmusic/personrecom',
+    redirect: '/home/findmusic',
   },
   {
     path: '/home',
@@ -23,6 +23,7 @@ const routes = [
       {
         name: 'findmusic',
         path: '/home/findmusic',
+        redirect: '/home/findmusic/personrecom',
         component: () => import('../views/findmusic/findmusic'),
         children: [
           //个性推荐

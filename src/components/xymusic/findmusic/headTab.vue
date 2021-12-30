@@ -1,6 +1,6 @@
 <template>
   <div class="headtab">
-    <el-menu :default-active="$route.path"
+    <el-menu :default-active="this.$route.path"
              class="el-menu-demo"
              mode="horizontal"
              :router="true">
