@@ -8,12 +8,12 @@
   </div>
 </template>
 <script>
-import headtab from "../../components/xymusic/findmusic/headTab.vue"
+import headtab from "../../components/xymusic/findmusic/headTab.vue";
 export default {
   components: {
-    headtab
-  }
-}
+    headtab,
+  },
+};
 </script>
 
 <style lang="less" scoped>

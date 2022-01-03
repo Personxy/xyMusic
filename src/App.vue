@@ -9,74 +9,72 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters([
-      'userInfo',
-      'searchHistory',
-      'playListMine',
-      'playListCollect',
-      'cookie',
-      'currenturl',
-      'songDetails',
-      'playsonglist',
-      'playstatus',
-      'playorder',
-      'volume',
-      'currentTime'
+      "userInfo",
+      "searchHistory",
+      "playListMine",
+      "playListCollect",
+      "cookie",
+      "currenturl",
+      "songDetails",
+      "playsonglist",
+      "playstatus",
+      "playorder",
+      "volume",
+      "currentTime",
     ]),
   },
   methods: {
     // 存入session
-    saveData () {
+    saveData() {
       //用户信息
-      sessionStorage.setItem('userInfo', JSON.stringify(this.userInfo));
+      sessionStorage.setItem("userInfo", JSON.stringify(this.userInfo));
       //搜索历史
       sessionStorage.setItem(
-        'searchHistory',
+        "searchHistory",
         JSON.stringify(this.searchHistory)
       );
       //热搜信息
       // sessionStorage.setItem("searchHot",JSON.stringify(this.searchHot));
       // 个人歌单信息
-      sessionStorage.setItem('playListMine', JSON.stringify(this.playListMine));
+      sessionStorage.setItem("playListMine", JSON.stringify(this.playListMine));
       //收藏歌单
       sessionStorage.setItem(
-        'playListCollect',
+        "playListCollect",
         JSON.stringify(this.playListCollect)
       );
       //cookie
-      sessionStorage.setItem('cookie', JSON.stringify(this.cookie));
+      sessionStorage.setItem("cookie", JSON.stringify(this.cookie));
       // 当前播放url
-      sessionStorage.setItem('currenturl', this.currenturl);
+      sessionStorage.setItem("currenturl", this.currenturl);
       //当前歌曲详情
-      sessionStorage.setItem('songDetails', JSON.stringify(this.songDetails));
+      sessionStorage.setItem("songDetails", JSON.stringify(this.songDetails));
       //当前播放列表
-      sessionStorage.setItem('playsonglist', JSON.stringify(this.playsonglist));
+      sessionStorage.setItem("playsonglist", JSON.stringify(this.playsonglist));
       //当前播放状态
-      sessionStorage.setItem('playstatus', this.playstatus);
+      sessionStorage.setItem("playstatus", this.playstatus);
       //播放顺序
-      sessionStorage.setItem('playorder', this.playorder);
+      sessionStorage.setItem("playorder", this.playorder);
       // 当前音量
-      sessionStorage.setItem('volume', this.volume);
+      sessionStorage.setItem("volume", this.volume);
       //当前进度条
-      sessionStorage.setItem('currentTime', this.currentTime)
+      sessionStorage.setItem("currentTime", this.currentTime);
     },
   },
-  mounted () {
+  mounted() {
     // 判断是否兼容箭头函数
-    try
-    {
-      eval('()=>{}');
+    try {
+      eval("()=>{}");
       // alert("浏览器支持箭头函数");
-    } catch (eo)
-    {
-      alert('本 现代浏览器进行使用');
-      window.location.href = 'http://browsehappy.osfipin.com/';
+    } catch (eo) {
+      alert("本 现代浏览器进行使用");
+      window.location.href = "http://browsehappy.osfipin.com/";
     }
     // 将数据保存到vuex
-    window.addEventListener('unload', this.saveData);
+    window.addEventListener("unload", this.saveData);
   },
 };
 </script>

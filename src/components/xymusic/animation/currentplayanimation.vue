@@ -8,8 +8,8 @@
 
 <script>
 export default {
-  name: 'playanimation'
-}
+  name: "playanimation",
+};
 </script>
 <style lang="less" scoped>
 .currentplay {

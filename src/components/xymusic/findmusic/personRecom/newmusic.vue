@@ -1,64 +1,70 @@
 <template>
   <div class="newmusic">
-    <p style="font-size:18px;font-weight:bold;text-align:left;padding-left:130px">最新音乐
-      &nbsp;&nbsp;&nbsp;></p>
+    <p style="
+        font-size: 18px;
+        font-weight: bold;
+        text-align: left;
+        padding-left: 130px;
+      ">
+      最新音乐 &nbsp;&nbsp;&nbsp;>
+    </p>
     <div class="newsongbox">
-      <div :class="[newsongsa,{active:index==current}]"
-           v-for="(item,index) in newsongs"
+      <div :class="[newsongsa, { active: index == current }]"
+           v-for="(item, index) in newsongs"
            :key="item.id"
-           style="width:360px;height:50px"
+           style="width: 360px; height: 50px"
            @click="selectsong(index)"
            ref="song">
         <!-- 歌曲图片 -->
         <div class="playimage"
              @click="playurl(item.id)">
           <el-image :src="item.picUrl"
-                    style="width:50px;height:50px;border-radius:5px"></el-image>
+                    style="width: 50px; height: 50px; border-radius: 5px"></el-image>
         </div>
         <!-- 歌曲信息 -->
         <div class="songinfo">
-          <span class="songname">{{item.name}}</span>
-          <span class="songauthor">{{item.song.artists[0].name}}</span>
+          <span class="songname">{{ item.name }}</span>
+          <span class="songauthor">{{ item.song.artists[0].name }}</span>
         </div>
         <!-- 播放按钮 -->
         <img src="../../../../assets/images/最新音乐播放按钮.svg"
              alt=""
              class="playbtn"
-             @click="playurl(item.id)">
+             @click="playurl(item.id)" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
   data () {
     return {
       newsongs: [],
       // 样式控制
-      current: 0,
+      current: 1000,
       // 样式
-      newsongsa: "newsongs"
-    }
+      newsongsa: "newsongs",
+    };
   },
   methods: {
     async getnewmusic () {
       const { data } = await this.$http.get("/personalized/newsong", {
         params: {
-          limit: 12
-        }
-      })
+          limit: 12,
+        },
+      });
       // console.log(data.result);
-      this.newsongs = data.result
+      this.newsongs = data.result;
     },
     // 点击改变当前项颜色
     selectsong (index) {
-      this.current = index
+      this.current = index;
     },
     // 点击当前项图片播放音乐
     async playurl (id) {
-      const res = await this.$http.get('/song/url', {
+      const res = await this.$http.get("/song/url", {
         params: {
           id: id,
           cookie: this.cookie,
@@ -66,30 +72,30 @@ export default {
       });
       // console.log(res.data.data[0].url);
       if (res.data.data[0].url == null)
-        return this.$message.error('没有版权哦！');
-      this.$store.dispatch('savecurrenturl', res.data.data[0].url);
+        return this.$message.error("没有版权哦！");
+      this.$store.dispatch("savecurrenturl", res.data.data[0].url);
       //获取歌曲详情
-      const resdata = await this.$http.get('/song/detail', {
+      const resdata = await this.$http.get("/song/detail", {
         params: {
           ids: id,
         },
       });
       // console.log(resdata);
       // 当前播放歌曲详情
-      this.$store.dispatch('savesongDetails', resdata.data.songs[0]);
+      this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
       //存入当前播放歌曲列表
-      this.$store.dispatch('saveplaysonglist', resdata.data.songs[0]);
+      this.$store.dispatch("saveplaysonglist", resdata.data.songs[0]);
       //当前播放状态
-      this.$store.dispatch('saveplaystatus', true);
-    }
+      this.$store.dispatch("saveplaystatus", true);
+    },
   },
   created () {
-    this.getnewmusic()
+    this.getnewmusic();
   },
   computed: {
-    ...mapGetters(['cookie'])
-  }
-}
+    ...mapGetters(["cookie"]),
+  },
+};
 </script>
 
 <style lang="less" scoped>

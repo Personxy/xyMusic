@@ -1,9 +1,11 @@
 <template>
   <div class="headtab">
-    <el-menu :default-active="this.$route.path"
-             class="el-menu-demo"
-             mode="horizontal"
-             :router="true">
+    <el-menu
+      :default-active="this.$route.path"
+      class="el-menu-demo"
+      mode="horizontal"
+      :router="true"
+    >
       <el-menu-item index="/home/findmusic/personrecom">个性推荐</el-menu-item>
       <el-menu-item index="/home/findmusic/songlist">歌单</el-menu-item>
       <el-menu-item index="/home/findmusic/ranking">排行榜</el-menu-item>
@@ -11,13 +13,10 @@
       <el-menu-item index="/home/findmusic/newmusic">最新音乐</el-menu-item>
     </el-menu>
   </div>
-
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style lang="less" scoped>

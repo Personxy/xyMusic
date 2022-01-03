@@ -4,19 +4,14 @@
       <!-- 顶部导航 -->
       <el-header>
         <div class="logobox">
-          <img class="logo"
-               src="../assets/images/logo1.png"
-               alt="" />
+          <img class="logo" src="../assets/images/logo1.png" alt="" />
         </div>
         <a class="home">羊羊音乐</a>
         <!-- 后退和前进按钮 -->
-        <span href=""
-              class="back"
-              @click="goBack">
+        <span href="" class="back" @click="goBack">
           <div class="arrowleft"></div>
         </span>
-        <span href=""
-              class="advance">
+        <span href="" class="advance">
           <div class="arrowlright"></div>
         </span>
         <!-- 搜索页面 -->
@@ -45,31 +40,31 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import Aside from '@/components/xymusic/aside';
-import Login from '@/components/xymusic/login/login';
-import loginbar from '@/components/xymusic/login/loginbar';
-import search from '@/components/xymusic/search/search';
-import musicplay from '../components/xymusic/musicplay/musicplay';
+import { mapGetters } from "vuex";
+import Aside from "@/components/xymusic/aside";
+import Login from "@/components/xymusic/login/login";
+import loginbar from "@/components/xymusic/login/loginbar";
+import search from "@/components/xymusic/search/search";
+import musicplay from "../components/xymusic/musicplay/musicplay";
 export default {
-  name: 'xymusic',
+  name: "xymusic",
   components: { Aside, Login, loginbar, search, musicplay },
-  data () {
+  data() {
     return {
-      searchdata: '',
+      searchdata: "",
     };
   },
   computed: {
     // 控制登录面板是否打开
-    loginbarflag () {
+    loginbarflag() {
       return this.$store.state.loginflag;
     },
-    ...mapGetters(['userInfo']),
+    ...mapGetters(["userInfo"]),
   },
   methods: {
-    goBack () {
-      window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
-    }
+    goBack() {
+      window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
+    },
   },
 };
 </script>

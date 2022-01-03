@@ -1,13 +1,10 @@
 <template>
   <div>
     <el-tabs v-model="activeName">
-      <el-tab-pane label="歌曲列表"
-                   name="songlist">
-        <playlist :songs="songs"
-                  :likeplaylist="likeplaylist"></playlist>
+      <el-tab-pane label="歌曲列表" name="songlist">
+        <playlist :songs="songs" :likeplaylist="likeplaylist"></playlist>
       </el-tab-pane>
-      <el-tab-pane label="评论"
-                   name="comments">
+      <el-tab-pane label="评论" name="comments">
         <comment></comment>
       </el-tab-pane>
     </el-tabs>
@@ -15,8 +12,8 @@
 </template>
 
 <script>
-import playlist from "./playlist.vue"
-import comment from "./comment.vue"
+import playlist from "./playlist.vue";
+import comment from "./comment.vue";
 export default {
   components: {
     playlist,
@@ -24,18 +21,15 @@ export default {
   },
   props: {
     songs: Array,
-    likeplaylist: Array
-
+    likeplaylist: Array,
   },
-  methods: {
-
-  },
-  data () {
+  methods: {},
+  data() {
     return {
-      activeName: "songlist"
-    }
-  }
-}
+      activeName: "songlist",
+    };
+  },
+};
 </script>
 
 <style lang="less" scoped>

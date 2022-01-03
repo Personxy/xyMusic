@@ -1,18 +1,28 @@
 <template>
   <div class="recommv">
-    <p style="font-size:18px;font-weight:bold;text-align:left;padding-left:130px">推荐MV
-      &nbsp;&nbsp;&nbsp;></p>
+    <p
+      style="
+        font-size: 18px;
+        font-weight: bold;
+        text-align: left;
+        padding-left: 130px;
+      "
+    >
+      推荐MV &nbsp;&nbsp;&nbsp;>
+    </p>
     <div class="mvbox">
-      <div class="mvs"
-           v-for="item in mvlist"
-           :key="item.id">
-
-        <el-image :src="item.picUrl"
-                  style="width:260px;height:150px;border-radius:5px"></el-image>
-        <span style="font-size:14px">{{item.name}}</span>
-        <span style="font-size:12px">{{item.artistName}}</span>
-        <div class="playcount"><img src="../../../../assets/images/歌单列表播放按钮.svg"
-               alt="">{{(item.playcount||item.playCount)| wan}}</div>
+      <div class="mvs" v-for="item in mvlist" :key="item.id">
+        <el-image
+          :src="item.picUrl"
+          style="width: 260px; height: 150px; border-radius: 5px"
+        ></el-image>
+        <span style="font-size: 14px">{{ item.name }}</span>
+        <span style="font-size: 12px">{{ item.artistName }}</span>
+        <div class="playcount">
+          <img src="../../../../assets/images/歌单列表播放按钮.svg" alt="" />{{
+            (item.playcount || item.playCount) | wan
+          }}
+        </div>
       </div>
     </div>
   </div>
@@ -20,21 +30,21 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      mvlist: []
-    }
+      mvlist: [],
+    };
   },
   methods: {
-    async getMV () {
-      const { data } = await this.$http.get("/personalized/mv")
-      this.mvlist = data.result
-    }
+    async getMV() {
+      const { data } = await this.$http.get("/personalized/mv");
+      this.mvlist = data.result;
+    },
   },
-  created () {
-    this.getMV()
-  }
-}
+  created() {
+    this.getMV();
+  },
+};
 </script>
 
 <style lang="less" scoped>

@@ -1,19 +1,16 @@
 <template>
   <div>
-    <div class="user"
-         @click="changeloginbar(true)"
-         v-if="userInfo === null">
-      <el-avatar :size="28"
-                 src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+    <div class="user" @click="changeloginbar(true)" v-if="userInfo === null">
+      <el-avatar
+        :size="28"
+        src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+      ></el-avatar>
       <a href="#">未登录</a>
     </div>
-    <div class="user"
-         v-else>
-      <el-avatar :size="28"
-                 :src="userInfo.avatarUrl"></el-avatar>
+    <div class="user" v-else>
+      <el-avatar :size="28" :src="userInfo.avatarUrl"></el-avatar>
       <a href="#">{{ userInfo.nickname }}</a>
-      <a href="#"
-         @click="loginout">退出</a>
+      <a href="#" @click="loginout">退出</a>
     </div>
   </div>
 </template>
@@ -23,11 +20,11 @@
 export default {
   name: "loginbar",
   methods: {
-    changeloginbar (loginflag) {
+    changeloginbar(loginflag) {
       this.$store.commit("changeloginbar", loginflag);
     },
     // 退出登陆
-    async loginout () {
+    async loginout() {
       await this.$http.get("/logout");
       //清除用户信息
       this.$store.dispatch("saveUserInfo", null);
@@ -39,11 +36,11 @@ export default {
       //清除cookie
       this.$store.dispatch("saveCookie", null);
       //回到发现模块
-      this.$router.push('/home/findmusic/personrecom')
+      this.$router.push("/home/findmusic/personrecom");
     },
   },
   computed: {
-    userInfo () {
+    userInfo() {
       return this.$store.state.userInfo;
     },
   },

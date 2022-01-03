@@ -1,39 +1,50 @@
 <template>
   <div class="category">
     <!-- 选择按钮 -->
-    <div class="allcatebtn"
-         @click="changecatpanel(panel)">
-      <span>{{all.name}}&nbsp;></span>
+    <div class="allcatebtn" @click="changecatpanel(panel)">
+      <span>{{ all.name }}&nbsp;></span>
     </div>
     <!-- 热门分类 -->
     <div class="hotcat">
-      <span v-for="(item,index) in tags"
-            :key="item.id"
-            :class="{active:index==currentindex}"
-            @click="selectcat(index,item.name)">{{item.name}}</span>
+      <span
+        v-for="(item, index) in tags"
+        :key="item.id"
+        :class="{ active: index == currentindex }"
+        @click="selectcat(index, item.name)"
+        >{{ item.name }}</span
+      >
     </div>
     <!-- 分类列表 -->
-    <div class="catlist"
-         style="width:750px;height:750px"
-         v-show="panel"
-         v-clickoutside="close">
+    <div
+      class="catlist"
+      style="width: 750px; height: 750px"
+      v-show="panel"
+      v-clickoutside="close"
+    >
       <div class="top">
-        <span style="margin-left:30px"
-              :class="{spanactive:spanflag}"
-              @click="selectallcate">全部歌单</span>
+        <span
+          style="margin-left: 30px"
+          :class="{ spanactive: spanflag }"
+          @click="selectallcate"
+          >全部歌单</span
+        >
       </div>
       <!-- 详细分类 -->
       <div class="contain">
-        <div class="catbox"
-             v-for="(item ,index) in categories"
-             :key="index"><span class="cattitle">{{item}}</span>
+        <div class="catbox" v-for="(item, index) in categories" :key="index">
+          <span class="cattitle">{{ item }}</span>
           <!-- 详细分类列表 -->
           <div class="abox">
-            <div :class="[catboxlist,{hide:item1.category!=index},]"
-                 v-for="(item1,index1) in sub"
-                 :key="index1">
-              <span @click="getcatlist(index1,item1.name)"
-                    :class="{currentcat:currentcatindex==index1}">{{item1.category==index?item1.name:''}}</span>
+            <div
+              :class="[catboxlist, { hide: item1.category != index }]"
+              v-for="(item1, index1) in sub"
+              :key="index1"
+            >
+              <span
+                @click="getcatlist(index1, item1.name)"
+                :class="{ currentcat: currentcatindex == index1 }"
+                >{{ item1.category == index ? item1.name : "" }}</span
+              >
             </div>
           </div>
         </div>
@@ -43,9 +54,9 @@
 </template>
 
 <script>
-import { bus } from "../../../../plugins/bus"
+import { bus } from "../../../../plugins/bus";
 export default {
-  data () {
+  data() {
     return {
       // name
       all: {},
@@ -63,61 +74,62 @@ export default {
       // 分类选中高亮
       currentcatindex: 1000,
       // 面板开关控制
-      panel: false
-    }
+      panel: false,
+    };
   },
   methods: {
     // 获取歌单分类
-    async getlistcat () {
-      const { data: { all, categories, sub } } = await this.$http.get('/playlist/catlist')
-      this.all = all
-      this.categories = categories
-      this.sub = sub
+    async getlistcat() {
+      const {
+        data: { all, categories, sub },
+      } = await this.$http.get("/playlist/catlist");
+      this.all = all;
+      this.categories = categories;
+      this.sub = sub;
       // console.log(sub);
       // console.log(categories);
     },
     // 热门歌单分类
-    async gethotcat () {
-      const { data: tags } = await this.$http.get('/playlist/hot')
+    async gethotcat() {
+      const { data: tags } = await this.$http.get("/playlist/hot");
       // console.log(tags);
-      this.tags = tags.tags
+      this.tags = tags.tags;
     },
 
     //点击全部分类
-    selectallcate () {
-      this.spanflag = true
-      this.currentcatindex = 1000
-      this.currentindex = 1000
-      this.panel = false
-      this.sendmessage("")
-      this.all.name = "全部歌单"
-
+    selectallcate() {
+      this.spanflag = true;
+      this.currentcatindex = 1000;
+      this.currentindex = 1000;
+      this.panel = false;
+      this.sendmessage("");
+      this.all.name = "全部歌单";
     },
     // 热门分类点击
-    selectcat (index, item) {
-      this.currentindex = index
-      this.currentcatindex = 1000
-      this.spanflag = false
-      this.sendmessage(item)
-      this.all.name = item
-      this.panel = false
+    selectcat(index, item) {
+      this.currentindex = index;
+      this.currentcatindex = 1000;
+      this.spanflag = false;
+      this.sendmessage(item);
+      this.all.name = item;
+      this.panel = false;
     },
     //分类点击
-    getcatlist (index1, item) {
-      this.currentcatindex = index1
-      this.currentindex = 1000
-      this.spanflag = false
-      this.panel = false
-      this.sendmessage(item)
-      this.all.name = item
+    getcatlist(index1, item) {
+      this.currentcatindex = index1;
+      this.currentindex = 1000;
+      this.spanflag = false;
+      this.panel = false;
+      this.sendmessage(item);
+      this.all.name = item;
     },
     // 面板开关控制
-    changecatpanel (panel) {
-      this.panel = !panel
+    changecatpanel(panel) {
+      this.panel = !panel;
     },
     //传递查询参数
-    sendmessage (item) {
-      bus.$emit('catname', item)
+    sendmessage(item) {
+      bus.$emit("catname", item);
     },
     // 点击外部关闭面板
     close: function (e) {
@@ -125,9 +137,9 @@ export default {
       this.panel = false;
     },
   },
-  created () {
+  created() {
     this.getlistcat();
-    this.gethotcat()
+    this.gethotcat();
   },
   directives: {
     // 自定义指令 能够在组件外部控制弹窗关闭
@@ -140,13 +152,12 @@ export default {
         };
 
         setTimeout(() => {
-          document.addEventListener('click', documentHandler);
+          document.addEventListener("click", documentHandler);
         }, 0);
       },
     },
   },
-
-}
+};
 </script>
 <style lang="less" scoped>
 .category {
