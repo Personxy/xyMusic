@@ -1,7 +1,14 @@
 <template>
-  <div>singer</div>
+  <div>
+    <singer />
+  </div>
 </template>
 <script>
-export default {};
+import singer from "../../../components/xymusic/findmusic/singer/singer.vue"
+export default {
+  components: {
+    singer
+  }
+};
 </script>
 <style lang="less" scoped></style>
