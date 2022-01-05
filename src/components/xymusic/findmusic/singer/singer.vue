@@ -42,7 +42,8 @@
          infinite-scroll-delay="500">
       <div class="singerinfo"
            v-for="item in artists "
-           :key="item.id">
+           :key="item.id"
+           @click="tosingerpage(item.id)">
         <div class="authoravg">
           <el-image :src="item.picUrl"
                     alt=""
@@ -88,7 +89,8 @@ export default {
         a: "a",
         b: "b",
         c: "c",
-        d: "e",
+        d: 'd',
+        e: "e",
         f: "f",
         g: "g",
         h: "h",
@@ -130,6 +132,7 @@ export default {
     }
   },
   methods: {
+    // 获取歌手列表
     async getsingerlist () {
       const { data } = await this.$http.get('/artist/list', {
         params: {
@@ -173,7 +176,10 @@ export default {
       this.artists = []
       this.getsingerlist()
     },
-
+    //跳转到歌手详情页
+    tosingerpage (id) {
+      this.$router.push(`/home/singerdetail/${id}`)
+    }
   },
   created () {
     this.getsingerlist()
@@ -250,6 +256,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     .singerinfo {
+      cursor: pointer;
       margin-right: 15px;
       margin-bottom: 15px;
       .authoravg {
