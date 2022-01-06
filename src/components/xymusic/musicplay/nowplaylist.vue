@@ -1,74 +1,61 @@
 <template>
-  <div class="playlistnow" v-if="playsonglist">
+  <div class="playlistnow"
+       v-if="playsonglist">
     <div class="playlist">
-      <div
-        style="
+      <div style="
           text-align: left;
           font-size: 24px;
           font-weight: bold;
           margin-bottom: 15px;
           margin-top: 10px;
           padding-left: 10px;
-        "
-      >
+        ">
         <span>当前播放</span>
       </div>
-      <div
-        style="
+      <div style="
           text-align: left;
           color: #cfcfcf;
           padding-left: 10px;
           font-size: 14px;
-        "
-      >
+        ">
         <span>总{{ playsonglist.length }}首</span>
-        <span
-          @click="clearcurrentlist"
-          style="margin-left: 300px; color: #507daf; cursor: pointer"
-          >清空列表</span
-        >
+        <span @click="clearcurrentlist"
+              style="margin-left: 300px; color: #507daf; cursor: pointer">清空列表</span>
       </div>
-      <el-table
-        :data="playsonglist"
-        style="border-top: 1px solid #f2f2f2; margin-top: 15px"
-        stripe
-        height="680"
-        @row-dblclick="playmusic"
-      >
-        <el-table-column
-          property="name"
-          label="标题"
-          width="200"
-          show-overflow-tooltip
-        >
+      <el-table :data="playsonglist"
+                style="border-top: 1px solid #f2f2f2; margin-top: 15px"
+                stripe
+                height="680"
+                @row-dblclick="playmusic">
+        <el-table-column property="name"
+                         label="标题"
+                         width="200"
+                         show-overflow-tooltip>
           <template slot-scope="scope">
-            <div
-              v-if="songDetails ? scope.row.id == songDetails.id : false"
-              style="color: #ec4141"
-            >
+            <div v-if="songDetails ? scope.row.id == songDetails.id : false"
+                 style="color: #ec4141">
               {{ scope.row.name }}
               <!-- 当前播放动画 -->
-              <div v-if="playstatus" style="display: inline-block">
+              <div v-if="playstatus"
+                   style="display: inline-block">
                 <playanimationa />
               </div>
               <!-- 暂停图标 -->
-              <img
-                src="../../../assets/images/列表暂停图标2.svg"
-                style="display: inline-block"
-                alt=""
-                v-else
-              />
+              <img src="../../../assets/images/列表暂停图标2.svg"
+                   style="display: inline-block"
+                   alt=""
+                   v-else />
             </div>
             <div v-else>{{ scope.row.name }}</div>
           </template>
         </el-table-column>
-        <el-table-column
-          property="ar[0].name"
-          label="歌手"
-          width="120"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column property="dt" label="时间" width="120">
+        <el-table-column property="ar[0].name"
+                         label="歌手"
+                         width="120"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column property="dt"
+                         label="时间"
+                         width="120">
           <template slot-scope="dt">
             {{ (dt.row.dt / 1000) | minutesformat }}
           </template>
@@ -82,7 +69,7 @@
 import { mapGetters } from "vuex";
 import playanimationa from "../animation/currentplayanimation";
 export default {
-  data() {
+  data () {
     return {
       openflag: false,
     };
@@ -92,7 +79,7 @@ export default {
   },
   methods: {
     // 清空播放列表
-    clearcurrentlist() {
+    clearcurrentlist () {
       this.$confirm("是否清空当前播放列表?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -109,7 +96,7 @@ export default {
         });
     },
     // 点击播放列表的音乐播放
-    async playmusic(row) {
+    async playmusic (row) {
       const res = await this.$http.get("/song/url", {
         params: {
           id: row.id,
@@ -125,7 +112,7 @@ export default {
           ids: row.id,
         },
       });
-      // console.log(resdata);
+      console.log(resdata);
       // 存入歌曲详情
       this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
     },
