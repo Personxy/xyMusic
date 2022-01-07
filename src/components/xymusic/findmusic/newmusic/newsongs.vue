@@ -211,7 +211,7 @@ export default {
         color: #8d8a8a;
         font-size: 15px;
       }
-      .newsongscontion:hover {
+      .newsongscontionclass:hover {
         color: #443f3f;
       }
       .newsongscontionActive {

@@ -302,6 +302,7 @@ export default {
 
       // 获取url
       this.getsongurl(this.playsonglist[index].id);
+      this.$store.dispatch("saveplaystatus", true);
       this.$store.dispatch("savesongDetails", this.playsonglist[index]);
     },
     // 获取url
