@@ -1,47 +1,42 @@
 <template>
   <div class="allsonglist">
     <!-- 采用v-infinite-scroll无限加载 -->
-    <div
-      v-infinite-scroll="getcatlist"
-      infinite-scroll-distance="200px"
-      infinite-scroll-delay="500"
-      class="songlistbox"
-    >
-      <div
-        class="catlist"
-        v-for="item in catlist"
-        :key="item.id"
-        @click="tolistdetail(item.id)"
-      >
-        <img
-          :src="item.coverImgUrl"
-          style="width: 240px; height: 250px; border-radius: 5px"
-        />
+    <div v-infinite-scroll="getcatlist"
+         infinite-scroll-distance="200px"
+         infinite-scroll-delay="500"
+         class="songlistbox">
+      <div class="catlist"
+           v-for="item in catlist"
+           :key="item.id"
+           @click="tolistdetail(item.id)">
+        <img :src="item.coverImgUrl"
+             style="width: 240px; height: 250px; border-radius: 5px" />
         <span>{{ item.name }}</span>
         <!-- 播放量 -->
         <div class="playcount">
-          <img src="../../../../assets/images/歌单列表播放按钮.svg" alt="" />{{
+          <img src="../../../../assets/images/歌单列表播放按钮.svg"
+               alt="" />{{
             (item.playcount || item.playCount) | wan
           }}
         </div>
         <!-- 播放显示按钮显示       -->
         <div class="playbtn">
-          <img
-            src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
-            style="width: 40px; height: 40px"
-            alt=""
-          />
+          <img src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
+               style="width: 40px; height: 40px"
+               alt="" />
         </div>
       </div>
     </div>
-    <div class="" v-if="loading" style="margin-top: 20px">加载中...</div>
+    <div class=""
+         v-if="loading"
+         style="margin-top: 20px">加载中...</div>
   </div>
 </template>
 
 <script>
 import { bus } from "../../../../plugins/bus";
 export default {
-  data() {
+  data () {
     return {
       // 歌单分类名
       catname: "",
@@ -54,7 +49,7 @@ export default {
   },
   methods: {
     // 获取歌单列表
-    async getcatlist() {
+    async getcatlist () {
       const { data } = await this.$http.get("/top/playlist", {
         params: {
           cat: this.catname,
@@ -64,19 +59,23 @@ export default {
       });
       this.loading = true;
       this.catlist.push.apply(this.catlist, data.playlists);
+      // 清除重复
+      this.catlist = this.catlist.filter((element, index, arr) => {
+        return arr.findIndex((el) => el.id == element.id) === index;
+      });
       // console.log(this.catlist);
       this.total = data.total;
       this.offset = this.offset + 50;
     },
     // 跳转到歌单详情
-    tolistdetail(id) {
+    tolistdetail (id) {
       this.$router.push(`/home/playlistpage/${id}`);
     },
   },
-  created() {
+  created () {
     this.getcatlist();
   },
-  mounted() {
+  mounted () {
     // 获取歌单分类名
     bus.$on("catname", (data) => {
       this.catname = data;

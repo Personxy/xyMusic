@@ -4,8 +4,10 @@
         font-size: 18px;
         font-weight: bold;
         text-align: left;
-        padding-left: 70px;
-      ">
+        padding-left: 60px;
+        cursor:pointer
+      "
+       @click="tosongslistpage">
       推荐歌单&nbsp;&nbsp;&nbsp;>
     </p>
     <div class="songlistbox"
@@ -89,6 +91,10 @@ export default {
     changeurl (id) {
       this.$router.push(`/home/playlistpage/${id}`);
     },
+    //跳转到歌单界面
+    tosongslistpage () {
+      this.$router.push('/home/findmusic/songlist');
+    }
   },
   created () {
     if (this.userInfo)
