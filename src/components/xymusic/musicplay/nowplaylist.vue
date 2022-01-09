@@ -112,7 +112,7 @@ export default {
           ids: row.id,
         },
       });
-      console.log(resdata);
+      // console.log(resdata);
       // 存入歌曲详情
       this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
     },
