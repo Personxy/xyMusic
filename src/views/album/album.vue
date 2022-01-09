@@ -1,29 +1,28 @@
 <template>
-  <div class="playlistpage">
+  <div class="albumpage">
     <!-- 歌单信息 -->
-    <listinfo :playlist="playlist"
-              :songs="songs" />
+    <albuminfo :albuminfo="albuminfo"
+               :songs="songs" />
     <!-- 歌单导航 -->
-    <listnav :songs="songs"
-             v-loading="loading"
-             :likeplaylist="likeplaylist" />
+    <albumnav v-loading="loading"
+              :songs="songs"
+              :likeplaylist="likeplaylist" />
   </div>
 </template>
+
 <script>
 import { mapGetters } from "vuex";
-import listinfo from "../../components/xymusic/playlistpage/listinfo";
-import listnav from "../../components/xymusic/playlistpage/listnav";
+import albuminfo from "../../components/xymusic/album/albuminfo.vue"
+import albumnav from "../../components/xymusic/album/albumnav.vue"
 export default {
   components: {
-    listinfo,
-    listnav,
+    albuminfo,
+    albumnav
   },
   data () {
     return {
       // 歌单详情
-      playlist: {
-        creator: {},
-      },
+      albuminfo: {},
       songs: [],
       loading: false,
       // 喜欢的音乐列表
@@ -31,32 +30,22 @@ export default {
     };
   },
   methods: {
-    //获取歌单详情
-    async getplaylistinfo () {
-      const res = await this.$http.get("/playlist/detail", {
-        params: {
-          id: this.$route.params.id,
-          cookie: this.cookie,
-        },
-      });
-      // console.log(res.data);
-      this.playlist = res.data.playlist;
-    },
-    // 获取所有歌曲
-    async getallplaylist () {
+
+    // 获取所有歌曲和专辑详情
+    async getallalbumlist () {
       this.loading = true;
-      const resdata = await this.$http.get("/playlist/track/all", {
+      const { data } = await this.$http.get("/album", {
         params: {
           id: this.$route.params.id,
           cookie: this.cookie,
           timestamp: Date.now(),
         },
       });
-      this.songs = resdata.data.songs;
+      this.songs = data.songs;
+      this.albuminfo = data.album
       // 加载动画结束
       this.loading = false;
     },
-
     //获取喜欢的歌曲列表
     async getlikelist () {
       if (!this.userInfo) return;
@@ -71,12 +60,12 @@ export default {
     },
   },
   created () {
-    this.getplaylistinfo();
-    this.getallplaylist();
     this.getlikelist();
+    this.getallalbumlist()
   },
   beforeUpdate () {
     // 对比喜欢的音乐和当前歌单添加 likemusicflag属性
+
     this.likeplaylist.forEach((item2, index2, arr2) => {
       this.songs.forEach((item, index, arr) => {
         if (arr2[index2] == arr[index].id)
@@ -94,30 +83,12 @@ export default {
     });
     // console.log(this.songs);
   },
-  // 监听路由
-  watch: {
-    $route () {
-      // console.log(to);
-      // console.log(from);
-      this.getplaylistinfo();
-      this.getallplaylist();
-      this.getlikelist();
-    },
-  },
   computed: {
     ...mapGetters(["cookie", "userInfo"]),
   },
-};
+
+}
 </script>
 
 <style lang="less" scoped>
-.playlistpage {
-  height: 80vh;
-}
-/deep/.el-loading-spinner {
-  top: 80px;
-}
-/deep/.el-loading-mask {
-  background-color: rgba(255, 255, 255, 0.6);
-}
 </style>

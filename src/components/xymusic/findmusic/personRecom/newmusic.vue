@@ -5,7 +5,9 @@
         font-weight: bold;
         text-align: left;
         padding-left: 130px;
-      ">
+        cursor:pointer
+      "
+       @click="tonewmusicpage">
       最新音乐 &nbsp;&nbsp;&nbsp;>
     </p>
     <div class="newsongbox">
@@ -88,6 +90,9 @@ export default {
       //当前播放状态
       this.$store.dispatch("saveplaystatus", true);
     },
+    tonewmusicpage () {
+      this.$router.push('/home/findmusic/newmusic')
+    }
   },
   created () {
     this.getnewmusic();

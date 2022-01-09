@@ -106,6 +106,12 @@ const routes = [
         path: '/home/singerdetail/:id',
         component: () => import('../views/singer/singer.vue'),
       },
+      // 专辑
+      {
+        name: 'album',
+        path: '/home/album/:id',
+        component: () => import('../views/album/album.vue'),
+      },
     ],
   },
 ];

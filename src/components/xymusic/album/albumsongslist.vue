@@ -1,5 +1,5 @@
 <template>
-  <div class="songtablist">
+  <div class="albumsongslist">
     <el-table :data="newsongs"
               stripe
               style="width: 100%"
@@ -73,16 +73,15 @@ export default {
   props: {
     songs: Array,
     likeplaylist: Array,
+
   },
   components: {
     playanimation,
   },
-  data () {
-    return {};
-  },
   methods: {
     // 收藏与取消收藏
     async changecollectcondition (flag, id) {
+      // console.log(flag);
       const res = await this.$http.get("/like", {
         params: {
           id: id,
@@ -102,7 +101,6 @@ export default {
         if (element.id == id)
         {
           // console.log(element.likemusicflag);
-
           element.likemusicflag = flag;
         }
       });
@@ -141,8 +139,8 @@ export default {
     },
     ...mapGetters(["cookie", "songDetails", "playstatus"]),
   },
-  created () { },
-};
+}
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+</style>

@@ -156,7 +156,7 @@
       }}</span>
       <el-slider v-model="progressvalue"
                  class="progressbox"
-                 :max="Math.floor(songDetails.dt / 1000)"
+                 :max="Math.floor((songDetails?songDetails.dt:0) / 1000)"
                  :show-tooltip="false"
                  @change="changecurrentTime()"
                  @mousedown.native="isdrag = true"
@@ -164,7 +164,7 @@
                  @mouseleave.native="isdrag = false"></el-slider>
       <!-- 总播放时间 -->
       <span class="totalTime">{{
-        (songDetails.dt / 1000) | minutesformat
+        ((songDetails?songDetails.dt:0) / 1000) | minutesformat
       }}</span>
     </div>
     <!-- 播放列表按钮 -->
