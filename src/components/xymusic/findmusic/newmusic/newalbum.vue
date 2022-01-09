@@ -23,7 +23,8 @@
          infinite-scroll-delay="500">
       <div class="newalbumlist"
            v-for="item in albumlist"
-           :key="item.id">
+           :key="item.id"
+           @click="toalbumdetail(item.id)">
         <el-image :src="item.blurPicUrl"
                   style="width:200px;height:200px"></el-image>
         <div class="albumname">{{item.name}}</div>
@@ -77,6 +78,11 @@ export default {
       })
       this.loading = true;
       this.albumlist.push.apply(this.albumlist, data.albums);
+      // 清除重复
+      this.albumlist = this.albumlist.filter((element, index, arr) => {
+        return arr.findIndex((el) => el.id == element.id) === index;
+      });
+      // console.log(this.offset);
       this.offset = this.offset + 30
     },
     // 地区选择
@@ -95,6 +101,10 @@ export default {
       this.offset = 30
       this.getalbumnews()
 
+    },
+    // 转到专辑详情
+    toalbumdetail (id) {
+      this.$router.push(`/home/album/${id}`)
     }
 
   },
@@ -163,6 +173,7 @@ export default {
     margin-top: 15px;
     display: flex;
     flex-wrap: wrap;
+    cursor: pointer;
     .newalbumlist {
       margin-right: 15px;
       text-align: left;
