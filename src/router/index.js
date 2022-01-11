@@ -69,6 +69,20 @@ const routes = [
         name: 'video',
         path: '/home/video',
         component: () => import('../views/video/video'),
+        redirect: '/home/video/videopage',
+
+        children: [
+          {
+            name: 'videopae',
+            path: '/home/video/videopage',
+            component: () => import('../views/video/videopage/videopage.vue'),
+          },
+          {
+            name: 'mvpage',
+            path: '/home/video/mvpage',
+            component: () => import('../views/video/MVpage/MVpage.vue'),
+          },
+        ],
       },
       //私人fm
       {
