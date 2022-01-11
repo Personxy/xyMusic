@@ -84,6 +84,9 @@ export default {
       this.getcatlist();
     });
   },
+  beforeDestroy () {
+    bus.$off('catname')
+  },
 };
 </script>
 
