@@ -25,27 +25,22 @@ export default {
       "playorder",
       "volume",
       "currentTime",
+      'nextsonglist'
     ]),
   },
   methods: {
     // 存入session
-    saveData() {
+    saveData () {
       //用户信息
       sessionStorage.setItem("userInfo", JSON.stringify(this.userInfo));
       //搜索历史
-      sessionStorage.setItem(
-        "searchHistory",
-        JSON.stringify(this.searchHistory)
-      );
+      sessionStorage.setItem("searchHistory", JSON.stringify(this.searchHistory));
       //热搜信息
       // sessionStorage.setItem("searchHot",JSON.stringify(this.searchHot));
       // 个人歌单信息
       sessionStorage.setItem("playListMine", JSON.stringify(this.playListMine));
       //收藏歌单
-      sessionStorage.setItem(
-        "playListCollect",
-        JSON.stringify(this.playListCollect)
-      );
+      sessionStorage.setItem("playListCollect", JSON.stringify(this.playListCollect));
       //cookie
       sessionStorage.setItem("cookie", JSON.stringify(this.cookie));
       // 当前播放url
@@ -54,6 +49,8 @@ export default {
       sessionStorage.setItem("songDetails", JSON.stringify(this.songDetails));
       //当前播放列表
       sessionStorage.setItem("playsonglist", JSON.stringify(this.playsonglist));
+      // 下一首播放列表
+      sessionStorage.setItem("nextsonglist", JSON.stringify(this.nextsonglist))
       //当前播放状态
       sessionStorage.setItem("playstatus", this.playstatus);
       //播放顺序
@@ -64,12 +61,14 @@ export default {
       sessionStorage.setItem("currentTime", this.currentTime);
     },
   },
-  mounted() {
+  mounted () {
     // 判断是否兼容箭头函数
-    try {
+    try
+    {
       eval("()=>{}");
       // alert("浏览器支持箭头函数");
-    } catch (eo) {
+    } catch (eo)
+    {
       alert("本 现代浏览器进行使用");
       window.location.href = "http://browsehappy.osfipin.com/";
     }
