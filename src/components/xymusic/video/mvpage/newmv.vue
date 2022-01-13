@@ -98,6 +98,7 @@ export default {
     margin-left: 60px;
     margin-top: 15px;
     .newmvlist {
+      cursor: pointer;
       margin-right: 20px;
       width: 293px;
       text-align: left;
