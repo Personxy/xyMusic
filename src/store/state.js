@@ -2,35 +2,23 @@ const state = {
   // 是否打开登陆面板
   loginflag: false,
   //用户信息
-  userInfo: sessionStorage.getItem("userInfo")
-    ? JSON.parse(sessionStorage.getItem("userInfo"))
-    : null,
+  userInfo: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : null,
   // 搜索历史
-  searchHistory: sessionStorage.getItem("searchHistory")
-    ? JSON.parse(sessionStorage.getItem("searchHistory"))
-    : null,
+  searchHistory: sessionStorage.getItem('searchHistory') ? JSON.parse(sessionStorage.getItem('searchHistory')) : null,
   // 个人歌单信息
-  playListMine: sessionStorage.getItem("playListMine")
-    ? JSON.parse(sessionStorage.getItem("playListMine"))
-    : null,
+  playListMine: sessionStorage.getItem('playListMine') ? JSON.parse(sessionStorage.getItem('playListMine')) : null,
   // 收藏歌单
-  playListCollect: sessionStorage.getItem("playListCollect")
-    ? JSON.parse(sessionStorage.getItem("playListCollect"))
-    : null,
+  playListCollect: sessionStorage.getItem('playListCollect') ? JSON.parse(sessionStorage.getItem('playListCollect')) : null,
   //cookie
-  cookie: sessionStorage.getItem("cookie")
-    ? JSON.parse(sessionStorage.getItem("cookie"))
-    : null,
+  cookie: sessionStorage.getItem('cookie') ? JSON.parse(sessionStorage.getItem('cookie')) : null,
   //当前播放url
-  currenturl: sessionStorage.getItem("currenturl"),
+  currenturl: sessionStorage.getItem('currenturl'),
   //当前播放歌曲详情
-  songDetails: sessionStorage.getItem("songDetails")
-    ? JSON.parse(sessionStorage.getItem("songDetails"))
-    : null,
+  songDetails: sessionStorage.getItem('songDetails') ? JSON.parse(sessionStorage.getItem('songDetails')) : null,
   // 当前播放歌曲列表
-  playsonglist: sessionStorage.getItem("playsonglist")
-    ? JSON.parse(sessionStorage.getItem("playsonglist"))
-    : [],
+  playsonglist: sessionStorage.getItem('playsonglist') ? JSON.parse(sessionStorage.getItem('playsonglist')) : [],
+  //下一首播放列表
+  nextsonglist: sessionStorage.getItem('nextsonglist') ? JSON.parse(sessionStorage.getItem('nextsonglist')) : [],
   //当前播放状态
   playstatus: true,
   //播放顺序

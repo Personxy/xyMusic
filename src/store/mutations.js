@@ -36,12 +36,55 @@ const mutations = {
   //保存当前歌曲列表
   saveplaysonglist(state, playsonglist) {
     // console.log(playsonglist);
-    if (playsonglist instanceof Array) {
+    if (playsonglist) {
       state.playsonglist = state.playsonglist.concat(playsonglist);
     } else {
       state.playsonglist.push(playsonglist);
     }
     // 去掉重复添加的歌曲
+    state.playsonglist = state.playsonglist.filter((element, index, arr) => {
+      return arr.findIndex((el) => el.id == element.id) === index;
+    });
+  },
+  // 保存下一首播放列表
+  savenextsonglist(state, nextsonglist) {
+    // 找到当前播放歌曲的index
+    // console.log(nextsonglist);
+    // console.log(state.songDetails);
+    let i = 0;
+    state.playsonglist.forEach((element, index, arr) => {
+      if (arr[index].id == state.songDetails.id) {
+        i = index;
+      }
+    });
+    state.nextsonglist.push(nextsonglist);
+    // 去重
+    state.nextsonglist = state.nextsonglist.filter((element, index, arr) => {
+      return arr.findIndex((el) => el.id == element.id) === index;
+    });
+    // // 把列表放到当前播放歌曲后面
+    state.playsonglist.splice(i + 1, 0, ...state.nextsonglist);
+    // 去重
+    state.playsonglist = state.playsonglist.filter((element, index, arr) => {
+      return arr.findIndex((el) => el.id == element.id) === index;
+    });
+  },
+  // 将歌曲添加到当前歌曲的下一首并播放
+  savenextsong(state, nextsonglist) {
+    let i = 0;
+    state.playsonglist.forEach((element, index, arr) => {
+      if (arr[index].id == state.songDetails.id) {
+        i = index;
+      }
+    });
+    // state.nextsonglist.unshift(nextsonglist);
+    // // 去重
+    // state.nextsonglist = state.nextsonglist.filter((element, index, arr) => {
+    //   return arr.findIndex((el) => el.id == element.id) === index;
+    // });
+    // // 把列表放到当前播放歌曲后面
+    state.playsonglist.splice(i + 1, 0, nextsonglist);
+    // 去重
     state.playsonglist = state.playsonglist.filter((element, index, arr) => {
       return arr.findIndex((el) => el.id == element.id) === index;
     });

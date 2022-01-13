@@ -15,6 +15,8 @@ export const currenturl = (state) => state.currenturl;
 export const songDetails = (state) => state.songDetails;
 //当前歌曲列表
 export const playsonglist = (state) => state.playsonglist;
+//下一首播放列表
+export const nextsonglist = (state) => state.nextsonglist;
 // 当前播放状态
 export const playstatus = (state) => state.playstatus;
 //当前播放顺序
