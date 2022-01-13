@@ -4,7 +4,8 @@
            @sendnewmv="getnewmvtag" />
     <recommv :recommv='recommv' />
     <wangyimv :wamgyimvlist='wamgyimvlist' />
-    <rankingmv :rankingmvlist='rankingmvlist' />
+    <rankingmv :rankingmvlist='rankingmvlist'
+               @sendrankmvtag="getrankmvtag" />
   </div>
 </template>
 
@@ -47,6 +48,7 @@ export default {
       })
       this.newmvlist = data.data
     },
+    // 获取传递过来的最新mv条件选项
     getnewmvtag (data) {
       this.newmvarea = data
       this.getnewmv()
@@ -77,6 +79,11 @@ export default {
         }
       })
       this.rankingmvlist = data.data
+    },
+    //获取传过来的排行榜tag
+    getrankmvtag (data) {
+      this.rankingarea = data
+      this.getranking()
     }
   },
 
