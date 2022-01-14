@@ -139,7 +139,7 @@ export default {
         this.playmusic(this.playsonglist[index + 1])
       }
       this.$store.dispatch('deletesong', index, row)
-      console.log(this.playsonglist);
+      // console.log(this.playsonglist);
       if (this.playsonglist.length == 0)
       {
         this.$store.dispatch("clearplaysonglist");

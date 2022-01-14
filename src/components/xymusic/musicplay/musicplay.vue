@@ -15,9 +15,11 @@
            class="songspic" />
       <!-- 歌曲名和歌手名 -->
       <div class="songNameAndAuthor">
-        <span style="margin-bottom: 5px">{{ songDetails.name }}</span>
+        <span style="margin-bottom: 5px"
+              class="songname">{{ songDetails.name }}</span>
         <span @click="tosingerpage(songDetails.ar[0].id)"
-              style="cursor:pointer">{{ songDetails.ar[0].name }}</span>
+              style="cursor:pointer"
+              class="songauthor">{{ songDetails.ar[0].name }}</span>
       </div>
     </div>
     <!-- 控制按钮 -->
@@ -418,6 +420,7 @@ export default {
   .musicInfo {
     display: flex;
     align-items: center;
+    width: 25%;
     .songspic {
       border-radius: 5px;
     }
@@ -426,6 +429,18 @@ export default {
       display: flex;
       flex-direction: column;
       text-align: left;
+      .songname {
+        margin-top: 5px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .songauthor {
+        margin-top: 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
   }
   .musicplay {
@@ -528,12 +543,13 @@ export default {
       font-size: 14px;
     }
   }
-
-  .listbtn {
-    cursor: pointer;
+  .playlistbtn {
     position: absolute;
     right: 20px;
-    bottom: 23px;
+    top: 20px;
+    .listbtn {
+      cursor: pointer;
+    }
   }
 }
 </style>
