@@ -72,8 +72,6 @@ const mutations = {
     // // 把列表放到当前播放歌曲后面
 
     state.playsonglist.splice(i + 1, 0, ...state.nextsonglist);
-    console.log(state.playsonglist);
-    console.log(state.nextsonglist);
     // 去重
     state.playsonglist = state.playsonglist.filter((element, index, arr) => {
       return arr.findIndex((el) => el.id == element.id) === index;
