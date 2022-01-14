@@ -51,43 +51,61 @@ const mutations = {
     // 找到当前播放歌曲的index
     // console.log(nextsonglist);
     // console.log(state.songDetails);
+
     let i = 0;
-    state.playsonglist.forEach((element, index, arr) => {
-      if (arr[index].id == state.songDetails.id) {
-        i = index;
-      }
-    });
-    state.nextsonglist.push(nextsonglist);
+    if (state.songDetails) {
+      state.playsonglist.forEach((element, index, arr) => {
+        if (arr[index].id == state.songDetails.id) {
+          i = index;
+        }
+      });
+      // 正在播放歌曲时，把下一首添加当前播放歌曲后面
+      state.nextsonglist.unshift(nextsonglist);
+    } else {
+      // 没有播放歌曲时放到列表最后面
+      state.nextsonglist.push(nextsonglist);
+    }
     // 去重
     state.nextsonglist = state.nextsonglist.filter((element, index, arr) => {
       return arr.findIndex((el) => el.id == element.id) === index;
     });
     // // 把列表放到当前播放歌曲后面
+
     state.playsonglist.splice(i + 1, 0, ...state.nextsonglist);
+    console.log(state.playsonglist);
+    console.log(state.nextsonglist);
     // 去重
     state.playsonglist = state.playsonglist.filter((element, index, arr) => {
       return arr.findIndex((el) => el.id == element.id) === index;
     });
   },
+  // 清空下一首播放列表
+  clearnextsonglist(state) {
+    state.nextsonglist = [];
+  },
   // 将歌曲添加到当前歌曲的下一首并播放
   savenextsong(state, nextsonglist) {
     let i = 0;
-    state.playsonglist.forEach((element, index, arr) => {
-      if (arr[index].id == state.songDetails.id) {
-        i = index;
-      }
-    });
-    // state.nextsonglist.unshift(nextsonglist);
-    // // 去重
-    // state.nextsonglist = state.nextsonglist.filter((element, index, arr) => {
-    //   return arr.findIndex((el) => el.id == element.id) === index;
-    // });
-    // // 把列表放到当前播放歌曲后面
-    state.playsonglist.splice(i + 1, 0, nextsonglist);
+    if (state.songDetails) {
+      state.playsonglist.forEach((element, index, arr) => {
+        if (arr[index].id == state.songDetails.id) {
+          i = index;
+        }
+      });
+      // 把列表放到当前播放歌曲后面
+      state.playsonglist.splice(i + 1, 0, nextsonglist);
+    } else {
+      // 当前没有播放歌曲时把要播放的歌曲放到第一首
+      state.playsonglist.splice(i, 0, nextsonglist);
+    }
     // 去重
     state.playsonglist = state.playsonglist.filter((element, index, arr) => {
       return arr.findIndex((el) => el.id == element.id) === index;
     });
+  },
+  //删除歌曲
+  deletesong(state, index) {
+    state.playsonglist.splice(index, 1);
   },
   // 清空当前播放列表
   clearplaysonglist(state) {

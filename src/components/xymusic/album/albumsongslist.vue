@@ -165,7 +165,22 @@ export default {
     // 添加到播放列表
     addlistnextsong (row) {
       //存入下一首播放列表
+      let length = this.nextsonglist.length
       this.$store.dispatch('savenextsonglist', row)
+      if (length + 1 == this.nextsonglist.length)
+      {
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        })
+      }
+      else
+      {
+        this.$message({
+          message: '请不要重复添加',
+          type: 'warning'
+        });
+      }
     },
     hovertitle (flag) {
       this.showbtn = flag
@@ -176,7 +191,7 @@ export default {
       // 拷贝传来的songlist
       return JSON.parse(JSON.stringify(this.songs));
     },
-    ...mapGetters(["cookie", "songDetails", "playstatus"]),
+    ...mapGetters(["cookie", "songDetails", "playstatus", 'nextsonglist']),
   },
 }
 </script>

@@ -40,8 +40,16 @@ const actions = {
   savenextsonglist({ commit }, nextsonglist) {
     commit('savenextsonglist', nextsonglist);
   },
+  clearnextsonglist({ commit }) {
+    commit('clearnextsonglist');
+  },
+  //播放当前选中歌曲并放到列表的下一首而不是列表最后面
   savenextsong({ commit }, nextsonglist) {
     commit('savenextsong', nextsonglist);
+  },
+  //删除选中歌曲
+  deletesong({ commit }, index) {
+    commit('deletesong', index);
   },
   // 清空当前播放列表
   clearplaysonglist({ commit }) {
