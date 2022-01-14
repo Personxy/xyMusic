@@ -26,7 +26,8 @@
                 style="border-top: 1px solid #f2f2f2; margin-top: 15px"
                 stripe
                 height="680"
-                @row-dblclick="playmusic">
+                @row-dblclick="playmusic"
+                empty-text="你还没有添加任何歌曲">
         <el-table-column property="name"
                          label="标题"
                          width="200"
@@ -60,6 +61,13 @@
             {{ (dt.row.dt / 1000) | minutesformat }}
           </template>
         </el-table-column>
+        <el-table-column label="操作"
+                         width="120">
+          <template slot-scope="scope">
+            <span @click="deleteRow(scope.$index, scope.row)"
+                  style="cursor:pointer">x</span>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -90,12 +98,15 @@ export default {
           this.$store.dispatch("saveplaystatus", false);
           this.$store.dispatch("savesongDetails", null);
           this.$store.dispatch("savecurrenturl", "");
+          this.$store.dispatch('clearnextsonglist')
         })
         .catch(() => {
           return;
         });
     },
-    // 点击播放列表的音乐播放
+
+
+    // 获取音乐和详情并播放
     async playmusic (row) {
       const res = await this.$http.get("/song/url", {
         params: {
@@ -106,6 +117,8 @@ export default {
       // console.log(res.data.data[0].url);
       if (!res.data.data[0].url) return this.$message.error("没有播放来源！");
       this.$store.dispatch("savecurrenturl", res.data.data[0].url);
+      this.$store.dispatch("saveplaystatus", true);
+
       //获取歌曲详情
       const resdata = await this.$http.get("/song/detail", {
         params: {
@@ -116,6 +129,25 @@ export default {
       // 存入歌曲详情
       this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
     },
+
+    // 删除当前歌曲
+    deleteRow (index, row) {
+      // rows.splice(index, 1);
+      // 如果删除的是当前播放的歌曲 则跳到下一首歌曲
+      if (this.playsonglist[index + 1] && this.songDetails.id == row.id)
+      {
+        this.playmusic(this.playsonglist[index + 1])
+      }
+      this.$store.dispatch('deletesong', index, row)
+      console.log(this.playsonglist);
+      if (this.playsonglist.length == 0)
+      {
+        this.$store.dispatch("clearplaysonglist");
+        this.$store.dispatch("saveplaystatus", false);
+        this.$store.dispatch("savesongDetails", null);
+        this.$store.dispatch("savecurrenturl", "");
+      }
+    }
   },
   computed: {
     ...mapGetters(["playsonglist", "cookie", "songDetails", "playstatus"]),
@@ -130,7 +162,7 @@ export default {
     background: #fdfdfd !important;
   }
   .playlist {
-    width: 45vh;
+    width: 52vh;
     height: 82.7vh;
     border-radius: 1px;
     border-top: 1px solid #cccc;
