@@ -16,7 +16,8 @@
       <!-- 歌曲名和歌手名 -->
       <div class="songNameAndAuthor">
         <span style="margin-bottom: 5px">{{ songDetails.name }}</span>
-        <span>{{ songDetails.ar[0].name }}</span>
+        <span @click="tosingerpage(songDetails.ar[0].id)"
+              style="cursor:pointer">{{ songDetails.ar[0].name }}</span>
       </div>
     </div>
     <!-- 控制按钮 -->
@@ -386,6 +387,10 @@ export default {
       this.$refs.audio.currentTime = this.progressvalue;
       this.isdrag = false;
     },
+    //跳转到歌手详情页
+    tosingerpage (id) {
+      this.$router.push(`/home/singerdetail/${id}`)
+    }
   },
   watch: {
     currenturl (newurl, oldurl) {
