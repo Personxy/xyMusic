@@ -4,14 +4,19 @@
       <!-- 顶部导航 -->
       <el-header>
         <div class="logobox">
-          <img class="logo" src="../assets/images/logo1.png" alt="" />
+          <img class="logo"
+               src="../assets/images/logo1.png"
+               alt="" />
         </div>
         <a class="home">羊羊音乐</a>
         <!-- 后退和前进按钮 -->
-        <span href="" class="back" @click="goBack">
+        <span href=""
+              class="back"
+              @click="goBack">
           <div class="arrowleft"></div>
         </span>
-        <span href="" class="advance">
+        <span href=""
+              class="advance">
           <div class="arrowlright"></div>
         </span>
         <!-- 搜索页面 -->
@@ -31,7 +36,8 @@
       </el-container>
       <!-- 播放器区域 -->
       <el-footer>
-        <musicplay></musicplay>
+        <musicplay @sendflag="getdetailflag" />
+        <musicdetail v-if="detailflag" />
       </el-footer>
     </el-container>
     <!-- 登录界面 -->
@@ -46,25 +52,30 @@ import Login from "@/components/xymusic/login/login";
 import loginbar from "@/components/xymusic/login/loginbar";
 import search from "@/components/xymusic/search/search";
 import musicplay from "../components/xymusic/musicplay/musicplay";
+import musicdetail from '../components/xymusic/musicdetail/musicdetail.vue';
 export default {
   name: "xymusic",
-  components: { Aside, Login, loginbar, search, musicplay },
-  data() {
+  components: { Aside, Login, loginbar, search, musicplay, musicdetail },
+  data () {
     return {
       searchdata: "",
+      detailflag: false
     };
   },
   computed: {
     // 控制登录面板是否打开
-    loginbarflag() {
+    loginbarflag () {
       return this.$store.state.loginflag;
     },
     ...mapGetters(["userInfo"]),
   },
   methods: {
-    goBack() {
+    goBack () {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     },
+    getdetailflag (data) {
+      this.detailflag = data
+    }
   },
 };
 </script>
@@ -137,6 +148,7 @@ export default {
 
 .el-aside {
   border-right: 1px solid #e1e1e1;
+  z-index: 9999999999999;
 }
 
 .el-footer {

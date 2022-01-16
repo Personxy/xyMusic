@@ -5,23 +5,42 @@
            autoplay
            @ended="getnextsong"
            @timeupdate="getcurrentTime"></audio>
+    <!-- 返回键和收藏键 -->
+    <transition enter-active-class="animate__animated animate__slideInDown  animate__fast "
+                leave-active-class="animate__animated animate__slideOutUp animate__faster">
+
+      <div class="detailinfo"
+           v-show="datailflag"
+           @click="opendetail(!datailflag)"
+           style="cursor:pointer"><img src="../../../assets/images/下箭头.svg"
+             alt=""></div>
+    </transition>
     <!-- 歌曲信息 -->
-    <div class="musicInfo"
-         v-if="songDetails">
-      <!-- 歌曲图片 -->
-      <img :src="songDetails.al.picUrl"
-           alt=""
-           style="width: 6.8vh"
-           class="songspic" />
-      <!-- 歌曲名和歌手名 -->
-      <div class="songNameAndAuthor">
-        <span style="margin-bottom: 5px"
-              class="songname">{{ songDetails.name }}</span>
-        <span @click="tosingerpage(songDetails.ar[0].id)"
-              style="cursor:pointer"
-              class="songauthor">{{ songDetails.ar[0].name }}</span>
+    <transition enter-active-class="animate__animated animate__slideInUp  animate__fast"
+                leave-active-class="animate__animated animate__slideOutDown  animate__fast">
+      <div class="musicInfo "
+           v-if="!datailflag">
+        <!-- 歌曲图片 -->
+        <div class="songspic "
+             @click="opendetail(!datailflag)"
+             style="width: 6.8vh;cursor:pointer;height:6.8vh">
+          <el-image :src="songDetails.al.picUrl"
+                    alt=""
+                    style="width: 6.8vh">
+          </el-image>
+          <div class="songpictrangle"></div>
+        </div>
+        <!-- 歌曲名和歌手名 -->
+        <div class="songNameAndAuthor">
+          <span style="margin-bottom: 5px"
+                class="songname">{{ songDetails.name }}</span>
+          <span @click="tosingerpage(songDetails.ar[0].id)"
+                style="cursor:pointer"
+                class="songauthor">{{ songDetails.ar[0].name }}</span>
+        </div>
       </div>
-    </div>
+    </transition>
+
     <!-- 控制按钮 -->
     <div class="musicplay">
       <!-- 播放模式 -->
@@ -223,6 +242,7 @@ export default {
       isdrag: false,
       //是否静音
       muted: false,
+      datailflag: false
     };
   },
   methods: {
@@ -392,6 +412,10 @@ export default {
     //跳转到歌手详情页
     tosingerpage (id) {
       this.$router.push(`/home/singerdetail/${id}`)
+    },
+    opendetail (flag) {
+      this.datailflag = flag
+      this.$emit("sendflag", flag)
     }
   },
   watch: {
@@ -417,13 +441,36 @@ export default {
   align-items: center;
   padding-left: 10px;
   position: relative;
+  height: 80px;
   .musicInfo {
     display: flex;
     align-items: center;
     width: 25%;
     .songspic {
-      border-radius: 5px;
+      position: relative;
+      .el-image {
+        border-radius: 5px;
+      }
+      .songpictrangle {
+        width: 18px;
+        height: 18px;
+        border-right: 1px solid #f4f4f4;
+        border-top: 1px solid #f4f4f4;
+        position: absolute;
+        display: none;
+        top: 50%;
+        left: 50%;
+        transform: rotate(314deg) translate(0%, -60%);
+      }
     }
+    .songspic:hover .el-image {
+      // 给图片添加滤镜 blur越大越模糊 brightness越大图片越黑
+      filter: blur(1px) brightness(50%);
+    }
+    .songspic:hover .songpictrangle {
+      display: block;
+    }
+
     .songNameAndAuthor {
       margin-left: 10px;
       display: flex;
@@ -442,6 +489,12 @@ export default {
         text-overflow: ellipsis;
       }
     }
+  }
+  .detailinfo {
+    margin-left: 25px;
+    margin-top: -3px;
+    position: absolute;
+    height: 40px;
   }
   .musicplay {
     user-select: none;

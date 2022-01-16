@@ -102,12 +102,12 @@ const routes = [
         path: '/home/cloudmusic',
         component: () => import('../views/cloudmusic/cloudmusic'),
       },
-      //我的收藏
-      {
-        name: 'mycollect',
-        path: '/home/mycollect',
-        component: () => import('../views/mycollect/mycollect'),
-      },
+      // //我的收藏
+      // {
+      //   name: 'mycollect',
+      //   path: '/home/mycollect',
+      //   component: () => import('../views/mycollect/mycollect'),
+      // },
       // 歌单
       {
         name: 'playlistpage',
