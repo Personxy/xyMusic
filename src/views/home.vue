@@ -36,8 +36,11 @@
       </el-container>
       <!-- 播放器区域 -->
       <el-footer>
-        <musicplay @sendflag="getdetailflag" />
-        <musicdetail v-if="detailflag" />
+        <transition name="detail">
+          <musicdetail v-show="songdetailflag" />
+        </transition>
+        <musicplay />
+
       </el-footer>
     </el-container>
     <!-- 登录界面 -->
@@ -59,7 +62,6 @@ export default {
   data () {
     return {
       searchdata: "",
-      detailflag: false
     };
   },
   computed: {
@@ -67,15 +69,13 @@ export default {
     loginbarflag () {
       return this.$store.state.loginflag;
     },
-    ...mapGetters(["userInfo"]),
+    ...mapGetters(["userInfo", 'songdetailflag']),
   },
   methods: {
     goBack () {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     },
-    getdetailflag (data) {
-      this.detailflag = data
-    }
+
   },
 };
 </script>
@@ -148,7 +148,6 @@ export default {
 
 .el-aside {
   border-right: 1px solid #e1e1e1;
-  z-index: 9999999999999;
 }
 
 .el-footer {
@@ -161,5 +160,27 @@ export default {
   position: fixed;
   height: 80px !important;
   width: 100%;
+}
+.detail-enter-active {
+  animation: enterin 0.5s;
+}
+.detail-leave-active {
+  animation: enterleave 0.5s;
+}
+@keyframes enterin {
+  from {
+    height: 0;
+  }
+  to {
+    height: 85vh;
+  }
+}
+@keyframes enterleave {
+  from {
+    height: 85vh;
+  }
+  to {
+    height: 0;
+  }
 }
 </style>
