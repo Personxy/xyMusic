@@ -27,6 +27,8 @@ const state = {
   volume: 50,
   // 当前播放时间
   currentTime: 0,
+  //歌曲详情面板开关
+  songdetailflag: false,
 };
 
 export default state;

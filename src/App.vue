@@ -25,7 +25,8 @@ export default {
       "playorder",
       "volume",
       "currentTime",
-      'nextsonglist'
+      'nextsonglist',
+      'songdetailflag'
     ]),
   },
   methods: {
@@ -59,6 +60,8 @@ export default {
       sessionStorage.setItem("volume", this.volume);
       //当前进度条
       sessionStorage.setItem("currentTime", this.currentTime);
+      //歌曲详情页面打开关闭
+      sessionStorage.setItem('songdetailflag', this.songdetailflag)
     },
   },
   mounted () {

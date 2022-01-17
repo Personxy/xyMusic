@@ -71,5 +71,9 @@ const actions = {
   savecurrentTime({ commit }, currentTime) {
     commit('savecurrentTime', currentTime);
   },
+  //歌曲详情面板
+  savesongdetailflag({ commit }, songdetailflag) {
+    commit('savesongdetailflag', songdetailflag);
+  },
 };
 export default actions;

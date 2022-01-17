@@ -125,5 +125,9 @@ const mutations = {
   savecurrentTime(state, currentTime) {
     state.currentTime = currentTime;
   },
+  //歌曲详情面板
+  savesongdetailflag(state, songdetailflag) {
+    state.songdetailflag = songdetailflag;
+  },
 };
 export default mutations;

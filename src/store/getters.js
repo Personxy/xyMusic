@@ -25,3 +25,5 @@ export const playorder = (state) => state.playorder;
 export const volume = (state) => state.volume;
 //当前播放时间
 export const currentTime = (state) => state.currentTime;
+//打开关闭歌曲详情面板
+export const songdetailflag = (state) => state.songdetailflag;
