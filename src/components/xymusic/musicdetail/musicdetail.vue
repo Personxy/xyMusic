@@ -24,7 +24,8 @@ export default {
   position: absolute;
   height: 85vh;
   width: 100%;
-  background: skyblue;
+  background: #ffffff;
   bottom: 80px;
+  z-index: 1700;
 }
 </style>
