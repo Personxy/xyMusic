@@ -88,6 +88,16 @@ export default {
   methods: {
     //播放音乐获取音乐src和音乐详情
     async getmusic (row) {
+      const res = await this.$http.get("/song/url", {
+        params: {
+          id: row.id,
+          cookie: this.cookie,
+        },
+      });
+      // console.log(res.data.data[0].url);
+      if (res.data.data[0].url == null)
+        return this.$message.error("没有版权哦！");
+      this.$store.dispatch("savecurrenturl", res.data.data[0].url);
       //获取歌曲详情
       const resdata = await this.$http.get("/song/detail", {
         params: {
@@ -103,16 +113,6 @@ export default {
       // this.$store.dispatch("saveplaysonglist", resdata.data.songs[0]);
       //当前播放状态
       this.$store.dispatch("saveplaystatus", true);
-      const res = await this.$http.get("/song/url", {
-        params: {
-          id: row.id,
-          cookie: this.cookie,
-        },
-      });
-      // console.log(res.data.data[0].url);
-      if (res.data.data[0].url == null)
-        return this.$message.error("没有版权哦！");
-      this.$store.dispatch("savecurrenturl", res.data.data[0].url);
 
     },
 

@@ -137,21 +137,6 @@ export default {
     },
     //播放音乐获取音乐src和音乐详情
     async getmusic (row) {
-      //获取歌曲详情
-      const resdata = await this.$http.get("/song/detail", {
-        params: {
-          ids: row.id,
-        },
-      });
-
-      //存入下一首播放列表
-      this.$store.dispatch('savenextsong', resdata.data.songs[0])
-      // 当前播放歌曲详情
-      this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
-      // //存入当前播放歌曲列表
-      // this.$store.dispatch("saveplaysonglist", resdata.data.songs[0]);
-      //当前播放状态
-      this.$store.dispatch("saveplaystatus", true);
       const res = await this.$http.get("/song/url", {
         params: {
           id: row.id,
@@ -162,7 +147,20 @@ export default {
       if (res.data.data[0].url == null)
         return this.$message.error("没有版权哦！");
       this.$store.dispatch("savecurrenturl", res.data.data[0].url);
-
+      //获取歌曲详情
+      const resdata = await this.$http.get("/song/detail", {
+        params: {
+          ids: row.id,
+        },
+      });
+      //存入下一首播放列表
+      this.$store.dispatch('savenextsong', resdata.data.songs[0])
+      // 当前播放歌曲详情
+      this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
+      // //存入当前播放歌曲列表
+      // this.$store.dispatch("saveplaysonglist", resdata.data.songs[0]);
+      //当前播放状态
+      this.$store.dispatch("saveplaystatus", true);
     },
     // 添加到播放列表
     addlistnextsong (row) {
