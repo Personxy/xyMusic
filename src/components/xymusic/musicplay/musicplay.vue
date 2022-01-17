@@ -10,8 +10,8 @@
                 leave-active-class="animate__animated animate__slideOutUp animate__faster">
 
       <div class="detailinfo"
-           v-show="datailflag"
-           @click="opendetail(!datailflag)"
+           v-show="songdetailflag"
+           @click="opendetail(!songdetailflag)"
            style="cursor:pointer"><img src="../../../assets/images/下箭头.svg"
              alt=""></div>
     </transition>
@@ -19,10 +19,10 @@
     <transition enter-active-class="animate__animated animate__slideInUp  animate__fast"
                 leave-active-class="animate__animated animate__slideOutDown  animate__fast">
       <div class="musicInfo "
-           v-if="!datailflag">
+           v-if="!songdetailflag">
         <!-- 歌曲图片 -->
         <div class="songspic "
-             @click="opendetail(!datailflag)"
+             @click="opendetail(!songdetailflag)"
              style="width: 6.8vh;cursor:pointer;height:6.8vh">
           <el-image :src="songDetails.al.picUrl"
                     alt=""
@@ -32,12 +32,23 @@
         </div>
         <!-- 歌曲名和歌手名 -->
         <div class="songNameAndAuthor">
-          <span style="margin-bottom: 5px"
-                class="songname">{{ songDetails.name }}</span>
+          <div style="margin-bottom: 5px"
+               class="songname">
+            <div class="namebox">{{ songDetails.name }}</div> <!-- 收藏按钮 -->
+            <div class="likesongbtn"
+                 style="cursor:pointer"><img src="../../../assets/images/爱心.svg"
+                   v-if="!likebtn"
+                   @click="likethisong(songDetails.id,true)"
+                   alt=""><img src="../../../assets/images/爱心已收藏.svg"
+                   alt=""
+                   v-if="likebtn"
+                   @click="likethisong(songDetails.id,false)"></div>
+          </div>
           <span @click="tosingerpage(songDetails.ar[0].id)"
                 style="cursor:pointer"
                 class="songauthor">{{ songDetails.ar[0].name }}</span>
         </div>
+
       </div>
     </transition>
 
@@ -213,6 +224,9 @@ export default {
       "playsonglist",
       "volume",
       "currentTime",
+      'cookie',
+      'userInfo',
+      'songdetailflag'
     ]),
     // progressvalue: {
     //   // return this.$options.filters['minutesformat'](this.currentTime / 1000);
@@ -229,7 +243,7 @@ export default {
   components: {
     nowplaylist,
   },
-  beforeMount () { },
+
   data () {
     return {
       // 音量
@@ -242,7 +256,9 @@ export default {
       isdrag: false,
       //是否静音
       muted: false,
-      datailflag: false
+      datailflag: false,
+      likebtn: false,
+      likemusiclist: []
     };
   },
   methods: {
@@ -413,16 +429,69 @@ export default {
     tosingerpage (id) {
       this.$router.push(`/home/singerdetail/${id}`)
     },
+    // toogle详情页
     opendetail (flag) {
-      this.datailflag = flag
-      this.$emit("sendflag", flag)
+      this.$store.dispatch("savesongdetailflag", flag)
+    },
+    // 喜欢取消喜欢音乐
+    async likethisong (id, flag) {
+      const { data } = await this.$http.get('/like', {
+        params: {
+          id: id,
+          cookie: this.cookie,
+          like: flag,
+          timestamp: Date.now(),
+        }
+      })
+      if (data.code == 200)
+      {
+        this.likebtn = flag
+        return this.$message({
+          message: '操作成功',
+          type: 'success'
+        });
+      }
+      else
+      {
+        return this.$message.error('操作频繁稍后再试');
+      }
+    },
+    async getlikemusiclist () {
+      const { data } = await this.$http.get('/likelist', {
+        params: {
+          id: this.userInfo.id,
+          cookie: this.cookie,
+          timestamp: Date.now(),
+        }
+      })
+      this.likemusiclist = data.ids
+      data.ids.forEach(element => {
+        if (element == this.songDetails.id)
+        {
+          this.likebtn = true
+        }
+      });
     }
+
+  },
+  created () {
+    this.getlikemusiclist()
   },
   watch: {
     currenturl (newurl, oldurl) {
       if (newurl == oldurl) return;
       this.progressvalue = 0;
     },
+    songDetails (newvalue) {
+      this.likebtn = false
+      this.likemusiclist.forEach(element => {
+        if (element == newvalue.id)
+        {
+          this.likebtn = true
+        }
+      });
+
+    }
   },
 };
 </script>
@@ -476,11 +545,22 @@ export default {
       display: flex;
       flex-direction: column;
       text-align: left;
+      width: 60%;
       .songname {
-        margin-top: 5px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        .namebox {
+          max-width: 80%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .likesongbtn {
+          width: 20%;
+          margin-left: 10px;
+          margin-top: 5px;
+        }
       }
       .songauthor {
         margin-top: 10px;
@@ -491,10 +571,10 @@ export default {
     }
   }
   .detailinfo {
-    margin-left: 25px;
-    margin-top: -3px;
     position: absolute;
     height: 40px;
+    top: 30px;
+    left: 30px;
   }
   .musicplay {
     user-select: none;
