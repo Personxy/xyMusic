@@ -176,10 +176,11 @@ export default {
   }
 }
 @keyframes enterleave {
-  from {
+  0% {
     height: 85vh;
   }
-  to {
+
+  100% {
     height: 0;
   }
 }
