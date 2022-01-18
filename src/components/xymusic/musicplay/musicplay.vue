@@ -19,7 +19,7 @@
     <transition enter-active-class="animate__animated animate__slideInUp  animate__fast"
                 leave-active-class="animate__animated animate__slideOutDown  animate__fast">
       <div class="musicInfo "
-           v-if="!songdetailflag">
+           v-if="songDetails&&!songdetailflag">
         <!-- 歌曲图片 -->
         <div class="songspic "
              @click="opendetail(!songdetailflag)"
@@ -475,7 +475,7 @@ export default {
 
   },
   created () {
-    this.getlikemusiclist()
+    this.userInfo && this.getlikemusiclist()
   },
   watch: {
     currenturl (newurl, oldurl) {
@@ -511,6 +511,7 @@ export default {
   padding-left: 10px;
   position: relative;
   height: 80px;
+  z-index: 1800;
   .musicInfo {
     display: flex;
     align-items: center;
