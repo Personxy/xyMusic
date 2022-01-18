@@ -1,8 +1,8 @@
 <template>
   <div class="musicdetail">
-    <musiclyric />
-    <comment />
-    <recominfo />
+    <musiclyric v-if="songDetails" />
+    <comment v-if="songDetails" />
+    <recominfo v-if="songDetails" />
   </div>
 </template>
 
@@ -10,12 +10,17 @@
 import musiclyric from "./musiclyric.vue"
 import comment from "./comment.vue"
 import recominfo from './recominfo.vue'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     musiclyric,
     comment,
     recominfo
-  }
+  },
+  computed: {
+    ...mapGetters(['songDetails'])
+  },
+
 }
 </script>
 
