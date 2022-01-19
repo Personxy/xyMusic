@@ -1,8 +1,11 @@
 <template>
   <div class="musicdetail">
-    <musiclyric v-if="songDetails" />
+    <div class="musicdetailtop">
+      <musiclyric v-if="songDetails" />
+      <recominfo v-if="songDetails" />
+    </div>
     <comment v-if="songDetails" />
-    <recominfo v-if="songDetails" />
+
   </div>
 </template>
 
@@ -32,5 +35,9 @@ export default {
   background: #ffffff;
   bottom: 80px;
   z-index: 1700;
+  .musicdetailtop {
+    width: 100%;
+    display: flex;
+  }
 }
 </style>

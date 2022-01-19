@@ -185,8 +185,9 @@ export default {
   height: 60%;
   text-align: left;
   display: flex;
+  width: 70%;
   .discimg {
-    width: 30%;
+    width: 50%;
     position: relative;
     left: 12%;
     user-select: none;
@@ -273,7 +274,7 @@ export default {
     }
   }
   .lyricbox {
-    width: 40%;
+    width: 50%;
     text-align: center;
     margin-top: 30px;
     display: flex;
