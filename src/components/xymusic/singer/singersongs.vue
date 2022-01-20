@@ -118,10 +118,19 @@ export default {
 
 
     // 添加到播放列表
-    addlistnextsong (row) {
+    async addlistnextsong (row) {
+      //获取歌曲详情
+      const resdata = await this.$http.get("/song/detail", {
+        params: {
+          ids: row.id,
+        },
+      });
+      // console.log(resdata);
       //存入下一首播放列表
+      // console.log(row);
       let length = this.nextsonglist.length
-      this.$store.dispatch('savenextsonglist', row)
+      // this.$store.dispatch('savenextsonglist', row)
+      this.$store.dispatch('savenextsonglist', resdata.data.songs[0])
       if (length + 1 == this.nextsonglist.length)
       {
         this.$message({

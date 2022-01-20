@@ -26,7 +26,7 @@ export default {
   },
   props: {
     songs: Array,
-    introduction: Array
+    introduction: Object
   },
   data () {
     return {
