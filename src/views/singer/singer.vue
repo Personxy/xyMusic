@@ -19,7 +19,7 @@ export default {
     return {
       artist: {},
       songs: [],
-      introduction: []
+      introduction: {}
     }
   },
   methods: {
@@ -49,13 +49,21 @@ export default {
           id: this.$route.params.id
         }
       })
-      this.introduction = data.introduction
+      this.introduction = data
+
     }
   },
   created () {
     this.getsingerinfo()
     this.getallsongs()
     this.getsingerdetail()
+  },
+  watch: {
+    $route () {
+      this.getsingerinfo()
+      this.getallsongs()
+      this.getsingerdetail()
+    }
   }
 
 
