@@ -342,6 +342,7 @@ export default {
       // 获取url
       this.getsongurl(this.playsonglist[index].id);
       this.$store.dispatch("saveplaystatus", true);
+
       this.$store.dispatch("savesongDetails", this.playsonglist[index]);
     },
     // 获取url
@@ -483,6 +484,7 @@ export default {
       this.progressvalue = 0;
     },
     songDetails (newvalue) {
+      if (!newvalue) return
       this.likebtn = false
       this.likemusiclist.forEach(element => {
         if (element == newvalue.id)
