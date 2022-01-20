@@ -35,6 +35,7 @@ export default {
   background: #ffffff;
   bottom: 80px;
   z-index: 1700;
+  overflow-y: auto;
   .musicdetailtop {
     width: 100%;
     display: flex;
