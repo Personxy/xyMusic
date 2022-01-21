@@ -16,10 +16,16 @@
       <div class="remainstr"><span>{{140-(commentscontent.length)}}</span></div>
       <!-- 发布评论 -->
       <div :class="{sendcomment:commentscontent.length==0,sendcomment2:commentscontent.length!=0,sendcomment3:true}"
-           @click="tocomment(2,0)">评论</div>
+           @click="tocomment(0)">评论</div>
     </el-dialog>
+    <div class="opencommentdialog"
+         @click="opencommentdialog()">
+      <img src="../../../assets/images/写评论.svg"
+           alt="">
+      <span>写评论</span>
+    </div>
     <div class="allcomments"
-         v-if="hotcomments.length!==0">
+         v-if="hotcomments&&hotcomments.length!==0">
       <div class="allcommentstitle">全部评论({{total}})</div>
       <div class="hotcomment"
            v-for="item in hotcomments"
@@ -42,7 +48,7 @@
               <img src="../../../assets/images/评论.svg"
                    alt=""
                    class="combtn"
-                   @click="replycomment(item.commentId,item.user.nickname)"
+                   @click="opencommentdialog(item.commentId,item.user.nickname)"
                    style="cursor:pointer">
             </div>
           </div>
@@ -51,7 +57,7 @@
     </div>
     <!-- 更多精彩评论 -->
     <div class="morecomments"
-         v-if="hotcomments.length!==0">
+         v-if="hotcomments&&hotcomments.length!==0">
       <span>更多精彩评论&nbsp;></span>
     </div>
     <!-- 最新评论 -->
@@ -78,19 +84,30 @@
               <img src="../../../assets/images/评论.svg"
                    alt=""
                    class="combtn"
-                   @click="replycomment(item.commentId,item.user.nickname)"
+                   @click="opencommentdialog(item.commentId,item.user.nickname)"
                    style="cursor:pointer">
               <img src="../../../assets/images/垃圾箱 (2).svg"
                    alt=""
                    class="deletcomment"
-                   v-if="item.user.nickname==userInfo.nickname"
+                   v-if="userInfo&&item.user.nickname==userInfo.nickname"
                    @click="deletcomment(item.commentId)">
             </div>
           </div>
         </div>
       </div>
     </div>
-
+    <div class="nothing"
+         v-if="newcomments.length==0">
+      没有更多内容了
+    </div>
+    <!-- 页码 -->
+    <el-pagination :pager-count="9"
+                   :page-size="limit"
+                   layout="prev, pager, next"
+                   :total="total"
+                   background
+                   @current-change="change">
+    </el-pagination>
   </div>
 </template>
 
@@ -103,17 +120,19 @@ export default {
     return {
       hotcomments: [],
       newcomments: [],
-      total: '',
+      total: 0,
       loading: false,
       centerDialogVisible: false,
       commentscontent: "",
-      placeholderstr: '请输入一百四十字以内',
+      placeholderstr: '发表评论',
       replyid: '',
-      t: 1
+      t: 1,
+      offset: 0,
+      limit: 20
     }
   },
   computed: {
-    ...mapGetters(['songDetails', 'cookie', 'userInfo'])
+    ...mapGetters(['songDetails', 'cookie', 'userInfo', 'loginflag'])
   },
   methods: {
     // 获取评论
@@ -122,31 +141,50 @@ export default {
       const { data } = await this.$http.get('/comment/music', {
         params: {
           id: this.songDetails.id,
-          limit: 100
+          limit: this.limit,
+          offset: this.offset,
+          timeStamp: Date.now()
         }
       })
       this.hotcomments = data.hotComments
       this.newcomments = data.comments
       this.total = data.total
       this.loading = false
-
+    },
+    change (data) {
+      this.offset = data - 1
+      this.getmusiccomment()
     },
     // 打开评论框
-    replycomment (id, nickname) {
+    opencommentdialog (id, nickname) {
+      this.commentscontent = ''
+      if (!this.userInfo)
+      {
+        this.$store.dispatch("changeloginbar", true);
+        return this.$message.error('请登录后再评论！');
+      }
       this.centerDialogVisible = true
+
       if (nickname && id)
       {
         this.placeholderstr = '回复  ' + nickname + ":"
         this.replyid = id
         this.t = 2
       }
+      else
+      {
+        this.placeholderstr = '发表评论'
+
+        this.t = 1
+        this.replyid = ''
+      }
+
     },
     // 发布评论
-    async tocomment (t, type) {
-      if (!this.userInfo) return this.$message.error('请登录后再评论！');
+    async tocomment (type) {
       const { data } = await this.$http.get('/comment', {
         params: {
-          t: t,
+          t: this.t,
           type: type,
           id: this.songDetails.id,
           content: this.commentscontent,
@@ -167,12 +205,16 @@ export default {
       } else
       {
         this.centerDialogVisible = false
-
         this.$message.error('评论失败！请稍后再试');
       }
-      this.getmusiccomment()
+      setTimeout(() => {
+        this.getmusiccomment()
+      }, 1000);
     },
+    // 删除评论
     async deletcomment (content) {
+      this.$store.dispatch("changeloginbar", true);
+      if (!this.userInfo) return this.$message.error('请登录后再评论！');
       const { data } = await this.$http.get('/comment', {
         params: {
           t: 0,
@@ -185,6 +227,10 @@ export default {
       })
       if (data.code == 200)
       {
+        setTimeout(() => {
+          this.getmusiccomment()
+        }, 1000);
+
         this.$message({
           message: '删除成功！',
           type: 'success'
@@ -204,7 +250,10 @@ export default {
     songDetails () {
       // 歌曲切换时要关闭评论框
       this.centerDialogVisible = false
-      this.placeholderstr = "请输入一百四十字以内"
+      // 页码变为1
+      this.offset = 0
+      //默认palceholder
+      this.placeholderstr = "发表评论"
       this.getmusiccomment()
     }
 
@@ -271,6 +320,23 @@ export default {
     }
     .sendcomment3:hover {
       background-color: #d73535;
+    }
+  }
+  .opencommentdialog {
+    width: 95px;
+    height: 35px;
+    border-radius: 20px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    position: fixed;
+    right: 22%;
+    bottom: 90px;
+    span {
+      margin-left: 5px;
     }
   }
   .allcomments {
@@ -371,6 +437,7 @@ export default {
         .username {
           color: #5b85b4;
         }
+
         .reply {
           background-color: #f5f5f5;
           line-height: 30px;
@@ -418,6 +485,13 @@ export default {
   }
 }
 /deep/.el-loading-spinner {
-  top: 0;
+  top: 15vh;
+}
+.el-pagination {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+/deep/.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #ec4141 !important;
 }
 </style>
