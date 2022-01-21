@@ -8,7 +8,8 @@
                src="../assets/images/logo1.png"
                alt="" />
         </div>
-        <a class="home">羊羊音乐</a>
+        <a class="home"
+           @click="backtohome">羊羊音乐</a>
         <!-- 后退和前进按钮 -->
         <span href=""
               class="back"
@@ -44,7 +45,7 @@
       </el-footer>
     </el-container>
     <!-- 登录界面 -->
-    <Login v-show="loginbarflag && !userInfo" />
+    <Login v-show="loginflag && !userInfo" />
   </div>
 </template>
 
@@ -66,15 +67,18 @@ export default {
   },
   computed: {
     // 控制登录面板是否打开
-    loginbarflag () {
-      return this.$store.state.loginflag;
-    },
-    ...mapGetters(["userInfo", 'songdetailflag']),
+
+    ...mapGetters(["userInfo", 'songdetailflag', 'loginflag']),
   },
+
   methods: {
     goBack () {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     },
+    backtohome () {
+      this.$router.push('/home/findmusic')
+      this.$store.dispatch('savesongdetailflag', false)
+    }
 
   },
 };
@@ -91,6 +95,7 @@ export default {
   .home {
     margin-left: 10px;
     font-family: "jdzhonyuanjian2ca53a9b9923eaa";
+    cursor: pointer;
   }
 }
 .logobox {

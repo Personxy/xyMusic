@@ -1,4 +1,8 @@
 const actions = {
+  //登陆面板状态
+  changeloginbar({ commit }, loginflag) {
+    commit('changeloginbar', loginflag);
+  },
   // 保存用户个人信息
   saveUserInfo({ commit }, profile) {
     commit('saveUserInfo', profile);

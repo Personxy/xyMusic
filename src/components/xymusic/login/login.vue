@@ -1,33 +1,31 @@
 <template>
   <div class="loginbox">
     <!-- 关闭按钮 -->
-    <i class="el-icon-close" @click="closelogin(false)"></i>
-    <img src="../../../assets/images/手机.svg" alt="" id="phoneico" />
+    <i class="el-icon-close"
+       @click="closelogin(false)"></i>
+    <img src="../../../assets/images/手机.svg"
+         alt=""
+         id="phoneico" />
     <!-- 登陆表单 -->
-    <el-form
-      :model="logindata"
-      :rules="rules"
-      ref="ruleForm"
-      label-width="100px"
-      class="demo-ruleForm"
-      @keyup.enter.native="sublogin"
-    >
+    <el-form :model="logindata"
+             :rules="rules"
+             ref="ruleForm"
+             label-width="100px"
+             class="demo-ruleForm"
+             @keyup.enter.native="sublogin">
       <el-form-item prop="phonenum">
-        <el-input
-          v-model="logindata.phonenum"
-          placeholder="请输入手机号"
-          prefix-icon="el-icon-mobile"
-        ></el-input>
+        <el-input v-model="logindata.phonenum"
+                  placeholder="请输入手机号"
+                  prefix-icon="el-icon-mobile"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input
-          v-model="logindata.password"
-          type="password"
-          placeholder="请输入密码"
-          prefix-icon="el-icon-lock"
-        ></el-input>
+        <el-input v-model="logindata.password"
+                  type="password"
+                  placeholder="请输入密码"
+                  prefix-icon="el-icon-lock"></el-input>
       </el-form-item>
-      <el-button type="primary" @click="sublogin">登录</el-button>
+      <el-button type="primary"
+                 @click="sublogin">登录</el-button>
     </el-form>
   </div>
 </template>
@@ -37,7 +35,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "Login",
   components: {},
-  data() {
+  data () {
     return {
       //登录数据
       logindata: {
@@ -59,7 +57,7 @@ export default {
   },
   methods: {
     // 登录
-    async sublogin() {
+    async sublogin () {
       let res = await this.$http.post("/login/cellphone", {
         phone: this.logindata.phonenum,
         password: this.logindata.password,
@@ -69,7 +67,7 @@ export default {
       this.saveinfo(res);
     },
     // 保存个人信息和登录信息
-    async saveinfo(res) {
+    async saveinfo (res) {
       //保存用户个人信息
       this.$store.dispatch("saveUserInfo", res.data.profile);
       //保存cookie
@@ -95,12 +93,12 @@ export default {
       this.$store.dispatch("saveplayListCollect", this.playListc);
     },
     // 登录面板状态
-    closelogin(loginflag) {
+    closelogin (loginflag) {
       this.$store.commit("changeloginbar", loginflag);
     },
   },
   computed: {
-    userInfo() {
+    userInfo () {
       return this.$store.state.userInfo;
     },
     ...mapGetters(["playListMine", "playListCollect", "cookie"]),
@@ -112,7 +110,7 @@ export default {
 .loginbox {
   width: 350px;
   height: 530px;
-  z-index: 500;
+  z-index: 9999;
   background-color: #ffffff;
   position: fixed;
   top: 100px;

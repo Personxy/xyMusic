@@ -1,3 +1,5 @@
+//登陆面板
+export const loginflag = (state) => state.loginflag;
 // 用户信息
 export const userInfo = (state) => state.userInfo;
 //搜索历史
