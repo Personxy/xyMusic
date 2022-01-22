@@ -36,6 +36,9 @@ export default {
   created () {
     this.getbroadcasting();
   },
+  mounted () {
+    this.$emit('boradcastdone', true)
+  }
 };
 </script>
 

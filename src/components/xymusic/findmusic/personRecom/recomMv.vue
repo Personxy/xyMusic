@@ -1,25 +1,24 @@
 <template>
   <div class="recommv">
-    <p
-      style="
+    <p style="
         font-size: 18px;
         font-weight: bold;
         text-align: left;
         padding-left: 130px;
-      "
-    >
+      ">
       推荐MV &nbsp;&nbsp;&nbsp;>
     </p>
     <div class="mvbox">
-      <div class="mvs" v-for="item in mvlist" :key="item.id">
-        <el-image
-          :src="item.picUrl"
-          style="width: 260px; height: 150px; border-radius: 5px"
-        ></el-image>
+      <div class="mvs"
+           v-for="item in mvlist"
+           :key="item.id">
+        <el-image :src="item.picUrl"
+                  style="width: 260px; height: 150px; border-radius: 5px"></el-image>
         <span style="font-size: 14px">{{ item.name }}</span>
         <span style="font-size: 12px">{{ item.artistName }}</span>
         <div class="playcount">
-          <img src="../../../../assets/images/歌单列表播放按钮.svg" alt="" />{{
+          <img src="../../../../assets/images/歌单列表播放按钮.svg"
+               alt="" />{{
             (item.playcount || item.playCount) | wan
           }}
         </div>
@@ -30,20 +29,23 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       mvlist: [],
     };
   },
   methods: {
-    async getMV() {
+    async getMV () {
       const { data } = await this.$http.get("/personalized/mv");
       this.mvlist = data.result;
     },
   },
-  created() {
+  created () {
     this.getMV();
   },
+  mounted () {
+    this.$emit("mvdone", true)
+  }
 };
 </script>
 

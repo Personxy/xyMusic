@@ -108,6 +108,9 @@ export default {
 
     // this.getrecomsongs();
   },
+  mounted () {
+    this.$emit('recomlistdone', true)
+  },
   watch: {
     userInfo () {
       if (this.userInfo)

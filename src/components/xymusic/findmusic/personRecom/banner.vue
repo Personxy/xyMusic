@@ -72,6 +72,9 @@ export default {
   created () {
     this.getbanner();
   },
+  mounted () {
+    this.$emit('bannerdone', true)
+  },
   computed: {
     ...mapGetters(["cookie"]),
   },

@@ -97,6 +97,9 @@ export default {
   created () {
     this.getnewmusic();
   },
+  mounted () {
+    this.$emit('getmusicdone', true)
+  },
   computed: {
     ...mapGetters(["cookie"]),
   },
