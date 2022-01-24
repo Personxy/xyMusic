@@ -126,6 +126,12 @@ const routes = [
         path: '/home/album/:id',
         component: () => import('../views/album/album.vue'),
       },
+      // 视频详情页
+      {
+        name: 'videodetail',
+        path: '/home/videodetail',
+        component: () => import('../views/videodetail/videodetail.vue'),
+      },
     ],
   },
 ];
