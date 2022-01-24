@@ -17,6 +17,8 @@ Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
 Vue.use(animated);
 axios.defaults.baseURL = 'https://netease-cloud-music-api-puce-iota.vercel.app/';
+// axios.defaults.baseURL = 'http://localhost:3000';
+
 new Vue({
   router,
   store,
