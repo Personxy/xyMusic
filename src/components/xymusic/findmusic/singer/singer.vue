@@ -145,6 +145,10 @@ export default {
       })
       this.loading = true;
       this.artists.push.apply(this.artists, data.artists);
+      // 清除重复
+      this.artists = this.artists.filter((element, index, arr) => {
+        return arr.findIndex((el) => el.id == element.id) === index;
+      });
       this.offset = this.offset + 18
       // console.log(this.artists);
     },
