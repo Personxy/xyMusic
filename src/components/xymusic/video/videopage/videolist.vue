@@ -7,7 +7,8 @@
       <!-- 视频列表 -->
       <div class="videlist"
            v-for="item in catlist"
-           :key="item.id">
+           :key="item.id"
+           @click="tovideodetail(item.data)">
         <!-- 视频封面 -->
         <div class="viodecover">
           <el-image :src="item.data.coverUrl"
@@ -32,8 +33,16 @@
 
       </div>
     </div>
-    <i class="el-icon-loading"
-       style="margin-top:30px"></i><span style="margin-left:10px">加载中</span>
+    <div class="loadbox"
+         v-if="hasmore">
+      <i class="el-icon-loading"
+         style="margin-top:30px"></i><span style="margin-left:10px">加载中</span>
+    </div>
+    <div class="nomore"
+         v-if="!hasmore"
+         style="margin-top:100px">
+      没有更多内容了请选择其他选项
+    </div>
   </div>
 </template>
 
@@ -46,6 +55,7 @@ export default {
       catid: '全部视频',
       catlist: [],
       offset: 0,
+      hasmore: true
     };
   },
   methods: {
@@ -60,7 +70,9 @@ export default {
       });
       // console.log(data);
       this.offset = this.offset + 8;
+      if (data.hasmore == false) return this.hasmore = false
       this.catlist.push.apply(this.catlist, data.datas);
+
       // 清除重复
       this.catlist = this.catlist.filter((element, index, arr) => {
         return arr.findIndex((el) => el.data.vid == element.data.vid) === index;
@@ -116,6 +128,31 @@ export default {
         }
       }
     },
+    tovideodetail (data) {
+
+      if (data.id)
+      {
+        // 传递mv参数
+
+        this.$router.push({
+          path: '/home/videodetail',
+          query: {
+            id: data.id
+          }
+        })
+      } else
+      {
+        // 传递视频参数
+
+        this.$router.push({
+          path: '/home/videodetail',
+          query: {
+            vid: data.vid
+          }
+        })
+      }
+
+    }
   },
 
   created () {
@@ -127,6 +164,7 @@ export default {
       this.catid = data;
       this.offset = 0;
       this.catlist = [];
+      this.hasmore = true
       this.getvideolist();
     });
   },
