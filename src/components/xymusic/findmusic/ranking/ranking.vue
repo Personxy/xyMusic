@@ -1,5 +1,8 @@
 <template>
-  <div class="ranking">
+  <div class="ranking"
+       v-loading="loading"
+       element-loading-text="加载中"
+       element-loading-spinner="el-icon-loading">
     <!-- 官方榜 -->
     <div class="top5ranking">
       <span class="title">官方榜</span>
@@ -79,11 +82,13 @@ export default {
       otherranking: [],
       // class
       rightsongs: "rightsongs",
-      current: 1000
+      current: 1000,
+      loading: false
     };
   },
   methods: {
     async getallranking () {
+      this.loading = true
       // 获取所有榜单列表
       const { data } = await this.$http.get("/toplist");
       this.top5ranking = data.list.slice(0, 4)
@@ -102,6 +107,7 @@ export default {
         this.top5ranking[index]["tracks"] = data.playlist.tracks.slice(0, 5)
         // console.log(this.top5ranking[index]);
       }
+      this.loading = false
     },
     // 点击改变当前项颜色
     selectsong (id) {
@@ -141,6 +147,7 @@ export default {
   created () {
     this.getallranking();
   },
+
 };
 </script>
 <style lang="less" scoped>
