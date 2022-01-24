@@ -64,12 +64,13 @@ export default {
 
   },
   mounted () {
+    // 渲染等待
     setTimeout(() => {
       if (this.banner && this.recomlist && this.recomlist && this.boradcast && this.mv)
       {
         this.load = true
       }
-    }, 500);
+    }, 2000);
 
   }
 
