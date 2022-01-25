@@ -5,7 +5,7 @@
       <el-header>
         <div class="logobox">
           <img class="logo"
-               src="../assets/images/logo1.png"
+               src="../assets/images/152053f6yy76qgeob6qqpg.jpg.icon (1).png"
                alt="" />
         </div>
         <a class="home"
