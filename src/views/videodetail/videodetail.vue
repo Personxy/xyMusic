@@ -74,10 +74,13 @@
 
       <!-- 推荐视频区域 -->
       <videorecom :vid="vid"
-                  :id="id" />
+                  :id="id"
+                  @sendvideoid="getvideoid"
+                  @sendmvid="getmvid" />
     </div>
 
-    <videocomment />
+    <videocomment :vid="vid"
+                  :id="id" />
   </div>
 </template>
 <script>
@@ -93,8 +96,8 @@ export default {
     return {
       // 视频ID
       vid: '',
-      // videoid
-      id: '',
+      // mvid
+      id: 0,
       videoinfo: {},
       videourl: '',
       mvinfo: {},
@@ -140,11 +143,18 @@ export default {
         }
       })
       this.mvurl = data.data.url
+    },
+    getvideoid (data) {
+      this.vid = data
+    },
+    getmvid (data) {
+
+      this.id = data
     }
   },
   created () {
     this.vid = this.$route.query.vid ? this.$route.query.vid : '';
-    this.id = this.$route.query.id ? this.$route.query.id : ''
+    this.id = this.$route.query.id ? this.$route.query.id : 0
     if (this.vid)
     {
       this.getvideourl()
@@ -154,7 +164,17 @@ export default {
     {
       this.getmvurl()
       this.getmvdetail()
+    }
+  },
+  watch: {
+    vid () {
+      this.getvideodetail()
+      this.getvideourl()
+    },
+    id () {
 
+      this.getmvdetail()
+      this.getmvurl()
     }
   }
 }
@@ -168,6 +188,7 @@ export default {
     justify-content: center;
 
     .videoplayarea {
+      width: 620px;
       .videotype {
         font-weight: bold;
         cursor: pointer;
