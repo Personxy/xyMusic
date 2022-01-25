@@ -5,7 +5,9 @@
       <div class="recommvlist"
            v-for="item in recommv"
            :key="item.id">
-        <div class="recommvcover">
+        <div class="recommvcover"
+             @
+             @click="tovideodetail(item)">
           <el-image :src="item.picUrl"
                     alt=""></el-image>
           <!-- 视频播放量 -->
@@ -29,8 +31,17 @@ export default {
   props: {
     recommv: Array
   },
-
-
+  methods: {
+    tovideodetail (data) {
+      // 传递mv参数
+      this.$router.push({
+        path: '/home/videodetail',
+        query: {
+          id: data.id
+        }
+      })
+    }
+  }
 }
 </script>
 

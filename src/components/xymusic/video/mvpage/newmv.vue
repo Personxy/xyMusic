@@ -15,7 +15,8 @@
       <div class="newmvlist"
            v-for="item in newmvlist"
            :key="item.id">
-        <div class="newmvlistcover">
+        <div class="newmvlistcover"
+             @click="tovideodetail(item)">
           <el-image :src="item.cover"
                     alt=""></el-image>
           <!-- 视频播放量 -->
@@ -51,6 +52,15 @@ export default {
       // console.log(this.newmvlist);
       this.currentindex = index
       this.$emit("sendnewmv", item)
+    },
+    tovideodetail (data) {
+      // 传递mv参数
+      this.$router.push({
+        path: '/home/videodetail',
+        query: {
+          id: data.id
+        }
+      })
     }
   },
   computed: {

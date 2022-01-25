@@ -14,7 +14,8 @@
            v-for="(item,index) in rankingmvlist "
            :key="item.id">
         <div class="mvrankingindex">{{9>index?"0"+(index+1):index+1}}</div>
-        <div class="mvrankcover">
+        <div class="mvrankcover"
+             @click="tovideodetail(item)">
           <el-image :src="item.cover"></el-image>
           <!-- 视频得分 -->
           <div class="mvrankscore">
@@ -51,6 +52,15 @@ export default {
       // console.log(this.newmvlist);
       this.currentindex = index
       this.$emit("sendrankmvtag", item)
+    },
+    tovideodetail (data) {
+      // 传递mv参数
+      this.$router.push({
+        path: '/home/videodetail',
+        query: {
+          id: data.id
+        }
+      })
     }
   }
 
@@ -111,7 +121,7 @@ export default {
       }
       .mvrankcover {
         position: relative;
-
+        cursor: pointer;
         .el-image {
           width: 180px;
           height: 95px;

@@ -5,7 +5,8 @@
       <div class="wymvlist"
            v-for="item in wamgyimvlist"
            :key="item.id">
-        <div class="wymvcover">
+        <div class="wymvcover"
+             @click="tovideodetail(item)">
           <el-image :src="item.cover"></el-image>
           <!-- 视频播放量 -->
           <div class="wymvplaycounts">
@@ -27,7 +28,19 @@
 export default {
   props: {
     wamgyimvlist: Array
+  },
+  methods: {
+    tovideodetail (data) {
+      // 传递mv参数
+      this.$router.push({
+        path: '/home/videodetail',
+        query: {
+          id: data.id
+        }
+      })
+    }
   }
+
 }
 </script>
 <style lang="less" scoped>
