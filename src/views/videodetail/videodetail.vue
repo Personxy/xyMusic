@@ -97,7 +97,7 @@ export default {
       // 视频ID
       vid: '',
       // mvid
-      id: 0,
+      id: Number,
       videoinfo: {},
       videourl: '',
       mvinfo: {},
@@ -150,11 +150,12 @@ export default {
     getmvid (data) {
 
       this.id = data
+
     }
   },
   created () {
     this.vid = this.$route.query.vid ? this.$route.query.vid : '';
-    this.id = this.$route.query.id ? this.$route.query.id : 0
+    this.id = this.$route.query.id ? parseInt(this.$route.query.id) : 0
     if (this.vid)
     {
       this.getvideourl()

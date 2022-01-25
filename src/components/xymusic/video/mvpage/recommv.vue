@@ -6,7 +6,6 @@
            v-for="item in recommv"
            :key="item.id">
         <div class="recommvcover"
-             @
              @click="tovideodetail(item)">
           <el-image :src="item.picUrl"
                     alt=""></el-image>
