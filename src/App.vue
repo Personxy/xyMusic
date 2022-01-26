@@ -43,7 +43,7 @@ export default {
       //收藏歌单
       sessionStorage.setItem("playListCollect", JSON.stringify(this.playListCollect));
       //cookie
-      sessionStorage.setItem("cookie", JSON.stringify(this.cookie));
+      sessionStorage.setItem("cookie", JSON.stringify(encodeURIComponent(this.cookie)));
       // 当前播放url
       sessionStorage.setItem("currenturl", this.currenturl);
       //当前歌曲详情

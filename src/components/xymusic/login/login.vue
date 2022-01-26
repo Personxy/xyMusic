@@ -6,6 +6,12 @@
     <img src="../../../assets/images/手机.svg"
          alt=""
          id="phoneico" />
+    <div class="logintype">
+      <span :class="{logintypechose:logintype==0}"
+            @click="changelogintype(0)">密码登陆</span>
+      <span :class="{logintypechose:logintype==1}"
+            @click="changelogintype(1)">验证码登陆</span>
+    </div>
     <!-- 登陆表单 -->
     <el-form :model="logindata"
              :rules="rules"
@@ -19,10 +25,25 @@
                   prefix-icon="el-icon-mobile"></el-input>
       </el-form-item>
       <el-form-item prop="password">
+        <!-- 密码输入框 -->
         <el-input v-model="logindata.password"
                   type="password"
                   placeholder="请输入密码"
-                  prefix-icon="el-icon-lock"></el-input>
+                  prefix-icon="el-icon-lock"
+                  v-if="logintype===0"></el-input>
+        <!-- 验证码输入框 -->
+        <el-input v-model="logindata.identification"
+                  placeholder="请输入验证码"
+                  v-if="logintype===1">
+          <el-button slot="append"
+                     class="identification"
+                     @click="getidentification"
+                     v-if="beforeidentification">{{getidentificationcontent}}</el-button>
+          <el-button slot="append"
+                     class="identificationafter"
+                     v-if="!beforeidentification"
+                     :disabled="btndisabled">可重新获取{{countdown}}s</el-button>
+        </el-input>
       </el-form-item>
       <el-button type="primary"
                  @click="sublogin">登录</el-button>
@@ -41,6 +62,7 @@ export default {
       logindata: {
         phonenum: "",
         password: "",
+        identification: ''
       },
       loginflag: true,
       // 表单验证规则
@@ -53,19 +75,44 @@ export default {
       },
       playListm: [],
       playListc: [],
+      logintype: 0,
+      beforeidentification: true,
+      btndisabled: true,
+      countdown: 60,
+      getidentificationcontent: '获取验证码'
     };
   },
   methods: {
     // 登录
     async sublogin () {
-      let res = await this.$http.post("/login/cellphone", {
-        phone: this.logindata.phonenum,
-        password: this.logindata.password,
-      });
-      if (res.data.code !== 200)
-        return this.$message.error("账户或者密码错误！");
-      this.saveinfo(res);
+      if (this.logintype == 0)
+      {
+        let res = await this.$http.post("/login/cellphone", {
+          phone: this.logindata.phonenum,
+          password: this.logindata.password,
+        });
+        if (res.data.code !== 200)
+          return this.$message.error("账户或者密码错误！");
+        console.log(res);
+        this.saveinfo(res);
+      } else if (this.logintype == 1)
+      {
+        let res = await this.$http.get('/captcha/verify',
+          {
+            params: {
+              phone: this.logindata.phonenum,
+              captcha: this.logindata.identification
+            }
+
+          })
+        console.log(res);
+        // this.saveinfo(res);
+
+      }
+
+
     },
+
     // 保存个人信息和登录信息
     async saveinfo (res) {
       //保存用户个人信息
@@ -96,6 +143,36 @@ export default {
     closelogin (loginflag) {
       this.$store.commit("changeloginbar", loginflag);
     },
+    // 登陆模式改变
+    changelogintype (type) {
+      this.logintype = type
+    },
+    // 验证码获取
+    async getidentification () {
+      this.beforeidentification = false
+
+      const { data } = await this.$http.get('/captcha/sent', {
+        params: {
+          phone: this.logindata.phonenum,
+
+        }
+      })
+      console.log(data);
+      if (this.timer)
+      {
+        clearInterval(this.timer)
+      }
+      this.timer = setInterval(() => {
+        this.countdown--
+        if (this.countdown == 0)
+        {
+          clearInterval(this.timer)
+          this.getidentificationcontent = "重新获取验证码"
+          this.beforeidentification = true
+          this.countdown = 5
+        }
+      }, 1000);
+    }
   },
   computed: {
     userInfo () {
@@ -116,6 +193,29 @@ export default {
   top: 100px;
   left: 50%;
   box-shadow: 5px 5px 10px #dfdede;
+  .logintype {
+    text-align: left;
+    color: #02a7de;
+    margin-left: 46px;
+    font-size: 14px;
+    cursor: pointer;
+    span {
+      margin-right: 15px;
+    }
+    .logintypechose {
+      color: #555555;
+    }
+  }
+
+  /deep/.identification {
+    cursor: pointer;
+    background-color: #ec4141;
+    color: white;
+  }
+  /deep/ .identificationafter {
+    background-color: #ec4141;
+    color: white;
+  }
 }
 .el-icon-close {
   position: absolute;
@@ -131,7 +231,7 @@ export default {
   margin-top: 60px;
 }
 .el-form.demo-ruleForm {
-  margin-top: 30px;
+  margin-top: 5px;
 }
 /deep/.el-form-item__content {
   width: 75%;
