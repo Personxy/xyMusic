@@ -188,7 +188,7 @@ export default {
     flex-wrap: wrap;
     .videlist {
       // width: 250px;
-      width: 24%;
+      width: 23%;
       margin-right: 8px;
       margin-top: 20px;
       text-align: left;
