@@ -25,7 +25,7 @@
       <el-table :data="playsonglist"
                 style="border-top: 1px solid #f2f2f2; margin-top: 15px"
                 stripe
-                height="680"
+                height="83%"
                 @row-dblclick="playmusic"
                 empty-text="你还没有添加任何歌曲">
         <el-table-column property="name"
@@ -162,15 +162,16 @@ export default {
     background: #fdfdfd !important;
   }
   .playlist {
-    width: 52vh;
-    height: 82.7vh;
+    width: 36vw;
+    height: calc(100% - 80px);
+    max-width: 500px;
     border-radius: 1px;
     border-top: 1px solid #cccc;
     border-left: 1px solid #cccc;
     position: fixed;
     // border-bottom: 1px solid #cccc;
     box-shadow: 0 0 2px 0;
-    top: 80px;
+    top: 0px;
     right: 0;
     background-color: white;
     /deep/.el-table {
