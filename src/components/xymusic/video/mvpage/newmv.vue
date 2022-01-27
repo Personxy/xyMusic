@@ -18,7 +18,8 @@
         <div class="newmvlistcover"
              @click="tovideodetail(item)">
           <el-image :src="item.cover"
-                    alt=""></el-image>
+                    alt=""
+                    lazy></el-image>
           <!-- 视频播放量 -->
           <div class="newmvplaycounts">
             <img src="../../../../assets/images/歌单列表播放按钮.svg"

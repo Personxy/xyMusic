@@ -111,6 +111,12 @@ export default {
   methods: {
     // 收藏与取消收藏
     async changecollectcondition (flag, id) {
+      const loading = this.$loading({
+        lock: true,
+        text: '操作中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.1)'
+      });
       const res = await this.$http.get("/like", {
         params: {
           id: id,
@@ -121,6 +127,7 @@ export default {
       });
       if (res.data.code != 200)
       {
+        loading.close();
         return this.$message({
           message: "操作频繁，请稍后再试！",
           type: "warning",
@@ -134,9 +141,16 @@ export default {
           element.likemusicflag = flag;
         }
       });
+      loading.close();
     },
     //播放音乐获取音乐src和音乐详情
     async getmusic (row) {
+      const loading = this.$loading({
+        lock: true,
+        text: '播放资源获取中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0,0)'
+      });
       const res = await this.$http.get("/song/url", {
         params: {
           id: row.id,
@@ -145,7 +159,11 @@ export default {
       });
       // console.log(res.data.data[0].url);
       if (res.data.data[0].url == null)
+      {
+        loading.close()
         return this.$message.error("没有版权哦！");
+      }
+
       this.$store.dispatch("savecurrenturl", res.data.data[0].url);
       //获取歌曲详情
       const resdata = await this.$http.get("/song/detail", {
@@ -161,6 +179,8 @@ export default {
       // this.$store.dispatch("saveplaysonglist", resdata.data.songs[0]);
       //当前播放状态
       this.$store.dispatch("saveplaystatus", true);
+      loading.close()
+
     },
     // 添加到播放列表
     addlistnextsong (row) {

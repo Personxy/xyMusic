@@ -5,14 +5,16 @@
          infinite-scroll-distance="200px"
          infinite-scroll-delay="200">
       <!-- 视频列表 -->
+
       <div class="videlist"
+           @click="tovideodetail(item.data)"
            v-for="item in catlist"
-           :key="item.id"
-           @click="tovideodetail(item.data)">
+           :key="item.id">
         <!-- 视频封面 -->
         <div class="viodecover">
           <el-image :src="item.data.coverUrl"
-                    alt=""></el-image>
+                    alt=""
+                    lazy></el-image>
           <!-- 视频播放量 -->
           <div class="videoplaycounts">
             <img src="../../../../assets/images/歌单列表播放按钮.svg"
@@ -32,6 +34,7 @@
              v-if="item.data.artists">{{item.data.artists[0].name}}</div>
 
       </div>
+
     </div>
     <div class="loadbox"
          v-if="hasmore">
@@ -184,7 +187,8 @@ export default {
     display: flex;
     flex-wrap: wrap;
     .videlist {
-      width: 250px;
+      // width: 250px;
+      width: 24%;
       margin-right: 8px;
       margin-top: 20px;
       text-align: left;
@@ -192,9 +196,10 @@ export default {
       cursor: pointer;
       .viodecover {
         position: relative;
-
+        width: 100%;
         .el-image {
-          width: 250px;
+          width: 100%;
+          // height: calc(@width * 0.56);
           height: 150px;
           border-radius: 5px;
         }

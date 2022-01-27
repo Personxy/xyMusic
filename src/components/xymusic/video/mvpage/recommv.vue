@@ -8,7 +8,8 @@
         <div class="recommvcover"
              @click="tovideodetail(item)">
           <el-image :src="item.picUrl"
-                    alt=""></el-image>
+                    alt=""
+                    lazy></el-image>
           <!-- 视频播放量 -->
           <div class="recommvmvplaycounts">
             <img src="../../../../assets/images/歌单列表播放按钮.svg"

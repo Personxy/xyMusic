@@ -16,7 +16,8 @@
         <div class="mvrankingindex">{{9>index?"0"+(index+1):index+1}}</div>
         <div class="mvrankcover"
              @click="tovideodetail(item)">
-          <el-image :src="item.cover"></el-image>
+          <el-image :src="item.cover"
+                    lazy></el-image>
           <!-- 视频得分 -->
           <div class="mvrankscore">
             <img src="../../../../assets/images/歌单列表播放按钮.svg"

@@ -1,5 +1,6 @@
 <template>
   <div class="mvpage">
+
     <newmv :newmvlist='newmvlist'
            @sendnewmv="getnewmvtag" />
     <recommv :recommv='recommv' />

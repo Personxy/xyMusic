@@ -7,7 +7,8 @@
            :key="item.id">
         <div class="wymvcover"
              @click="tovideodetail(item)">
-          <el-image :src="item.cover"></el-image>
+          <el-image :src="item.cover"
+                    lazy></el-image>
           <!-- 视频播放量 -->
           <div class="wymvplaycounts">
             <img src="../../../../assets/images/歌单列表播放按钮.svg"

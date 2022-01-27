@@ -6,6 +6,7 @@
     <img src="../../../assets/images/手机.svg"
          alt=""
          id="phoneico" />
+    <!-- 登陆方式切换 -->
     <div class="logintype">
       <span :class="{logintypechose:logintype==0}"
             @click="changelogintype(0)">密码登陆</span>
