@@ -22,7 +22,12 @@
       <el-form-item prop="phonenum">
         <el-input v-model="logindata.phonenum"
                   placeholder="请输入手机号"
-                  prefix-icon="el-icon-mobile"></el-input>
+                  prefix-icon="el-icon-mobile"
+                  v-if="logintype===0"></el-input>
+        <el-input v-model="logindata.phonenum"
+                  placeholder="请输入手机号"
+                  prefix-icon="el-icon-mobile"
+                  v-if="logintype===1"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <!-- 密码输入框 -->
@@ -93,21 +98,32 @@ export default {
         });
         if (res.data.code !== 200)
           return this.$message.error("账户或者密码错误！");
-        console.log(res);
+        // console.log(res);
         this.saveinfo(res);
       } else if (this.logintype == 1)
       {
-        let res = await this.$http.get('/captcha/verify',
+        // 验证验证码
+        const { data } = await this.$http.get('/captcha/verify',
           {
             params: {
               phone: this.logindata.phonenum,
-              captcha: this.logindata.identification
+              captcha: this.logindata.identification,
+              timestamp: Date.now()
             }
 
           })
-        console.log(res);
+        // console.log({ data });
         // this.saveinfo(res);
-
+        if (data.code !== 200) return this.$message.error('验证码错误！')
+        let res = await this.$http.post("/login/cellphone", {
+          phone: this.logindata.phonenum,
+          captcha: this.logindata.identification,
+        });
+        if (res.data.code !== 200)
+          return this.$message.error("账户或者密码错误！");
+        // console.log(res);
+        this.saveinfo(res);
+        this.getidentificationcontent = "获取验证码"
       }
 
 
