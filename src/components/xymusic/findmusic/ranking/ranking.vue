@@ -75,6 +75,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data () {
     return {
@@ -147,6 +148,9 @@ export default {
   created () {
     this.getallranking();
   },
+  computed: {
+    ...mapGetters(['cookie'])
+  }
 
 };
 </script>
