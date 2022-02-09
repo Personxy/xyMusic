@@ -13,7 +13,8 @@
     <div class="songlistbox"
          style="display: flex; flex-wrap: wrap">
       <!-- 每日推荐歌曲 -->
-      <div class="dailysongs">
+      <div class="dailysongs"
+           @click="torecomsongspage">
         <el-image style="width: 200px; height: 200px; border-radius: 5px"></el-image>
         <p>每日歌曲推荐</p>
         <img src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
@@ -56,15 +57,7 @@ export default {
     };
   },
   methods: {
-    // 每日推荐歌曲
-    async getrecomsongs () {
-      const res = await this.$http.get("/recommend/songs", {
-        params: {
-          cookie: this.cookie,
-        },
-      });
-      this.dailySongs = res.data.dailySongs;
-    },
+
     // 登陆后推荐的歌单
     async getrecomlist () {
       const res = await this.$http.get("/recommend/resource", {
@@ -94,6 +87,10 @@ export default {
     //跳转到歌单界面
     tosongslistpage () {
       this.$router.push('/home/findmusic/songlist');
+    },
+    //跳转到每日推荐歌曲详情页
+    torecomsongspage () {
+      this.$router.push('/home/recomsongs');
     }
   },
   created () {

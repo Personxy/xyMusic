@@ -132,6 +132,12 @@ const routes = [
         path: '/home/videodetail',
         component: () => import('../views/videodetail/videodetail.vue'),
       },
+      //每日推荐歌单
+      {
+        name: 'recomsongs',
+        path: '/home/recomsongs',
+        component: () => import('../views/recomsongs/receomsongs.vue'),
+      },
     ],
   },
 ];

@@ -112,6 +112,7 @@ export default {
         params: {
           id: row.id,
           cookie: this.cookie,
+          realIP: '116.25.146.177'
         },
       });
       // console.log(res.data.data[0].url);
