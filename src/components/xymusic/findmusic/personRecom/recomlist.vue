@@ -90,6 +90,7 @@ export default {
     },
     //跳转到每日推荐歌曲详情页
     torecomsongspage () {
+      console.log(1);
       this.$router.push('/home/recomsongs');
     }
   },

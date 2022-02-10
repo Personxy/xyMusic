@@ -138,6 +138,12 @@ const routes = [
         path: '/home/recomsongs',
         component: () => import('../views/recomsongs/receomsongs.vue'),
       },
+      //搜索结果
+      {
+        name: 'searchresult',
+        path: '/home/search/:keywords',
+        component: () => import('../views/searchresult/searchresult.vue'),
+      },
     ],
   },
 ];

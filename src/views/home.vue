@@ -20,7 +20,7 @@
               class="advance">
           <div class="arrowlright"></div>
         </span>
-        <!-- 搜索页面 -->
+        <!-- 搜索框 -->
         <search />
         <!-- 点击出现登陆面板或在此显示用户头像 -->
         <loginbar />
