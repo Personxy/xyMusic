@@ -4,7 +4,7 @@ const state = {
   //用户信息
   userInfo: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo')) : null,
   // 搜索历史
-  searchHistory: sessionStorage.getItem('searchHistory') ? JSON.parse(sessionStorage.getItem('searchHistory')) : null,
+  searchHistory: sessionStorage.getItem('searchHistory') ? JSON.parse(sessionStorage.getItem('searchHistory')) : [],
   // 个人歌单信息
   playListMine: sessionStorage.getItem('playListMine') ? JSON.parse(sessionStorage.getItem('playListMine')) : null,
   // 收藏歌单
