@@ -15,11 +15,24 @@
       <!-- 每日推荐歌曲 -->
       <div class="dailysongs"
            @click="torecomsongspage">
-        <el-image style="width: 200px; height: 200px; border-radius: 5px"></el-image>
+        <img style="width: 200px; height: 200px; border-radius: 5px"
+             src="../../../../assets/images/每日推荐背景图.png"
+             class="dailysongsbc" />
+        <!-- 日历 -->
+        <div class="rili">
+          <div class="rilibox">
+            <img src="../../../../assets/images/日历.svg"
+                 alt="">
+            <span>{{10>daily?"0"+daily:daily}}</span>
+          </div>
+
+        </div>
+
         <p>每日歌曲推荐</p>
         <img src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
              style="width: 40px; height: 40px"
-             alt="" />
+             alt=""
+             class="dailysongsbtn" />
       </div>
       <!-- 其他推荐歌单 -->
       <div class="ohterrecomlist"
@@ -54,6 +67,7 @@ export default {
     return {
       recomelist: [],
       dailySongs: [],
+      daily: new Date().getDate()
     };
   },
   methods: {
@@ -130,11 +144,7 @@ export default {
   padding: 0 85px 0 70px;
   .songlistbox {
     .dailysongs {
-      position: relative;
-      img {
-        position: absolute;
-        right: 10px;
-        bottom: 75px;
+      .el-image {
       }
     }
     font-size: 14px;
@@ -166,14 +176,38 @@ export default {
     }
     .dailysongs {
       cursor: pointer;
-
       margin-left: 60px;
-      img {
+      position: relative;
+      .rili {
+        position: absolute;
+        top: 56px;
+        left: 60px;
+        .rilibox {
+          position: relative;
+          img {
+            width: 90px;
+            height: 90px;
+          }
+          span {
+            position: absolute;
+            bottom: 19px;
+            right: 32px;
+            color: white;
+            font-size: 25px;
+          }
+        }
+      }
+      .dailysongsbc {
+      }
+      .dailysongsbtn {
+        position: absolute;
         display: none;
+        right: 10px;
+        bottom: 75px;
       }
     }
     .dailysongs:hover img {
-      display: block;
+      display: inline;
     }
   }
 }
