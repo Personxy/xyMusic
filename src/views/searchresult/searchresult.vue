@@ -18,6 +18,10 @@
                    name="video">
         <videopage :keywords="keywords" />
       </el-tab-pane>
+      <el-tab-pane label="MV"
+                   name="MV">
+        <mvpage :keywords="keywords" />
+      </el-tab-pane>
       <el-tab-pane label="歌单"
                    name="songlist">
         <songlist :keywords="keywords" />
@@ -31,9 +35,10 @@ import songs from '../../components/xymusic/searchresult/songs.vue';
 import singer from '../../components/xymusic/searchresult/singer.vue';
 import album from '../../components/xymusic/searchresult/album.vue';
 import videopage from '../../components/xymusic/searchresult/video.vue';
+import mvpage from '../../components/xymusic/searchresult/mv.vue';
 import songlist from '../../components/xymusic/searchresult/songlist.vue';
 export default {
-  components: { songs, singer, album, videopage, songlist },
+  components: { songs, singer, album, videopage, songlist, mvpage },
   data () {
     return {
       keywords: '',

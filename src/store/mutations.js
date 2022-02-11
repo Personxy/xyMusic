@@ -8,7 +8,20 @@ const mutations = {
   },
   //搜索历史
   saveSearchHistory(state, searchHistory) {
-    state.searchHistory = searchHistory;
+    state.searchHistory.unshift(searchHistory);
+    state.searchHistory = [...new Set(state.searchHistory)];
+  },
+  //删除某条搜索记录
+  deletsearchitem(state, searchitem) {
+    for (let index = 0; index < state.searchHistory.length; index++) {
+      if (state.searchHistory[index] === searchitem) {
+        state.searchHistory.splice(index, 1);
+      }
+    }
+  },
+  //清空搜索记录
+  clearSearchHistory(state) {
+    state.searchHistory = [];
   },
   //个人歌单
   saveplayListMine(state, playListMine) {

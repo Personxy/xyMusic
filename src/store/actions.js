@@ -12,7 +12,14 @@ const actions = {
   saveSearchHistory({ commit }, searchHistory) {
     commit('saveSearchHistory', searchHistory);
   },
-
+  // 删除某条搜索记录
+  deletsearchitem({ commit }, searchitem) {
+    commit('deletsearchitem', searchitem);
+  },
+  //清空搜索记录
+  clearSearchHistory({ commit }) {
+    commit('clearSearchHistory');
+  },
   //收藏的歌单
   saveplayListCollect({ commit }, playListCollect) {
     commit('saveplayListCollect', playListCollect);

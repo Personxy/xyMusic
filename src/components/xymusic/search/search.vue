@@ -30,15 +30,18 @@
       <div class="searchHistory">
         <div class="searchitem"
              v-for="item in searchHistory"
-             :key="item.id">
+             :key="item.id"
+             @click="tosearch(item)">
           {{ item }}
+          <span @click="deletesearch(item)"> x</span>
         </div>
       </div>
       <div class="hotSearch">
         <p>热搜榜</p>
         <div class="hotSearchItem"
              v-for="(item, i) in searchHot"
-             :key="item.id">
+             :key="item.id"
+             @click="tosearch(item.first)">
           <span class="hotnum">{{ i + 1 }}</span>
           <span class="hotname">{{ item.first }}</span>
         </div>
@@ -74,16 +77,16 @@ export default {
     //搜索
     search () {
       this.searchHistoryflag = true;
+
       if (
-        this.searchdata == "undefined" ||
-        this.searchdata == null ||
-        this.searchdata == "" ||
-        this.searchdata.replace(/(^s*)|(s*$)/g, "").length == 0
+        this.searchdata === "undefined" ||
+        this.searchdata === null ||
+        this.searchdata === "" ||
+        this.searchdata.replace(/\s*/g, "").length == 0
       )
         return;
-
-      this.searcharr.push(this.searchdata);
-      this.$store.dispatch("saveSearchHistory", this.searcharr);
+      // 保存搜索记录、
+      this.$store.dispatch("saveSearchHistory", this.searchdata);
       // this.searchdata = "";
       this.changesearchbox();
       this.opensearch = false
@@ -92,10 +95,21 @@ export default {
     },
     // 清空搜索记录
     clearSearchData () {
-      this.searcharr = [];
-      this.$store.dispatch("saveSearchHistory", this.searcharr);
+      this.$store.dispatch("clearSearchHistory");
       this.searchHistoryflag = false;
     },
+    // 点击热搜词搜索
+    tosearch (item) {
+      // console.log(item);
+      this.searchdata = item;
+      this.search()
+    },
+    // 删除某条搜索记录
+    deletesearch (item, e) {
+      this.$store.dispatch('deletsearchitem', item)
+      // 阻止冒泡
+      window.event ? window.event.cancelBubble = true : e.stopPropagation();
+    }
   },
   computed: {
     ...mapGetters(["searchHistory"]),
@@ -188,6 +202,22 @@ export default {
   margin-right: 5px;
   margin-left: 10px;
   margin-top: 10px;
+  cursor: pointer;
+  position: relative;
+  span {
+    display: none;
+    position: absolute;
+    right: 6px;
+  }
+}
+.searchitem:hover {
+  background: #f2f2f2;
+  span {
+    display: inline;
+  }
+  span:hover {
+    color: #f1766a;
+  }
 }
 .hotSearchItem {
   color: #484848;

@@ -1,29 +1,29 @@
 <template>
   <div class="video">
     <div class="videolist"
-         v-for="item in result.videos"
+         v-for="item in result.mvs"
          :key="item.id">
       <div class="cover">
-        <el-image :src="item.coverUrl"
-                  @click="tovideodetail(item.vid)"></el-image>
+        <el-image :src="item.cover"
+                  @click="tovideodetail(item.id)"></el-image>
         <!-- 视频播放量 -->
         <div class="videoplaycounts">
           <img src="../../../assets/images/歌单列表播放按钮.svg"
                alt="" />{{
-            item.playTime  | wan
+            item.playCount  | wan
           }}
         </div>
         <!-- 视频时长 -->
-        <div class="videoduration">{{item.durationms/1000  | minutesformat}}</div>
+        <div class="videoduration">{{item.duration/1000  | minutesformat}}</div>
       </div>
       <!-- 视频标题 -->
       <div class="videotitle"
-           @click="tovideodetail(item.vid)">{{ item.title }}</div>
+           @click="tovideodetail(item.vid)">{{ item.name }}</div>
       <!-- 视频作者 -->
-      <div class="videoauthor">{{item.creator.nickname}}</div>
+      <div class="videoauthor">{{item.artists[0].name}}</div>
     </div>
     <div class="nomore"
-         v-if="!result.videos">没有更多结果了</div>
+         v-if="!result.mvs">没有更多结果了</div>
   </div>
 </template>
 
@@ -48,12 +48,12 @@ export default {
       const { data } = await this.$http.get('/cloudsearch', {
         params: {
           keywords: this.keywords,
-          type: 1014,
+          type: 1004,
           limit: 30
         }
       })
       this.result = data.result
-
+      // console.log(this.result);
       loading.close()
     },
     tovideodetail (id) {
