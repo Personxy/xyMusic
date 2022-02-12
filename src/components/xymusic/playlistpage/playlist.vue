@@ -175,12 +175,9 @@ export default {
       this.$store.dispatch('savenextsong', resdata.data.songs[0])
       // 当前播放歌曲详情
       this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
-      // //存入当前播放歌曲列表
-      // this.$store.dispatch("saveplaysonglist", resdata.data.songs[0]);
       //当前播放状态
       this.$store.dispatch("saveplaystatus", true);
       loading.close()
-
     },
     // 添加到播放列表
     addlistnextsong (row) {

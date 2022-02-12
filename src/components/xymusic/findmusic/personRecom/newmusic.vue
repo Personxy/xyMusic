@@ -55,6 +55,7 @@ export default {
       const { data } = await this.$http.get("/personalized/newsong", {
         params: {
           limit: 12,
+          cookie: this.cookie
         },
       });
       // console.log(data.result);
@@ -66,6 +67,12 @@ export default {
     },
     // 点击当前项图片播放音乐
     async playurl (id) {
+      const loading = this.$loading({
+        lock: true,
+        text: '播放资源获取中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0,0)'
+      });
       const res = await this.$http.get("/song/url", {
         params: {
           id: id,
@@ -74,7 +81,10 @@ export default {
       });
       // console.log(res.data.data[0].url);
       if (res.data.data[0].url == null)
+      {
+        loading.close()
         return this.$message.error("没有版权哦！");
+      }
       this.$store.dispatch("savecurrenturl", res.data.data[0].url);
       //获取歌曲详情
       const resdata = await this.$http.get("/song/detail", {
@@ -83,12 +93,13 @@ export default {
         },
       });
       // console.log(resdata);
+      //存入下一首播放列表
+      this.$store.dispatch('savenextsong', resdata.data.songs[0])
       // 当前播放歌曲详情
       this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
-      //存入当前播放歌曲列表
-      this.$store.dispatch("saveplaysonglist", resdata.data.songs[0]);
       //当前播放状态
       this.$store.dispatch("saveplaystatus", true);
+      loading.close()
     },
     tonewmusicpage () {
       this.$router.push('/home/findmusic/newmusic')

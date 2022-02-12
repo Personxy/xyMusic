@@ -11,7 +11,8 @@
     <div class="broadcastinglistbox">
       <div class="broadcastinglist"
            v-for="item in broadcasting"
-           :key="item.id">
+           :key="item.id"
+           @click="tovideopage(item)">
         <el-image :src="item.sPicUrl"
                   style="width: 360px; height: 200px; border-radius: 5px"></el-image>
         <p style="font-size: 14px; text-align: left">{{ item.name }}</p>
@@ -32,6 +33,14 @@ export default {
       const { data } = await this.$http.get("/personalized/privatecontent");
       this.broadcasting = data.result;
     },
+    tovideopage (item) {
+      this.$router.push({
+        path: '/home/videodetail',
+        query: {
+          id: item.id
+        }
+      })
+    }
   },
   created () {
     this.getbroadcasting();

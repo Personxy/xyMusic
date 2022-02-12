@@ -30,7 +30,7 @@ export default {
     },
     // 播放轮播音乐
     async playmusic (id) {
-      console.log(id);
+
       // 如果是链接打开新窗口跳到新链接
       if (id.url) return window.open(id.url, "_blank");
       //如果是歌单跳转到歌单详情页面
@@ -44,6 +44,12 @@ export default {
         this.$router.push(`/home/album/${id.targetId}`);
         return;
       }
+      const loading = this.$loading({
+        lock: true,
+        text: '播放资源获取中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0,0)'
+      });
       const res = await this.$http.get("/song/url", {
         params: {
           id: id.targetId,
@@ -52,7 +58,10 @@ export default {
       });
       // console.log(res.data.data[0].url);
       if (res.data.data[0].url == null)
+      {
+        loading.close()
         return this.$message.error("没有版权哦！");
+      }
       this.$store.dispatch("savecurrenturl", res.data.data[0].url);
       //获取歌曲详情
       const resdata = await this.$http.get("/song/detail", {
@@ -61,12 +70,14 @@ export default {
         },
       });
       // console.log(resdata);
+      //存入当前播放歌曲列表
+      this.$store.dispatch("savenextsong", resdata.data.songs[0]);
       // 当前播放歌曲详情
       this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
-      //存入当前播放歌曲列表
-      this.$store.dispatch("saveplaysonglist", resdata.data.songs[0]);
       //当前播放状态
       this.$store.dispatch("saveplaystatus", true);
+      loading.close()
+
     },
   },
   created () {

@@ -64,7 +64,6 @@ const mutations = {
     // 找到当前播放歌曲的index
     // console.log(nextsonglist);
     // console.log(state.songDetails);
-
     let i = 0;
     if (state.songDetails) {
       state.playsonglist.forEach((element, index, arr) => {

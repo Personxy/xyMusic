@@ -5,13 +5,16 @@
         font-weight: bold;
         text-align: left;
         padding-left: 130px;
-      ">
+        cursor:pointer
+      "
+       @click="torecommv">
       推荐MV &nbsp;&nbsp;&nbsp;>
     </p>
     <div class="mvbox">
       <div class="mvs"
            v-for="item in mvlist"
-           :key="item.id">
+           :key="item.id"
+           @click="tomvpage(item)">
         <el-image :src="item.picUrl"
                   style="width: 260px; height: 150px; border-radius: 5px"></el-image>
         <span style="font-size: 14px">{{ item.name }}</span>
@@ -39,6 +42,18 @@ export default {
       const { data } = await this.$http.get("/personalized/mv");
       this.mvlist = data.result;
     },
+    torecommv () {
+      this.$router.push(`/home/video/mvpage`)
+    },
+    tomvpage (item) {
+      this.$router.push({
+        path: '/home/videodetail',
+        query: {
+          id: item.id
+        }
+      })
+      console.log(item);
+    }
   },
   created () {
     this.getMV();

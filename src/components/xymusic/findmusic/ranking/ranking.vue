@@ -7,8 +7,8 @@
     <div class="top5ranking">
       <span class="title">官方榜</span>
       <div class="top5box"
-           v-for="(item,index) in top5ranking "
-           :key="index">
+           v-for="item in top5ranking "
+           :key="item.id">
         <!-- 封面 -->
         <div class="imgdiv">
           <img :src="item.coverImgUrl"
@@ -24,10 +24,10 @@
 
         <!-- 右边前五首 -->
         <div class="rightsongsbox">
-          <div :class="[rightsongs, { active: item1.id == current }]"
+          <div :class="[rightsongs, { active: item1.id == current.index&&item.id==current.id }]"
                v-for="(item1,index1) in item.tracks"
-               :key="index1"
-               @click="selectsong(item1.id)"
+               :key="item1.id"
+               @click="selectsong(item1.id,item.id)"
                @dblclick="getmusic(item1)">
             <div class="index_name"><span class="index">{{index1+1}}</span> <span class="name">{{item1.name}}</span></div> <span class="author">{{item1.ar[0].name}}</span>
           </div>
@@ -83,7 +83,10 @@ export default {
       otherranking: [],
       // class
       rightsongs: "rightsongs",
-      current: 1000,
+      current: {
+        index: 1000,
+        id: 0
+      },
       loading: false
     };
   },
@@ -111,11 +114,19 @@ export default {
       this.loading = false
     },
     // 点击改变当前项颜色
-    selectsong (id) {
-      this.current = id
+    selectsong (index, id) {
+      this.current.index = index;
+      this.current.id = id
+
     },
     //播放音乐获取音乐src和音乐详情
     async getmusic (item) {
+      const loading = this.$loading({
+        lock: true,
+        text: '播放资源获取中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0,0)'
+      });
       const res = await this.$http.get("/song/url", {
         params: {
           id: item.id,
@@ -124,7 +135,10 @@ export default {
       });
       // console.log(res.data.data[0].url);
       if (res.data.data[0].url == null)
+      {
+        loading.close()
         return this.$message.error("没有版权哦！");
+      }
       this.$store.dispatch("savecurrenturl", res.data.data[0].url);
       //获取歌曲详情
       const resdata = await this.$http.get("/song/detail", {
@@ -133,12 +147,14 @@ export default {
         },
       });
       // console.log(resdata);
+      //存入下一首播放列表
+      this.$store.dispatch('savenextsong', resdata.data.songs[0])
       // 当前播放歌曲详情
       this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
-      //存入当前播放歌曲列表
-      this.$store.dispatch("saveplaysonglist", resdata.data.songs[0]);
       //当前播放状态
       this.$store.dispatch("saveplaystatus", true);
+      loading.close()
+
     },
     // 跳转到音乐详情
     toranklist (id) {
