@@ -158,6 +158,7 @@ export default {
 
 <style lang="less" scoped>
 .playlistnow {
+  z-index: 9999999999;
   ::-webkit-scrollbar-thumb {
     // 滚动条颜色
     background: #fdfdfd !important;
@@ -170,6 +171,7 @@ export default {
     border-top: 1px solid #cccc;
     border-left: 1px solid #cccc;
     position: fixed;
+    z-index: 3000;
     // border-bottom: 1px solid #cccc;
     box-shadow: 0 0 2px 0;
     top: 0px;

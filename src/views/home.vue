@@ -190,3 +190,9 @@ export default {
   }
 }
 </style>
+
+<style>
+.el-loading-mask {
+  z-index: 0;
+}
+</style>
