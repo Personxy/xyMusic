@@ -163,6 +163,7 @@ export default {
   },
 
   mounted () {
+    bus.$off('catid');
     bus.$on('catid', (data) => {
       this.catid = data;
       this.offset = 0;

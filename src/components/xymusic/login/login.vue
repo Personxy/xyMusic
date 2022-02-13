@@ -167,7 +167,6 @@ export default {
     // 验证码获取
     async getidentification () {
       this.beforeidentification = false
-
       const { data } = await this.$http.get('/captcha/sent', {
         params: {
           phone: this.logindata.phonenum,
