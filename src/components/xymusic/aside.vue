@@ -3,7 +3,7 @@
     <el-menu class="el-menu-vertical-demo"
              text-color="#535353"
              active-text-color="#313131"
-             :default-active="$router.path"
+             :default-active="$route.path"
              :router="true">
       <el-menu-item index="/home/findmusic">
         <span slot="title">发现音乐</span>
@@ -28,11 +28,11 @@
         <i class="el-icon-upload"></i>
         <span slot="title">我的音乐云盘</span>
       </el-menu-item>
-      <el-menu-item index="/home/mycollect"
+      <!-- <el-menu-item index="/home/mycollect"
                     class="otheritem">
         <i class="el-icon-star-off"></i>
         <span slot="title">我的收藏</span>
-      </el-menu-item>
+      </el-menu-item> -->
       <el-submenu index="1"
                   class="createplaylist">
         <template slot="title">创建的歌单</template>
@@ -118,6 +118,12 @@ export default {
   font-size: 14px;
   font-weight: normal;
 }
+/deep/.el-menu-item.otheritem:focus {
+  color: rgb(49, 49, 49) !important;
+  text-align: left !important;
+  font-size: 14px;
+  font-weight: normal;
+}
 .el-menu p {
   font-size: 10px;
   color: #929297;
@@ -126,6 +132,12 @@ export default {
 }
 .el-menu-item:hover {
   background-color: #e6e7ea;
+}
+.el-menu-item:focus {
+  background-color: #e6e7ea !important;
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(49, 49, 49) !important;
 }
 .el-menu-item img {
   margin-right: 5px;
@@ -149,6 +161,12 @@ export default {
 
 /deep/.el-submenu .el-menu-item {
   min-width: 0;
+}
+/deep/.el-submenu .el-menu-item:focus {
+  color: rgb(49, 49, 49) !important;
+  text-align: left !important;
+  font-size: 14px;
+  font-weight: normal;
 }
 /deep/.el-submenu__icon-arrow {
   right: 100px;
