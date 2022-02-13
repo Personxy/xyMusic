@@ -645,7 +645,7 @@ export default {
   }
   .progress {
     position: fixed;
-    bottom: 1px;
+    bottom: -4px;
     left: 30%;
     /deep/.el-slider__runway {
       width: 700px !important;
