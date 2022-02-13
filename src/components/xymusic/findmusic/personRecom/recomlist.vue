@@ -79,10 +79,23 @@ export default {
           cookie: this.cookie,
           timeStamp: Date.now(),
         },
-      });
-      // console.log(res);
-      res.data.recommend = res.data.recommend.slice(0, 9);
-      this.recomelist = res.data.recommend;
+      }).catch(
+        err => {
+          if (err == 'Error: Request failed with status code 301' && this.cookie)
+          {
+            this.$message.error('登陆过期，请重新登陆！')
+            // this.$store.commit("changeloginbar", true);
+          }
+        }
+      );
+      if (res.data)
+      {
+        res.data.recommend = res.data.recommend.slice(0, 9);
+        this.recomelist = res.data.recommend;
+      }
+
+
+
     },
     //未登录推荐的歌单
     async getohterrecomlist () {

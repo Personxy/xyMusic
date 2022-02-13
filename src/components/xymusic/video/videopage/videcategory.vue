@@ -66,29 +66,44 @@ export default {
   methods: {
     // 获取视频分类
     async getlistcat () {
-      const {
-        data
-      } = await this.$http.get("/video/group/list", {
-        params: {
-          cookie: this.cookie
-        }
-      });
-      // this.all = all;
-      this.categories = data.data;
-      // this.sub = sub;
-      // // console.log(sub);
-      // // console.log(categories);
+      if (!this.cookie)
+      {
+        this.$store.commit("changeloginbar", true);
+      } else
+      {
+        const {
+          data
+        } = await this.$http.get("/video/group/list", {
+          params: {
+            cookie: this.cookie
+          }
+        });
+        // this.all = all;
+        this.categories = data.data;
+        // this.sub = sub;
+        // // console.log(sub);
+        // // console.log(categories);
+      }
+
 
     },
     // 热门视频分类
     async gethotcat () {
-      const { data } = await this.$http.get("/video/category/list", {
-        params: {
-          cookie: this.cookie
-        }
-      });
+      if (!this.cookie)
+      {
+        this.$store.commit("changeloginbar", true);
 
-      this.tags = data.data;
+      } else
+      {
+        const { data } = await this.$http.get("/video/category/list", {
+          params: {
+            cookie: this.cookie
+          }
+        });
+
+        this.tags = data.data;
+      }
+
     },
 
     //点击全部分类
