@@ -70,22 +70,36 @@ export default {
           offset: this.offset,
           timeStamp: Date.now(),
         },
+      }).catch(err => {
+        if (err == 'Error: Request failed with status code 301' && this.cookie)
+        {
+          this.$message.error('登录失效！请重新登陆使用视频功能')
+          // this.$store.commit("changeloginbar", true);
+        } else
+        {
+          this.$message.error('请登陆后使用视频功能')
+          this.$store.commit("changeloginbar", true);
+        }
       });
       // console.log(data);
-      this.offset = this.offset + 8;
-      if (data.hasmore == false) return this.hasmore = false
-      this.catlist.push.apply(this.catlist, data.datas);
-
-      // 清除重复
-      this.catlist = this.catlist.filter((element, index, arr) => {
-        return arr.findIndex((el) => el.data.vid == element.data.vid) === index;
-      });
-      // console.log(this.catlist);
-      // 至少获取30条数据
-
-      if (this.catlist.length < 30)
+      if (data.datas)
       {
-        this.getallvideolist();
+        // console.log(data);
+        this.offset = this.offset + 8;
+        if (data.hasmore == false) return this.hasmore = false
+        this.catlist.push.apply(this.catlist, data.datas);
+
+        // 清除重复
+        this.catlist = this.catlist.filter((element, index, arr) => {
+          return arr.findIndex((el) => el.data.vid == element.data.vid) === index;
+        });
+        // console.log(this.catlist);
+        // 至少获取30条数据
+
+        if (this.catlist.length < 30)
+        {
+          this.getallvideolist();
+        }
       }
     },
 
@@ -172,7 +186,11 @@ export default {
       this.getvideolist();
     });
   },
-
+  watch: {
+    cookie () {
+      this.getallvideolist()
+    }
+  },
   beforeDestroy () {
     bus.$off('catid');
   },
