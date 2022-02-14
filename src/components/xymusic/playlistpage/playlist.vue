@@ -5,7 +5,8 @@
               style="width: 100%"
               @row-dblclick="getmusic"
               @cell-mouse-enter="hovertitle(true)"
-              @cell-mouse-leave="hovertitle(false)">
+              @cell-mouse-leave="hovertitle(false)"
+              @cell-click="tosingerpage">
       <el-table-column type="index"
                        width="50"> </el-table-column>
       <!-- 收藏按钮 -->
@@ -69,13 +70,17 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="ar[0].name"
-                       label="歌手"
+      <el-table-column label="歌手"
                        width="300">
+        <template scope="scope">
+          <span style="cursor:pointer">{{scope.row.ar[0].name}}</span>
+        </template>
       </el-table-column>
-      <el-table-column prop="al.name"
-                       label="专辑"
+      <el-table-column label="专辑"
                        width="400">
+        <template scope="scope">
+          <span style="cursor:pointer">{{scope.row.al.name}}</span>
+        </template>
       </el-table-column>
       <el-table-column prop="dt"
                        label="时间"
@@ -201,6 +206,20 @@ export default {
     },
     hovertitle (flag) {
       this.showbtn = flag
+    },
+    // 跳转到歌手或者专辑页面
+    tosingerpage (row, column) {
+      // console.log(row);
+      // console.log(column);
+      if (column.label === '歌手')
+      {
+        this.$store.dispatch('savesongdetailflag', false)
+        this.$router.push(`/home/singerdetail/${row.ar[0].id}`)
+      } else if (column.label === '专辑')
+      {
+        this.$store.dispatch('savesongdetailflag', false)
+        this.$router.push(`/home/album/${row.al.id}`)
+      }
     }
   },
   computed: {
