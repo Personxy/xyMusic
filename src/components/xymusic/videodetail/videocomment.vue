@@ -42,10 +42,15 @@
             <div class="commentfoot">
               <div class="commenttime">{{item.timeStr}}</div>
               <div class="commentbtn">
-
                 <div class="likebtn"><img src="../../../assets/images/点赞.svg"
-                       alt=""><span class="likedCount">{{item.likedCount}}</span></div>
-
+                       alt=""
+                       @click="likecomment(item.commentId,1)"
+                       v-if="!item.liked">
+                  <img src="../../../assets/images/已点赞.svg"
+                       alt=""
+                       v-else
+                       @click="likecomment(item.commentId,0)"><span class="likedCount">{{item.likedCount}}</span>
+                </div>
                 <img src="../../../assets/images/评论.svg"
                      alt=""
                      class="combtn"
@@ -81,7 +86,14 @@
               <div class="commenttime">{{item.timeStr}}</div>
               <div class="commentbtn">
                 <div class="likebtn"><img src="../../../assets/images/点赞.svg"
-                       alt=""><span class="likedCount">{{item.likedCount}}</span></div>
+                       alt=""
+                       @click="likecomment(item.commentId,1)"
+                       v-if="!item.liked">
+                  <img src="../../../assets/images/已点赞.svg"
+                       alt=""
+                       v-else
+                       @click="likecomment(item.commentId,0)"><span class="likedCount">{{item.likedCount}}</span>
+                </div>
                 <img src="../../../assets/images/评论.svg"
                      alt=""
                      class="combtn"
@@ -152,14 +164,14 @@ export default {
             id: this.vid,
             limit: this.limit,
             offset: this.offset,
-            timeStamp: Date.now()
+            timeStamp: Date.now(),
+            cookie: this.cookie
           }
         })
         this.hotcomments = data.hotComments
         this.newcomments = data.comments
         this.total = data.total
         this.loading = false
-
       }
       // 获取mv评论
       else
@@ -169,7 +181,9 @@ export default {
             id: this.id,
             limit: this.limit,
             offset: this.offset,
-            timeStamp: Date.now()
+            cookie: this.cookie,
+            timeStamp: Date.now(),
+
           }
         })
         this.hotcomments = data.hotComments
@@ -270,7 +284,69 @@ export default {
       {
         this.$message.error('删除失败！请稍后再试');
       }
+    },
+    // 点赞评论
+    async likecomment (id, t) {
+      if (this.vid.length !== 0)
+      {
+        // 视频评论点赞
+        const { data } = await this.$http.get('/comment/like', {
+          params: {
+            id: this.vid,
+            cid: id,
+            t: t,
+            type: 5,
+            cookie: this.cookie,
+            timeStamp: Date.now()
+          }
+        })
+        if (data.code == 200)
+        {
+          setTimeout(() => {
+            this.getmusiccomment()
+          }, 1000);
+
+          this.$message({
+            message: '操作成功！',
+            type: 'success'
+          });
+        } else
+        {
+          this.$message.error('操作失败，请稍后再试！')
+        }
+
+
+      } else
+      {
+        // mv评论点赞
+        const { data } = await this.$http.get('/comment/like', {
+          params: {
+            id: this.id,
+            cid: id,
+            t: t,
+            type: 1,
+            cookie: this.cookie,
+            timeStamp: Date.now()
+
+          }
+        })
+        if (data.code == 200)
+        {
+          setTimeout(() => {
+            this.getmusiccomment()
+          }, 1000);
+
+          this.$message({
+            message: '操作成功！',
+            type: 'success'
+          });
+        } else
+        {
+          this.$message.error('操作失败，请稍后再试！')
+        }
+      }
     }
+
 
   },
   created () {
@@ -412,6 +488,9 @@ export default {
               margin-right: 15px;
               align-items: center;
               display: flex;
+              img {
+                cursor: pointer;
+              }
               .likedCount {
                 font-size: 14px;
                 margin-left: 1px;
@@ -494,6 +573,9 @@ export default {
               margin-right: 15px;
               align-items: center;
               display: flex;
+              img {
+                cursor: pointer;
+              }
               .likedCount {
                 font-size: 14px;
                 margin-left: 1px;
