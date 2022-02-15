@@ -3,7 +3,7 @@
     <el-menu class="el-menu-vertical-demo"
              text-color="#535353"
              active-text-color="#313131"
-             :default-active="$route.path"
+             :default-active=" '/' + this.$route.path.split('/')[1] + '/' + this.$route.path.split('/')[2]"
              :router="true">
       <el-menu-item index="/home/findmusic">
         <span slot="title">发现音乐</span>
