@@ -43,8 +43,14 @@
             <div class="commentbtn">
 
               <div class="likebtn"><img src="../../../assets/images/点赞.svg"
-                     alt=""><span class="likedCount">{{item.likedCount}}</span></div>
-
+                     alt=""
+                     @click="likecomment(item.commentId,1)"
+                     v-if="!item.liked">
+                <img src="../../../assets/images/已点赞.svg"
+                     alt=""
+                     v-else
+                     @click="likecomment(item.commentId,0)"><span class="likedCount">{{item.likedCount}}</span>
+              </div>
               <img src="../../../assets/images/评论.svg"
                    alt=""
                    class="combtn"
@@ -80,7 +86,14 @@
             <div class="commenttime">{{item.timeStr}}</div>
             <div class="commentbtn">
               <div class="likebtn"><img src="../../../assets/images/点赞.svg"
-                     alt=""><span class="likedCount">{{item.likedCount}}</span></div>
+                     alt=""
+                     @click="likecomment(item.commentId,1)"
+                     v-if="!item.liked">
+                <img src="../../../assets/images/已点赞.svg"
+                     alt=""
+                     v-else
+                     @click="likecomment(item.commentId,0)"><span class="likedCount">{{item.likedCount}}</span>
+              </div>
               <img src="../../../assets/images/评论.svg"
                    alt=""
                    class="combtn"
@@ -143,7 +156,8 @@ export default {
           id: this.songDetails.id,
           limit: this.limit,
           offset: this.offset,
-          timeStamp: Date.now()
+          timeStamp: Date.now(),
+          cookie: this.cookie
         }
       })
       this.hotcomments = data.hotComments
@@ -240,7 +254,33 @@ export default {
       {
         this.$message.error('删除失败！请稍后再试');
       }
+    },
+    // 点赞评论
+    async likecomment (id, t) {
+      const { data } = await this.$http.get('/comment/like', {
+        params: {
+          id: this.songDetails.id,
+          cid: id,
+          t: t,
+          type: 0,
+          cookie: this.cookie,
+          timeStamp: Date.now()
+
+        }
+      })
+      if (data.code == 200)
+      {
+        setTimeout(() => {
+          this.getmusiccomment()
+        }, 1000);
+
+        this.$message({
+          message: '操作成功！',
+          type: 'success'
+        });
+      }
     }
+
 
   },
   created () {
@@ -384,6 +424,9 @@ export default {
               margin-right: 15px;
               align-items: center;
               display: flex;
+              img {
+                cursor: pointer;
+              }
               .likedCount {
                 font-size: 14px;
                 margin-left: 1px;
@@ -465,6 +508,9 @@ export default {
               margin-right: 15px;
               align-items: center;
               display: flex;
+              img {
+                cursor: pointer;
+              }
               .likedCount {
                 font-size: 14px;
                 margin-left: 1px;

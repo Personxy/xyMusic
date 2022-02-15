@@ -41,7 +41,6 @@
           <div class="commentfoot">
             <div class="commenttime">{{item.timeStr}}</div>
             <div class="commentbtn">
-
               <div class="likebtn"><img src="../../../assets/images/点赞.svg"
                      alt=""
                      @click="likecomment(item.commentId,1)"
