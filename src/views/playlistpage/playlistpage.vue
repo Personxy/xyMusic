@@ -6,7 +6,8 @@
     <!-- 歌单导航 -->
     <listnav :songs="songs"
              v-loading="loading"
-             :likeplaylist="likeplaylist" />
+             :likeplaylist="likeplaylist"
+             :playlist="playlist" />
   </div>
 </template>
 <script>

@@ -1,11 +1,16 @@
 <template>
   <div>
     <el-tabs v-model="activeName">
-      <el-tab-pane label="歌曲列表" name="songlist">
-        <playlist :songs="songs" :likeplaylist="likeplaylist"></playlist>
+      <el-tab-pane label="歌曲列表"
+                   name="songlist">
+        <playlist :songs="songs"
+                  :likeplaylist="likeplaylist"></playlist>
       </el-tab-pane>
-      <el-tab-pane label="评论" name="comments">
-        <comment></comment>
+      <el-tab-pane :label="commentlabel"
+                   name="comments">
+        <comment :songs="songs"
+                 :playlist="playlist"
+                 @sendtotal='gettotal'></comment>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -22,11 +27,17 @@ export default {
   props: {
     songs: Array,
     likeplaylist: Array,
+    playlist: Object
   },
-  methods: {},
-  data() {
+  methods: {
+    gettotal (data) {
+      this.commentlabel = '评论(' + data + ')'
+    }
+  },
+  data () {
     return {
       activeName: "songlist",
+      commentlabel: ''
     };
   },
 };
