@@ -4,8 +4,10 @@
       <!-- 视频和视频信息区域 -->
       <div class="videoplayarea">
         <div class="videotype">
-          <span v-if="videoinfo.vid">&lt;&nbsp;视频详情</span>
-          <span v-if="mvinfo.id">&lt;&nbsp;mv详情</span>
+          <span v-if="videoinfo.vid"
+                @click="tovideolistpage">&lt;&nbsp;视频详情</span>
+          <span v-if="mvinfo.id"
+                @click="tomvlistpage">&lt;&nbsp;mv详情</span>
         </div>
         <div class="videoplay">
           <video :src="videourl.length!=0?videourl:mvurl"
@@ -51,12 +53,20 @@
           </div>
 
         </div>
-        <div class="videobtn">
+        <!-- 视频按钮接口不完整 功能暂时不做 -->
+        <div class="videobtn"
+             v-if="false">
           <!-- 点赞 mv没有点赞api -->
           <div class="like"
-               v-if="videoinfo.vid">
+               v-if="!videoinfo.liked">
             <img src="../../assets/images/点赞.svg"
-                 alt="">
+                 alt=""
+                 @click="likevideo(vid,1)"
+                 v-if="videoinfo.liked">
+            <img src="../../assets/images/已点赞.svg"
+                 alt=""
+                 v-else
+                 @click="likevideo(vid,0)">
             <span>赞{{videoinfo.praisedCount}}</span>
           </div>
           <div class="collect">
@@ -71,14 +81,12 @@
           </div>
         </div>
       </div>
-
       <!-- 推荐视频区域 -->
       <videorecom :vid="vid"
                   :id="id"
                   @sendvideoid="getvideoid"
                   @sendmvid="getmvid" />
     </div>
-
     <videocomment :vid="vid"
                   :id="id" />
   </div>
@@ -87,6 +95,7 @@
 
 import videorecom from '../../components/xymusic/videodetail/videorecom.vue'
 import videocomment from "../../components/xymusic/videodetail/videocomment.vue"
+import { mapGetters } from 'vuex'
 export default {
   components: {
     videorecom,
@@ -110,7 +119,8 @@ export default {
     async getvideodetail () {
       const { data } = await this.$http.get('/video/detail', {
         params: {
-          id: this.vid
+          id: this.vid,
+          cookie: this.cookie
         }
       })
       this.videoinfo = data.data
@@ -124,6 +134,39 @@ export default {
       })
       this.videourl = data.urls[0].url
 
+    },
+    // 获取点赞过的视频
+    async getlikedvideo () {
+      // const { data } = await this.$http.get('/playlist/mylike', {
+      //   params: {
+      //     cookie: this.cookie,
+      //     timeStamp: Date.now()
+      //   }
+      // })
+      // // console.log(data);
+    },
+    // 视频点赞
+    async likevideo (id, t) {
+      const { data } = await this.$http.get('/resource/like', {
+        params: {
+          id: id,
+          t: t,
+          type: 5,
+          cookie: this.cookie,
+          timeStamp: Date.now()
+        }
+      })
+      if (data.code == 200)
+      {
+        setTimeout(() => {
+          this.getmusiccomment()
+        }, 1000);
+
+        this.$message({
+          message: '操作成功！',
+          type: 'success'
+        });
+      }
     },
     //mv详情
     async getmvdetail () {
@@ -144,16 +187,24 @@ export default {
       })
       this.mvurl = data.data.url
     },
+    // 子组件传值
     getvideoid (data) {
       this.vid = data
     },
     getmvid (data) {
-
       this.id = data
-
+    },
+    // 跳转到视频列表
+    tovideolistpage () {
+      this.$router.push('/home/video/videopage')
+    },
+    // 跳转到mv列表
+    tomvlistpage () {
+      this.$router.push('/home/video/mvpage')
     }
   },
   created () {
+    this.getlikedvideo()
     this.vid = this.$route.query.vid ? this.$route.query.vid : '';
     this.id = this.$route.query.id ? parseInt(this.$route.query.id) : 0
     if (this.vid)
@@ -171,12 +222,16 @@ export default {
     vid () {
       this.getvideodetail()
       this.getvideourl()
+      this.getlikedvideo()
     },
     id () {
-
       this.getmvdetail()
       this.getmvurl()
+      this.getlikedvideo()
     }
+  },
+  computed: {
+    ...mapGetters(['cookie'])
   }
 }
 </script>
