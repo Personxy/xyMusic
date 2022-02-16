@@ -1,14 +1,9 @@
 <template>
-  <div class="albumcommets">
-    albumcommets
-  </div>
+  <div class="albumcommets">albumcommets</div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

@@ -15,14 +15,12 @@
       <div class="controlBtn">
         <div class="playadd">
           <!-- 播放全部 -->
-          <div class="playall"
-               @click="playallmusic">
+          <div class="playall" @click="playallmusic">
             <p class="triangular"></p>
             <span>播放全部</span>
           </div>
           <!-- 添加歌单到播放列表 -->
-          <div class="add"
-               @click="addsheettoplaylist">+</div>
+          <div class="add" @click="addsheettoplaylist">+</div>
         </div>
         <!-- 收藏按钮
         <div>
@@ -69,10 +67,17 @@
         </div> -->
         <!-- 歌手姓名 -->
       </div>
-      <div class="albumauthor">歌手：<span style="color:#767DB6"
-              @click="tosingerpage(albuminfo.artist.id)">{{albuminfo&&albuminfo.artist&&albuminfo.artist.name}}</span></div>
+      <div class="albumauthor">
+        歌手：<span
+          style="color: #767db6"
+          @click="tosingerpage(albuminfo.artist.id)"
+          >{{ albuminfo && albuminfo.artist && albuminfo.artist.name }}</span
+        >
+      </div>
       <!-- 发布时间 -->
-      <div class="auhorpublishtime">发布时间：{{albuminfo.publishTime |dateFormat}}</div>
+      <div class="auhorpublishtime">
+        发布时间：{{ albuminfo.publishTime | dateFormat }}
+      </div>
     </div>
   </div>
 </template>
@@ -83,7 +88,7 @@ import { mapGetters } from "vuex";
 export default {
   props: {
     albuminfo: Object,
-    songs: Array
+    songs: Array,
   },
   computed: {
     ...mapGetters([
@@ -94,16 +99,15 @@ export default {
       "playsonglist",
     ]),
   },
-  data () {
+  data() {
     return {
       index: 0,
     };
   },
   methods: {
     // 收藏歌单与否
-    async changcollect () {
-      if (this.albuminfo.info.liked)
-      {
+    async changcollect() {
+      if (this.albuminfo.info.liked) {
         // 取消收藏歌单
         const res = await this.$http.get("/album/sub", {
           params: {
@@ -114,21 +118,17 @@ export default {
           },
         });
         // console.log(res);
-        if (res.data.code == 200)
-        {
+        if (res.data.code == 200) {
           this.albuminfo.info.liked = false;
           // this.$store.dispatch("savecurrentactive", "")
-        }
-        else
-        {
+        } else {
           return this.$message({
             showClose: true,
-            message: '操作失败！请稍后再试',
-            type: 'error'
+            message: "操作失败！请稍后再试",
+            type: "error",
           });
         }
-      } else
-      {
+      } else {
         // 收藏歌单
         const resa = await this.$http.get("/album/sublist", {
           params: {
@@ -139,23 +139,20 @@ export default {
           },
         });
         // console.log(resa);
-        if (resa.data.code == 200)
-        {
+        if (resa.data.code == 200) {
           // this.$store.dispatch("savecurrentactive", "/home/playlistpage/" + this.playListCollect[0].id)
           this.albuminfo.info.liked = true;
-        }
-        else
-        {
+        } else {
           return this.$message({
             showClose: true,
-            message: '操作失败！请稍后再试',
-            type: 'error'
+            message: "操作失败！请稍后再试",
+            type: "error",
           });
         }
       }
     },
     // 播放当前歌单所有歌曲 替换当前列表
-    async playallmusic () {
+    async playallmusic() {
       // 清除当前播放列表
       this.$store.dispatch("clearplaysonglist");
       // console.log(this.playsonglist);
@@ -169,8 +166,7 @@ export default {
         },
       });
       // console.log(res.data.data[0].url);
-      if (!res.data.data[0].url)
-      {
+      if (!res.data.data[0].url) {
         this.index++;
         this.$message.error("没有版权即将播放下一首！");
         setTimeout(() => {
@@ -178,8 +174,7 @@ export default {
           // console.log(this.index);
           // this.$message.error('没有播放来源！');
         }, 3000);
-      } else
-      {
+      } else {
         this.$store.dispatch("savecurrenturl", res.data.data[0].url);
         this.$store.dispatch("saveplaystatus", true);
         //获取歌曲详情
@@ -195,16 +190,16 @@ export default {
       }
     },
     //添加当前歌单到播放列表
-    addsheettoplaylist () {
+    addsheettoplaylist() {
       // console.log(this.songs);
       this.$store.dispatch("saveplaysonglist", this.songs);
     },
     //跳转到歌手详情页
-    tosingerpage (id) {
-      this.$router.push(`/home/singerdetail/${id}`)
-    }
+    tosingerpage(id) {
+      this.$router.push(`/home/singerdetail/${id}`);
+    },
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

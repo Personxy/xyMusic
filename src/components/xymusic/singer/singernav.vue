@@ -1,39 +1,36 @@
 <template>
   <div class="singernav">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="歌曲列表"
-                   name="songs">
+      <el-tab-pane label="歌曲列表" name="songs">
         <!-- 歌曲列表 -->
         <singersongs :songs="songs" />
       </el-tab-pane>
-      <el-tab-pane label="歌手详情"
-                   name="detail">
+      <el-tab-pane label="歌手详情" name="detail">
         <!-- 歌手详情 -->
         <singerdetail :introduction="introduction" />
       </el-tab-pane>
-
     </el-tabs>
   </div>
 </template>
 
 <script>
-import singersongs from "./singersongs.vue"
-import singerdetail from "./singerdetail.vue"
+import singersongs from "./singersongs.vue";
+import singerdetail from "./singerdetail.vue";
 export default {
   components: {
     singersongs,
-    singerdetail
+    singerdetail,
   },
   props: {
     songs: Array,
-    introduction: Object
+    introduction: Object,
   },
-  data () {
+  data() {
     return {
-      activeName: "songs"
-    }
-  }
-}
+      activeName: "songs",
+    };
+  },
+};
 </script>
 
 <style lang="less" scoped>

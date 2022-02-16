@@ -25,25 +25,34 @@ export default {
       "playorder",
       "volume",
       "currentTime",
-      'nextsonglist',
-      'songdetailflag'
+      "nextsonglist",
+      "songdetailflag",
     ]),
   },
   methods: {
     // 存入session
-    saveData () {
+    saveData() {
       //用户信息
       sessionStorage.setItem("userInfo", JSON.stringify(this.userInfo));
       //搜索历史
-      sessionStorage.setItem("searchHistory", JSON.stringify(this.searchHistory));
+      sessionStorage.setItem(
+        "searchHistory",
+        JSON.stringify(this.searchHistory)
+      );
       //热搜信息
       // sessionStorage.setItem("searchHot",JSON.stringify(this.searchHot));
       // 个人歌单信息
       sessionStorage.setItem("playListMine", JSON.stringify(this.playListMine));
       //收藏歌单
-      sessionStorage.setItem("playListCollect", JSON.stringify(this.playListCollect));
+      sessionStorage.setItem(
+        "playListCollect",
+        JSON.stringify(this.playListCollect)
+      );
       //cookie
-      sessionStorage.setItem("cookie", JSON.stringify(encodeURIComponent(this.cookie)));
+      sessionStorage.setItem(
+        "cookie",
+        JSON.stringify(encodeURIComponent(this.cookie))
+      );
       // 当前播放url
       sessionStorage.setItem("currenturl", this.currenturl);
       //当前歌曲详情
@@ -51,7 +60,7 @@ export default {
       //当前播放列表
       sessionStorage.setItem("playsonglist", JSON.stringify(this.playsonglist));
       // 下一首播放列表
-      sessionStorage.setItem("nextsonglist", JSON.stringify(this.nextsonglist))
+      sessionStorage.setItem("nextsonglist", JSON.stringify(this.nextsonglist));
       //当前播放状态
       sessionStorage.setItem("playstatus", this.playstatus);
       //播放顺序
@@ -61,17 +70,15 @@ export default {
       //当前进度条
       sessionStorage.setItem("currentTime", this.currentTime);
       //歌曲详情页面打开关闭
-      sessionStorage.setItem('songdetailflag', this.songdetailflag)
+      sessionStorage.setItem("songdetailflag", this.songdetailflag);
     },
   },
-  mounted () {
+  mounted() {
     // 判断是否兼容箭头函数
-    try
-    {
+    try {
       eval("()=>{}");
       // alert("浏览器支持箭头函数");
-    } catch (eo)
-    {
+    } catch (eo) {
       alert("本 现代浏览器进行使用");
       window.location.href = "http://browsehappy.osfipin.com/";
     }

@@ -1,9 +1,11 @@
 <template>
   <div class="headnav">
-    <el-menu :default-active="$route.path"
-             class="el-menu-demo"
-             mode="horizontal"
-             :router="true">
+    <el-menu
+      :default-active="$route.path"
+      class="el-menu-demo"
+      mode="horizontal"
+      :router="true"
+    >
       <el-menu-item index="/home/video/videopage">视频</el-menu-item>
       <el-menu-item index="/home/video/mvpage">MV</el-menu-item>
     </el-menu>
@@ -11,9 +13,7 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style lang="less" scoped>

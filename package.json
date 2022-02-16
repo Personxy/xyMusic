@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
@@ -17,6 +17,7 @@
     "lodash": "^4.17.21",
     "vue": "^2.6.11",
     "vue-axios": "^3.4.0",
+    "vue-jsonp": "^2.0.0",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
   },

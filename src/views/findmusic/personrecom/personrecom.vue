@@ -1,7 +1,6 @@
 <template>
   <div class="personrecom">
-    <div class="personrecomdiv"
-         v-show="load">
+    <div class="personrecomdiv" v-show="load">
       <!-- 轮播图 -->
       <banner @bannerdone="getbannerload" />
       <!-- 推荐歌单 -->
@@ -13,12 +12,10 @@
       <!-- 推荐MV -->
       <recommv @mvdone="mvload" />
     </div>
-    <div class="loading"
-         v-show="!load">
-      <i class="el-icon-loading"
-         style="margin-top:30px"></i><span style="margin-left:10px">加载中</span>
+    <div class="loading" v-show="!load">
+      <i class="el-icon-loading" style="margin-top: 30px"></i
+      ><span style="margin-left: 10px">加载中</span>
     </div>
-
   </div>
 </template>
 <script>
@@ -35,45 +32,47 @@ export default {
     newmusic,
     recommv,
   },
-  data () {
+  data() {
     return {
       load: false,
       banner: false,
       recomlist: false,
       broadcasting: false,
       boradcast: false,
-      mv: false
-    }
+      mv: false,
+    };
   },
   methods: {
-    getbannerload (data) {
-      this.banner = data
+    getbannerload(data) {
+      this.banner = data;
     },
-    getrecomlistload (data) {
-      this.recomlist = data
+    getrecomlistload(data) {
+      this.recomlist = data;
     },
-    getmusicload (data) {
-      this.broadcasting = data
+    getmusicload(data) {
+      this.broadcasting = data;
     },
-    boradcastload (data) {
-      this.boradcast = data
+    boradcastload(data) {
+      this.boradcast = data;
     },
-    mvload (data) {
-      this.mv = data
-    }
-
+    mvload(data) {
+      this.mv = data;
+    },
   },
-  mounted () {
+  mounted() {
     // 渲染等待
     setTimeout(() => {
-      if (this.banner && this.recomlist && this.recomlist && this.boradcast && this.mv)
-      {
-        this.load = true
+      if (
+        this.banner &&
+        this.recomlist &&
+        this.recomlist &&
+        this.boradcast &&
+        this.mv
+      ) {
+        this.load = true;
       }
     }, 2000);
-
-  }
-
+  },
 };
 </script>
 

@@ -1,47 +1,54 @@
 <template>
   <!-- 搜索 -->
   <div class="searchbar">
-    <el-input v-model="searchdata"
-              placeholder="搜索"
-              size="mini"
-              @focus="changesearchbox"
-              v-clickoutside="close"
-              @keyup.enter.native="search"
-              ref="input"></el-input>
-    <i class="el-icon-search"
-       @click="search"
-       size="mini"></i>
-    <div class="searchbox"
-         v-show="opensearch">
+    <el-input
+      v-model="searchdata"
+      placeholder="搜索"
+      size="mini"
+      @focus="changesearchbox"
+      v-clickoutside="close"
+      @keyup.enter.native="search"
+      ref="input"
+    ></el-input>
+    <i class="el-icon-search" @click="search" size="mini"></i>
+    <div class="searchbox" v-show="opensearch">
       <!-- 搜索历史 -->
       <p v-if="searchHistoryflag">
         搜索历史&nbsp;
-        <el-popconfirm confirm-button-text="确认"
-                       cancel-button-text="取消"
-                       icon="el-icon-info"
-                       icon-color="red"
-                       title="确定要删除所有搜索历史记录吗"
-                       @confirm="clearSearchData">
-          <img src="../../../assets/images/垃圾箱 (2).svg"
-               alt=""
-               slot="reference" />
+        <el-popconfirm
+          confirm-button-text="确认"
+          cancel-button-text="取消"
+          icon="el-icon-info"
+          icon-color="red"
+          title="确定要删除所有搜索历史记录吗"
+          @confirm="clearSearchData"
+        >
+          <img
+            src="../../../assets/images/垃圾箱 (2).svg"
+            alt=""
+            slot="reference"
+          />
         </el-popconfirm>
       </p>
       <div class="searchHistory">
-        <div class="searchitem"
-             v-for="item in searchHistory"
-             :key="item.id"
-             @click="tosearch(item)">
+        <div
+          class="searchitem"
+          v-for="item in searchHistory"
+          :key="item.id"
+          @click="tosearch(item)"
+        >
           {{ item }}
           <span @click="deletesearch(item)"> x</span>
         </div>
       </div>
       <div class="hotSearch">
         <p>热搜榜</p>
-        <div class="hotSearchItem"
-             v-for="(item, i) in searchHot"
-             :key="item.id"
-             @click="tosearch(item.first)">
+        <div
+          class="hotSearchItem"
+          v-for="(item, i) in searchHot"
+          :key="item.id"
+          @click="tosearch(item.first)"
+        >
           <span class="hotnum">{{ i + 1 }}</span>
           <span class="hotname">{{ item.first }}</span>
         </div>
@@ -54,7 +61,7 @@
 import { mapGetters } from "vuex";
 export default {
   name: "search",
-  data () {
+  data() {
     return {
       searchdata: "",
       opensearch: false,
@@ -65,7 +72,7 @@ export default {
   },
   methods: {
     // 控制搜索面板开关且提交热搜请求
-    async changesearchbox () {
+    async changesearchbox() {
       this.opensearch = !this.opensearch;
       let res = await this.$http.get("/search/hot");
       this.searchHot = res.data.result.hots;
@@ -75,7 +82,7 @@ export default {
       this.opensearch = false;
     },
     //搜索
-    search () {
+    search() {
       this.searchHistoryflag = true;
 
       if (
@@ -89,27 +96,27 @@ export default {
       this.$store.dispatch("saveSearchHistory", this.searchdata);
       // this.searchdata = "";
       this.changesearchbox();
-      this.opensearch = false
+      this.opensearch = false;
       // this.$refs.input.blur();
-      this.$router.push({ path: `/home/search/${this.searchdata}` })
+      this.$router.push({ path: `/home/search/${this.searchdata}` });
     },
     // 清空搜索记录
-    clearSearchData () {
+    clearSearchData() {
       this.$store.dispatch("clearSearchHistory");
       this.searchHistoryflag = false;
     },
     // 点击热搜词搜索
-    tosearch (item) {
+    tosearch(item) {
       // console.log(item);
       this.searchdata = item;
-      this.search()
+      this.search();
     },
     // 删除某条搜索记录
-    deletesearch (item, e) {
-      this.$store.dispatch('deletsearchitem', item)
+    deletesearch(item, e) {
+      this.$store.dispatch("deletsearchitem", item);
       // 阻止冒泡
-      window.event ? window.event.cancelBubble = true : e.stopPropagation();
-    }
+      window.event ? (window.event.cancelBubble = true) : e.stopPropagation();
+    },
   },
   computed: {
     ...mapGetters(["searchHistory"]),
@@ -131,13 +138,12 @@ export default {
     },
   },
   watch: {
-    searchdata (newval) {
-      if (newval == '')
-      {
-        this.opensearch = true
+    searchdata(newval) {
+      if (newval == "") {
+        this.opensearch = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

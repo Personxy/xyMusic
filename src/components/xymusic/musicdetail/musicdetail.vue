@@ -5,26 +5,24 @@
       <recominfo v-if="songDetails" />
     </div>
     <comment v-if="songDetails" />
-
   </div>
 </template>
 
 <script>
-import musiclyric from "./musiclyric.vue"
-import comment from "./comment.vue"
-import recominfo from './recominfo.vue'
-import { mapGetters } from 'vuex'
+import musiclyric from "./musiclyric.vue";
+import comment from "./comment.vue";
+import recominfo from "./recominfo.vue";
+import { mapGetters } from "vuex";
 export default {
   components: {
     musiclyric,
     comment,
-    recominfo
+    recominfo,
   },
   computed: {
-    ...mapGetters(['songDetails'])
+    ...mapGetters(["songDetails"]),
   },
-
-}
+};
 </script>
 
 <style lang="less" scoped>

@@ -3,15 +3,21 @@
     <div class="newsongstop">
       <!-- 条件选项 -->
       <div class="newsongsconditionbox">
-        <div :class="[newsongscontionclass,{newsongscontionActive:currentnewsongscontion==index}]"
-             v-for="(item,index) in newsongscontion"
-             :key="index"
-             @click="selectnewsongscontion(index,item[0])">{{item[1]}}</div>
+        <div
+          :class="[
+            newsongscontionclass,
+            { newsongscontionActive: currentnewsongscontion == index },
+          ]"
+          v-for="(item, index) in newsongscontion"
+          :key="index"
+          @click="selectnewsongscontion(index, item[0])"
+        >
+          {{ item[1] }}
+        </div>
       </div>
       <div class="newsongscontrol">
         <!-- 播放全部 -->
-        <div class="playall"
-             @click="playallmusic">
+        <div class="playall" @click="playallmusic">
           <p class="triangular"></p>
           <span>播放全部</span>
         </div>
@@ -19,70 +25,74 @@
     </div>
 
     <!-- 歌曲列表 -->
-    <div class="newsongsbox"
-         v-loading="loading">
-      <div class="newsongsli"
-           v-for="(item,index) in newsongslist"
-           :key="item.id">
+    <div class="newsongsbox" v-loading="loading">
+      <div
+        class="newsongsli"
+        v-for="(item, index) in newsongslist"
+        :key="item.id"
+      >
         <!-- index -->
-        <div class="songsindex">{{(10)>(index+1)?'0'+(index+1):index+1}}</div>
-        <div class="songscover"
-             @click="playnewsong(item.id)">
-          <img :src="item.album.picUrl"
-               alt="">
+        <div class="songsindex">
+          {{ 10 > index + 1 ? "0" + (index + 1) : index + 1 }}
+        </div>
+        <div class="songscover" @click="playnewsong(item.id)">
+          <img :src="item.album.picUrl" alt="" />
           <div class="playbutton">
-            <img src="../../../../assets/images/显示在图片上的播放按钮.svg"
-                 alt="">
+            <img
+              src="../../../../assets/images/显示在图片上的播放按钮.svg"
+              alt=""
+            />
           </div>
         </div>
-        <div class="songsname">{{item.name}}</div>
-        <div class="songsauthor">{{item.artists[0].name}}</div>
-        <div class="songsalbum">{{item.album.name}}</div>
-        <div class="songsduration">{{item.duration/1000 | minutesformat}}</div>
+        <div class="songsname">{{ item.name }}</div>
+        <div class="songsauthor">{{ item.artists[0].name }}</div>
+        <div class="songsalbum">{{ item.album.name }}</div>
+        <div class="songsduration">
+          {{ (item.duration / 1000) | minutesformat }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 // import _ from "lodash"
 export default {
-
-  data () {
+  data() {
     return {
       newsongscontion: [
-        [0, '全部'],
-        [7, '华语'],
-        [96, '欧美'],
-        [8, '日本'],
-        [16, '韩国']
+        [0, "全部"],
+        [7, "华语"],
+        [96, "欧美"],
+        [8, "日本"],
+        [16, "韩国"],
       ],
-      newsongscontionclass: 'newsongscontionclass',
+      newsongscontionclass: "newsongscontionclass",
       currentnewsongscontion: 0,
       newsongslist: [],
       loading: false,
       index: 0,
-      newarry: [{
-        al: {
-          picUrl: ''
+      newarry: [
+        {
+          al: {
+            picUrl: "",
+          },
+          id: "",
+          dt: "",
+          ar: [{ name: "" }],
         },
-        id: "",
-        dt: "",
-        ar: [{ name: '' }],
-
-      }
-      ]
-    }
+      ],
+    };
   },
   methods: {
     // 播放
-    async playnewsong (id) {
+    async playnewsong(id) {
       const loading = this.$loading({
         lock: true,
-        text: '播放资源获取中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0,0)'
+        text: "播放资源获取中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0,0)",
       });
       const res = await this.$http.get("/song/url", {
         params: {
@@ -91,9 +101,8 @@ export default {
         },
       });
       // console.log(res.data.data[0].url);
-      if (res.data.data[0].url == null)
-      {
-        loading.close()
+      if (res.data.data[0].url == null) {
+        loading.close();
         return this.$message.error("没有版权哦！");
       }
 
@@ -106,46 +115,42 @@ export default {
       });
       // console.log(resdata);
       //存入下一首播放列表
-      this.$store.dispatch('savenextsong', resdata.data.songs[0])
+      this.$store.dispatch("savenextsong", resdata.data.songs[0]);
       // 当前播放歌曲详情
       this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
       //当前播放状态
       this.$store.dispatch("saveplaystatus", true);
-      loading.close()
-
+      loading.close();
     },
     // 添加属性
-    setobjkey (obj, str, str2) {
-      for (var key in obj)
-      {
-        if (key != str)
-        {
-          obj[str] = { [str2]: "" }
+    setobjkey(obj, str, str2) {
+      for (var key in obj) {
+        if (key != str) {
+          obj[str] = { [str2]: "" };
         }
       }
-      return obj
+      return obj;
     },
     // 添加属性
-    setarrkey (obj, str, s2) {
-      for (var key in obj)
-      {
-        if (key != str)
-        {
-          obj[str] = [{ [s2]: '' }]
+    setarrkey(obj, str, s2) {
+      for (var key in obj) {
+        if (key != str) {
+          obj[str] = [{ [s2]: "" }];
         }
       }
-      return obj
+      return obj;
     },
     // 播放所有歌曲
-    async playallmusic () {
+    async playallmusic() {
       // 清除当前播放列表
       this.$store.dispatch("clearplaysonglist");
       // console.log(this.playsonglist);
-      for (let i = 0; i < this.newsongslist.length; i++)
-      {
+      for (let i = 0; i < this.newsongslist.length; i++) {
         this.newsongslist[i].dt = this.newsongslist[i].duration;
-        this.setobjkey(this.newsongslist[i], "al", "picUrl").al.picUrl = this.newsongslist[i].album.picUrl
-        this.setarrkey(this.newsongslist[i], "ar", "name").ar[0].name = this.newsongslist[i].artists[0].name
+        this.setobjkey(this.newsongslist[i], "al", "picUrl").al.picUrl =
+          this.newsongslist[i].album.picUrl;
+        this.setarrkey(this.newsongslist[i], "ar", "name").ar[0].name =
+          this.newsongslist[i].artists[0].name;
       }
       this.$store.dispatch("saveplaysonglist", this.newsongslist);
 
@@ -158,8 +163,7 @@ export default {
       });
       // console.log(res.data.data[0].url);
       // console.log(this.newsongslist[this.index]);
-      if (!res.data.data[0].url)
-      {
+      if (!res.data.data[0].url) {
         this.index++;
         this.$message.error("没有版权即将播放下一首！");
         setTimeout(() => {
@@ -167,8 +171,7 @@ export default {
           // console.log(this.index);
           // this.$message.error('没有播放来源！');
         }, 3000);
-      } else
-      {
+      } else {
         this.$store.dispatch("savecurrenturl", res.data.data[0].url);
         this.$store.dispatch("saveplaystatus", true);
         //获取歌曲详情
@@ -184,29 +187,27 @@ export default {
       }
     },
     // 选择新歌条件
-    async selectnewsongscontion (index, item) {
-      this.loading = true
-      this.currentnewsongscontion = index
-      const { data } = await this.$http.get('/top/song', {
+    async selectnewsongscontion(index, item) {
+      this.loading = true;
+      this.currentnewsongscontion = index;
+      const { data } = await this.$http.get("/top/song", {
         params: {
-          type: item
-        }
-      })
-      this.newsongslist = data.data
+          type: item,
+        },
+      });
+      this.newsongslist = data.data;
 
-      this.loading = false
-    }
+      this.loading = false;
+    },
   },
-  created () {
+  created() {
     // this.newsongslist = _.cloneDeep(this.newsongs)
-    this.selectnewsongscontion(0, 0)
+    this.selectnewsongscontion(0, 0);
   },
   computed: {
-    ...mapGetters([
-      'cookie', 'playsonglist'
-    ])
-  }
-}
+    ...mapGetters(["cookie", "playsonglist"]),
+  },
+};
 </script>
 
 <style lang="less" scoped>

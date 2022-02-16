@@ -4,78 +4,93 @@
     <div class="newalbumtop">
       <!-- 条件选项 -->
       <div class="newalbumonditionbox">
-        <div :class="[newalbumcontionclass,{newalbumcontionActive:currentnewalbumcontion==index}]"
-             v-for="(item,index) in newalbumcontion"
-             :key="index"
-             @click="selectnewalbumcontion(index,item[0])">{{item[1]}}</div>
+        <div
+          :class="[
+            newalbumcontionclass,
+            { newalbumcontionActive: currentnewalbumcontion == index },
+          ]"
+          v-for="(item, index) in newalbumcontion"
+          :key="index"
+          @click="selectnewalbumcontion(index, item[0])"
+        >
+          {{ item[1] }}
+        </div>
       </div>
       <div class="newandhotalbum">
-        <div :class="newalbum"
-             @click="changealbumtype(0,'new')"><span :class="{newandhotalbumactive:currentnewandhotalbum==0}">推荐</span></div>
-        <div :class="allalbum"
-             @click="changealbumtype(1,'hot')"><span :class="{newandhotalbumactive:currentnewandhotalbum==1}">全部</span></div>
+        <div :class="newalbum" @click="changealbumtype(0, 'new')">
+          <span :class="{ newandhotalbumactive: currentnewandhotalbum == 0 }"
+            >推荐</span
+          >
+        </div>
+        <div :class="allalbum" @click="changealbumtype(1, 'hot')">
+          <span :class="{ newandhotalbumactive: currentnewandhotalbum == 1 }"
+            >全部</span
+          >
+        </div>
       </div>
     </div>
     <!-- 专辑列表 -->
-    <div class="newalbumlistbox"
-         v-infinite-scroll="getalbumnews"
-         infinite-scroll-distance="200px"
-         infinite-scroll-delay="500">
-      <div class="newalbumlist"
-           v-for="item in albumlist"
-           :key="item.id"
-           @click="toalbumdetail(item.id)">
-        <el-image :src="item.blurPicUrl"
-                  style="width:200px;height:200px"></el-image>
-        <div class="albumname">{{item.name}}</div>
-        <div class="albumauthor">{{item.artists[0].name}}</div>
+    <div
+      class="newalbumlistbox"
+      v-infinite-scroll="getalbumnews"
+      infinite-scroll-distance="200px"
+      infinite-scroll-delay="500"
+    >
+      <div
+        class="newalbumlist"
+        v-for="item in albumlist"
+        :key="item.id"
+        @click="toalbumdetail(item.id)"
+      >
+        <el-image
+          :src="item.blurPicUrl"
+          style="width: 200px; height: 200px"
+        ></el-image>
+        <div class="albumname">{{ item.name }}</div>
+        <div class="albumauthor">{{ item.artists[0].name }}</div>
       </div>
     </div>
-    <div class=""
-         v-if="loading"
-         style="margin-top: 20px">加载中...</div>
-
+    <div class="" v-if="loading" style="margin-top: 20px">加载中...</div>
   </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       newalbumcontion: [
-        ['ALL', '全部'],
-        ['ZH', '华语'],
-        ['EA', '欧美'],
-        ['JP', '日本'],
-        ['KR', '韩国']
+        ["ALL", "全部"],
+        ["ZH", "华语"],
+        ["EA", "欧美"],
+        ["JP", "日本"],
+        ["KR", "韩国"],
       ],
       // class
-      newalbumcontionclass: 'newalbumcontionclass',
-      newalbum: 'newalbum',
-      allalbum: 'allalbum',
+      newalbumcontionclass: "newalbumcontionclass",
+      newalbum: "newalbum",
+      allalbum: "allalbum",
       currentnewalbumcontion: 0,
       currentnewandhotalbum: 0,
       // 地区
-      area: 'ALL',
+      area: "ALL",
       // 热门或者推荐
-      type: 'new',
+      type: "new",
       limit: 30,
       offset: 30,
       albumlist: [],
       loading: false,
-
-    }
+    };
   },
   methods: {
-    async getalbumnews () {
+    async getalbumnews() {
       const { data } = await this.$http.get("/album/new", {
         params: {
           area: this.area,
           type: this.type,
           limit: this.limit,
-          offset: this.offset
-        }
-      })
+          offset: this.offset,
+        },
+      });
       this.loading = true;
       this.albumlist.push.apply(this.albumlist, data.albums);
       // 清除重复
@@ -83,36 +98,33 @@ export default {
         return arr.findIndex((el) => el.id == element.id) === index;
       });
       // console.log(this.offset);
-      this.offset = this.offset + 30
+      this.offset = this.offset + 30;
     },
     // 地区选择
-    selectnewalbumcontion (index, item) {
-      this.currentnewalbumcontion = index
-      this.area = item
-      this.albumlist = []
-      this.offset = 30
-      this.getalbumnews()
+    selectnewalbumcontion(index, item) {
+      this.currentnewalbumcontion = index;
+      this.area = item;
+      this.albumlist = [];
+      this.offset = 30;
+      this.getalbumnews();
     },
     // 热门或者推荐选择
-    changealbumtype (index, item) {
-      this.currentnewandhotalbum = index
-      this.type = item
-      this.albumlist = []
-      this.offset = 30
-      this.getalbumnews()
-
+    changealbumtype(index, item) {
+      this.currentnewandhotalbum = index;
+      this.type = item;
+      this.albumlist = [];
+      this.offset = 30;
+      this.getalbumnews();
     },
     // 转到专辑详情
-    toalbumdetail (id) {
-      this.$router.push(`/home/album/${id}`)
-    }
-
+    toalbumdetail(id) {
+      this.$router.push(`/home/album/${id}`);
+    },
   },
-  created () {
-    this.getalbumnews()
-  }
-
-}
+  created() {
+    this.getalbumnews();
+  },
+};
 </script>
 
 <style lang="less" scoped>

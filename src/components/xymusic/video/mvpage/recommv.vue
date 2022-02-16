@@ -2,26 +2,20 @@
   <div class="recommv">
     <div class="recommvtitle">推荐mv&nbsp;&nbsp;></div>
     <div class="recommvlistbox">
-      <div class="recommvlist"
-           v-for="item in recommv"
-           :key="item.id">
-        <div class="recommvcover"
-             @click="tovideodetail(item)">
-          <el-image :src="item.picUrl"
-                    alt=""
-                    lazy></el-image>
+      <div class="recommvlist" v-for="item in recommv" :key="item.id">
+        <div class="recommvcover" @click="tovideodetail(item)">
+          <el-image :src="item.picUrl" alt="" lazy></el-image>
           <!-- 视频播放量 -->
           <div class="recommvmvplaycounts">
-            <img src="../../../../assets/images/歌单列表播放按钮.svg"
-                 alt="" />{{
-            item.playCount  | wan
-          }}
+            <img
+              src="../../../../assets/images/歌单列表播放按钮.svg"
+              alt=""
+            />{{ item.playCount | wan }}
           </div>
         </div>
-        <div class="recommvname">{{item.name}}</div>
-        <div class="recommvauthor">{{item.artists[0].name}}</div>
+        <div class="recommvname">{{ item.name }}</div>
+        <div class="recommvauthor">{{ item.artists[0].name }}</div>
       </div>
-
     </div>
   </div>
 </template>
@@ -29,20 +23,20 @@
 <script>
 export default {
   props: {
-    recommv: Array
+    recommv: Array,
   },
   methods: {
-    tovideodetail (data) {
+    tovideodetail(data) {
       // 传递mv参数
       this.$router.push({
-        path: '/home/videodetail',
+        path: "/home/videodetail",
         query: {
-          id: data.id
-        }
-      })
-    }
-  }
-}
+          id: data.id,
+        },
+      });
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

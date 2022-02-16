@@ -1,97 +1,89 @@
 <template>
   <div class="mvpage">
-
-    <newmv :newmvlist='newmvlist'
-           @sendnewmv="getnewmvtag" />
-    <recommv :recommv='recommv' />
-    <wangyimv :wamgyimvlist='wamgyimvlist' />
-    <rankingmv :rankingmvlist='rankingmvlist'
-               @sendrankmvtag="getrankmvtag" />
+    <newmv :newmvlist="newmvlist" @sendnewmv="getnewmvtag" />
+    <recommv :recommv="recommv" />
+    <wangyimv :wamgyimvlist="wamgyimvlist" />
+    <rankingmv :rankingmvlist="rankingmvlist" @sendrankmvtag="getrankmvtag" />
   </div>
 </template>
 
 <script>
-import newmv from "../../../components/xymusic/video/mvpage/newmv.vue"
-import recommv from '../../../components/xymusic/video/mvpage/recommv.vue'
-import wangyimv from "../../../components/xymusic/video/mvpage/wangyimv.vue"
-import rankingmv from "../../../components/xymusic/video/mvpage/mvranking.vue"
+import newmv from "../../../components/xymusic/video/mvpage/newmv.vue";
+import recommv from "../../../components/xymusic/video/mvpage/recommv.vue";
+import wangyimv from "../../../components/xymusic/video/mvpage/wangyimv.vue";
+import rankingmv from "../../../components/xymusic/video/mvpage/mvranking.vue";
 export default {
   components: {
     newmv,
     recommv,
     wangyimv,
-    rankingmv
+    rankingmv,
   },
-  data () {
+  data() {
     return {
       newmvlist: [],
       newmvarea: "内地",
       recommv: [],
       rankingarea: "内地",
       wamgyimvlist: [],
-      rankingmvlist: []
-    }
+      rankingmvlist: [],
+    };
   },
-  created () {
-    this.getnewmv()
-    this.getrecommv()
-    this.getwangyimv()
-    this.getranking()
+  created() {
+    this.getnewmv();
+    this.getrecommv();
+    this.getwangyimv();
+    this.getranking();
   },
   methods: {
     // 获取最新mv
-    async getnewmv () {
-      const { data } = await this.$http.get('/mv/first', {
+    async getnewmv() {
+      const { data } = await this.$http.get("/mv/first", {
         params: {
           area: this.newmvarea,
-          limit: 8
-        }
-      })
-      this.newmvlist = data.data
+          limit: 8,
+        },
+      });
+      this.newmvlist = data.data;
     },
     // 获取传递过来的最新mv条件选项
-    getnewmvtag (data) {
-      this.newmvarea = data
-      this.getnewmv()
+    getnewmvtag(data) {
+      this.newmvarea = data;
+      this.getnewmv();
     },
     // 推荐mv
-    async getrecommv () {
-      const { data } = await this.$http.get('/personalized/mv')
-      this.recommv = data.result
+    async getrecommv() {
+      const { data } = await this.$http.get("/personalized/mv");
+      this.recommv = data.result;
     },
 
-
     // 网易出品
-    async getwangyimv () {
+    async getwangyimv() {
       const { data } = await this.$http.get("mv/exclusive/rcmd", {
         params: {
-          limit: 8
-        }
-      })
-      this.wamgyimvlist = data.data
+          limit: 8,
+        },
+      });
+      this.wamgyimvlist = data.data;
     },
 
     //排行榜
-    async getranking () {
-      const { data } = await this.$http.get('/top/mv', {
+    async getranking() {
+      const { data } = await this.$http.get("/top/mv", {
         params: {
           limit: 10,
-          area: this.rankingarea
-        }
-      })
-      this.rankingmvlist = data.data
+          area: this.rankingarea,
+        },
+      });
+      this.rankingmvlist = data.data;
     },
     //获取传过来的排行榜tag
-    getrankmvtag (data) {
-      this.rankingarea = data
-      this.getranking()
-    }
+    getrankmvtag(data) {
+      this.rankingarea = data;
+      this.getranking();
+    },
   },
-
-
-
-}
+};
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

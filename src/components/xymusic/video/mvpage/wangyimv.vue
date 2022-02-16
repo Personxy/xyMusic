@@ -2,47 +2,41 @@
   <div class="wangyimv">
     <div class="wymvtitle">网易出品&nbsp;&nbsp;></div>
     <div class="wymvlistbox">
-      <div class="wymvlist"
-           v-for="item in wamgyimvlist"
-           :key="item.id">
-        <div class="wymvcover"
-             @click="tovideodetail(item)">
-          <el-image :src="item.cover"
-                    lazy></el-image>
+      <div class="wymvlist" v-for="item in wamgyimvlist" :key="item.id">
+        <div class="wymvcover" @click="tovideodetail(item)">
+          <el-image :src="item.cover" lazy></el-image>
           <!-- 视频播放量 -->
           <div class="wymvplaycounts">
-            <img src="../../../../assets/images/歌单列表播放按钮.svg"
-                 alt="" />{{
-            item.playCount  | wan
-          }}
+            <img
+              src="../../../../assets/images/歌单列表播放按钮.svg"
+              alt=""
+            />{{ item.playCount | wan }}
           </div>
         </div>
-        <div class="wymvname">{{item.name}}</div>
-        <div class="wymvauthor">{{item.artistName}}</div>
+        <div class="wymvname">{{ item.name }}</div>
+        <div class="wymvauthor">{{ item.artistName }}</div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    wamgyimvlist: Array
+    wamgyimvlist: Array,
   },
   methods: {
-    tovideodetail (data) {
+    tovideodetail(data) {
       // 传递mv参数
       this.$router.push({
-        path: '/home/videodetail',
+        path: "/home/videodetail",
         query: {
-          id: data.id
-        }
-      })
-    }
-  }
-
-}
+          id: data.id,
+        },
+      });
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
 .wangyimv {

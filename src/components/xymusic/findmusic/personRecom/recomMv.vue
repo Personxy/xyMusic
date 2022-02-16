@@ -1,27 +1,32 @@
 <template>
   <div class="recommv">
-    <p style="
+    <p
+      style="
         font-size: 18px;
         font-weight: bold;
         text-align: left;
         padding-left: 130px;
-        cursor:pointer
+        cursor: pointer;
       "
-       @click="torecommv">
+      @click="torecommv"
+    >
       推荐MV &nbsp;&nbsp;&nbsp;>
     </p>
     <div class="mvbox">
-      <div class="mvs"
-           v-for="item in mvlist"
-           :key="item.id"
-           @click="tomvpage(item)">
-        <el-image :src="item.picUrl"
-                  style="width: 260px; height: 150px; border-radius: 5px"></el-image>
+      <div
+        class="mvs"
+        v-for="item in mvlist"
+        :key="item.id"
+        @click="tomvpage(item)"
+      >
+        <el-image
+          :src="item.picUrl"
+          style="width: 260px; height: 150px; border-radius: 5px"
+        ></el-image>
         <span style="font-size: 14px">{{ item.name }}</span>
         <span style="font-size: 12px">{{ item.artistName }}</span>
         <div class="playcount">
-          <img src="../../../../assets/images/歌单列表播放按钮.svg"
-               alt="" />{{
+          <img src="../../../../assets/images/歌单列表播放按钮.svg" alt="" />{{
             (item.playcount || item.playCount) | wan
           }}
         </div>
@@ -32,35 +37,35 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       mvlist: [],
     };
   },
   methods: {
-    async getMV () {
+    async getMV() {
       const { data } = await this.$http.get("/personalized/mv");
       this.mvlist = data.result;
     },
-    torecommv () {
-      this.$router.push(`/home/video/mvpage`)
+    torecommv() {
+      this.$router.push(`/home/video/mvpage`);
     },
-    tomvpage (item) {
+    tomvpage(item) {
       this.$router.push({
-        path: '/home/videodetail',
+        path: "/home/videodetail",
         query: {
-          id: item.id
-        }
-      })
+          id: item.id,
+        },
+      });
       console.log(item);
-    }
+    },
   },
-  created () {
+  created() {
     this.getMV();
   },
-  mounted () {
-    this.$emit("mvdone", true)
-  }
+  mounted() {
+    this.$emit("mvdone", true);
+  },
 };
 </script>
 

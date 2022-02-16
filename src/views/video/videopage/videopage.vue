@@ -6,15 +6,14 @@
 </template>
 
 <script>
-import videocategory from "../../../components/xymusic/video/videopage/videcategory.vue"
-import videolist from "../../../components/xymusic/video/videopage/videolist.vue"
+import videocategory from "../../../components/xymusic/video/videopage/videcategory.vue";
+import videolist from "../../../components/xymusic/video/videopage/videolist.vue";
 export default {
   components: {
     videocategory,
-    videolist
-  }
-}
+    videolist,
+  },
+};
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

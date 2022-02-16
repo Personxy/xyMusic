@@ -3,69 +3,73 @@
     <div class="mvrankingtop">
       <div class="mvrankingtitle">MV排行榜&nbsp;&nbsp;></div>
       <div class="mvrankingtags">
-        <div :class="[mvrankingtagslistclass,{active:index==currentindex}]"
-             v-for="(item,index) in mvrankingtags"
-             :key="item.id"
-             @click="selectranktags(index,item)">{{item}}</div>
+        <div
+          :class="[mvrankingtagslistclass, { active: index == currentindex }]"
+          v-for="(item, index) in mvrankingtags"
+          :key="item.id"
+          @click="selectranktags(index, item)"
+        >
+          {{ item }}
+        </div>
       </div>
     </div>
     <div class="mvrankinglistbox">
-      <div class="mvrankinglist"
-           v-for="(item,index) in rankingmvlist "
-           :key="item.id">
-        <div class="mvrankingindex">{{9>index?"0"+(index+1):index+1}}</div>
-        <div class="mvrankcover"
-             @click="tovideodetail(item)">
-          <el-image :src="item.cover"
-                    lazy></el-image>
+      <div
+        class="mvrankinglist"
+        v-for="(item, index) in rankingmvlist"
+        :key="item.id"
+      >
+        <div class="mvrankingindex">
+          {{ 9 > index ? "0" + (index + 1) : index + 1 }}
+        </div>
+        <div class="mvrankcover" @click="tovideodetail(item)">
+          <el-image :src="item.cover" lazy></el-image>
           <!-- 视频得分 -->
           <div class="mvrankscore">
-            <img src="../../../../assets/images/歌单列表播放按钮.svg"
-                 alt="" />{{
-            item.playCount
-          }}
+            <img
+              src="../../../../assets/images/歌单列表播放按钮.svg"
+              alt=""
+            />{{ item.playCount }}
           </div>
         </div>
         <div class="mvrankinfo">
-          <div class="mvrankname">{{item.name}}</div>
-          <div class="mvrankauthor">{{item.artistName}}</div>
+          <div class="mvrankname">{{ item.name }}</div>
+          <div class="mvrankauthor">{{ item.artistName }}</div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    rankingmvlist: Array
+    rankingmvlist: Array,
   },
-  data () {
+  data() {
     return {
-      mvrankingtags: ['内地', '港台', '欧美', '日本', '韩国'],
+      mvrankingtags: ["内地", "港台", "欧美", "日本", "韩国"],
       currentindex: 0,
-      mvrankingtagslistclass: 'mvrankingtagslistclass'
-    }
+      mvrankingtagslistclass: "mvrankingtagslistclass",
+    };
   },
   methods: {
-    selectranktags (index, item) {
+    selectranktags(index, item) {
       // console.log(this.newmvlist);
-      this.currentindex = index
-      this.$emit("sendrankmvtag", item)
+      this.currentindex = index;
+      this.$emit("sendrankmvtag", item);
     },
-    tovideodetail (data) {
+    tovideodetail(data) {
       // 传递mv参数
       this.$router.push({
-        path: '/home/videodetail',
+        path: "/home/videodetail",
         query: {
-          id: data.id
-        }
-      })
-    }
-  }
-
-}
+          id: data.id,
+        },
+      });
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

@@ -17,25 +17,18 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
 export default {
   props: {
     videoinfo: Object,
-    mvinfo: Object
+    mvinfo: Object,
   },
-  data () {
-    return {
-    }
+  data() {
+    return {};
   },
-  methods: {
-
-
-  },
-  created () {
-
-  }
-}
+  methods: {},
+  created() {},
+};
 </script>

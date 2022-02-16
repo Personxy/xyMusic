@@ -1,35 +1,32 @@
 <template>
   <div class="newmv">
     <div class="newmvtop">
-      <div class="newmvtitle">
-        最新MV&nbsp;&nbsp;>
-      </div>
+      <div class="newmvtitle">最新MV&nbsp;&nbsp;></div>
       <div class="newmvtags">
-        <div :class="[newmvtagslistclass,{active:index==currentindex}]"
-             v-for="(item,index) in newmvtags"
-             :key="item.id"
-             @click="selecttags(index,item)">{{item}}</div>
+        <div
+          :class="[newmvtagslistclass, { active: index == currentindex }]"
+          v-for="(item, index) in newmvtags"
+          :key="item.id"
+          @click="selecttags(index, item)"
+        >
+          {{ item }}
+        </div>
       </div>
     </div>
     <div class="newmvlistbox">
-      <div class="newmvlist"
-           v-for="item in newmvlist"
-           :key="item.id">
-        <div class="newmvlistcover"
-             @click="tovideodetail(item)">
-          <el-image :src="item.cover"
-                    alt=""
-                    lazy></el-image>
+      <div class="newmvlist" v-for="item in newmvlist" :key="item.id">
+        <div class="newmvlistcover" @click="tovideodetail(item)">
+          <el-image :src="item.cover" alt="" lazy></el-image>
           <!-- 视频播放量 -->
           <div class="newmvplaycounts">
-            <img src="../../../../assets/images/歌单列表播放按钮.svg"
-                 alt="" />{{
-            item.playCount  | wan
-          }}
+            <img
+              src="../../../../assets/images/歌单列表播放按钮.svg"
+              alt=""
+            />{{ item.playCount | wan }}
           </div>
         </div>
-        <div class="newmvtitle">{{item.name}}</div>
-        <div class="newmvauthor">{{item.artistName}}</div>
+        <div class="newmvtitle">{{ item.name }}</div>
+        <div class="newmvauthor">{{ item.artistName }}</div>
       </div>
     </div>
   </div>
@@ -38,39 +35,38 @@
 <script>
 export default {
   props: {
-    newmvlist: Array
+    newmvlist: Array,
   },
-  data () {
+  data() {
     return {
-      newmvtags: ['内地', '港台', '欧美', '日本', '韩国'],
+      newmvtags: ["内地", "港台", "欧美", "日本", "韩国"],
       // class
-      newmvtagslistclass: 'newmvtagslistclass',
-      currentindex: 0
-    }
+      newmvtagslistclass: "newmvtagslistclass",
+      currentindex: 0,
+    };
   },
   methods: {
-    selecttags (index, item) {
+    selecttags(index, item) {
       // console.log(this.newmvlist);
-      this.currentindex = index
-      this.$emit("sendnewmv", item)
+      this.currentindex = index;
+      this.$emit("sendnewmv", item);
     },
-    tovideodetail (data) {
+    tovideodetail(data) {
       // 传递mv参数
       this.$router.push({
-        path: '/home/videodetail',
+        path: "/home/videodetail",
         query: {
-          id: data.id
-        }
-      })
-    }
+          id: data.id,
+        },
+      });
+    },
   },
   computed: {
-    newmvlistdata () {
-      return this.newmvlist
-    }
-  }
-
-}
+    newmvlistdata() {
+      return this.newmvlist;
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

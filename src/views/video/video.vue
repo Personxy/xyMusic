@@ -6,12 +6,12 @@
 </template>
 
 <script>
-import headnav from "../../components/xymusic/video/headnav.vue"
+import headnav from "../../components/xymusic/video/headnav.vue";
 export default {
   components: {
-    headnav
-  }
-}
+    headnav,
+  },
+};
 </script>
 
 <style lang="less" scoped>

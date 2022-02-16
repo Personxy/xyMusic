@@ -70,7 +70,6 @@ const routes = [
         path: '/home/video',
         component: () => import('../views/video/video'),
         redirect: '/home/video/videopage',
-
         children: [
           {
             name: 'videopae',
@@ -149,7 +148,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes,
 });

@@ -1,33 +1,41 @@
 <template>
   <div class="newmusic">
     <div class="newmusictab">
-      <div :class="[newsongstab,{activetab:current==0}]"
-           @click="changemusictab(0)">新歌速递</div>
-      <div :class="[newalbumtab,{activetab:current==1}]"
-           @click="changemusictab(1)">新碟上架</div>
+      <div
+        :class="[newsongstab, { activetab: current == 0 }]"
+        @click="changemusictab(0)"
+      >
+        新歌速递
+      </div>
+      <div
+        :class="[newalbumtab, { activetab: current == 1 }]"
+        @click="changemusictab(1)"
+      >
+        新碟上架
+      </div>
     </div>
-    <newsongs v-if='current==0' />
-    <newalbum v-if='current==1' />
+    <newsongs v-if="current == 0" />
+    <newalbum v-if="current == 1" />
   </div>
 </template>
 <script>
-import newsongs from "../../../components/xymusic/findmusic/newmusic/newsongs.vue"
-import newalbum from "../../../components/xymusic/findmusic/newmusic/newalbum.vue"
+import newsongs from "../../../components/xymusic/findmusic/newmusic/newsongs.vue";
+import newalbum from "../../../components/xymusic/findmusic/newmusic/newalbum.vue";
 export default {
   components: {
     newsongs,
-    newalbum
+    newalbum,
   },
-  data () {
+  data() {
     return {
-      newsongstab: 'newsongstab',
+      newsongstab: "newsongstab",
       newalbumtab: "newalbumtab",
       current: 0,
-    }
+    };
   },
   methods: {
-    changemusictab (index) {
-      this.current = index
+    changemusictab(index) {
+      this.current = index;
     },
     // 新歌速递
     // async getnewsongs () {
@@ -39,9 +47,7 @@ export default {
     //   this.newsongs = data.data
     // }
   },
-  created () {
-
-  }
+  created() {},
 };
 </script>
 <style lang="less" scoped>

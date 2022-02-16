@@ -1,18 +1,22 @@
 <template>
   <div class="songslist">
-    <div class="songlistbox"
-         v-for="item in result.playlists"
-         :key="item.id"
-         @click="tolistdetail(item.id)">
+    <div
+      class="songlistbox"
+      v-for="item in result.playlists"
+      :key="item.id"
+      @click="tolistdetail(item.id)"
+    >
       <div class="cover">
         <el-image :src="item.coverImgUrl"></el-image>
       </div>
-      <div class="name">{{item.name}}</div>
-      <div class="songscount">{{item.trackCount}}首</div>
-      <div class="creator"><span>by</span>{{item.creator.nickname}}</div>
+      <div class="name">{{ item.name }}</div>
+      <div class="songscount">{{ item.trackCount }}首</div>
+      <div class="creator"><span>by</span>{{ item.creator.nickname }}</div>
       <div class="playcount">
-        <div class="playbtn"><img src="../../../assets/images/播放.svg"
-               alt=""></div>{{item.playCount | wan}}
+        <div class="playbtn">
+          <img src="../../../assets/images/播放.svg" alt="" />
+        </div>
+        {{ item.playCount | wan }}
       </div>
     </div>
   </div>
@@ -20,46 +24,46 @@
 <script>
 export default {
   props: {
-    keywords: String
+    keywords: String,
   },
-  data () {
+  data() {
     return {
-      result: {}
-    }
+      result: {},
+    };
   },
   methods: {
-    async getplaylist () {
+    async getplaylist() {
       const loading = this.$loading({
         lock: true,
-        text: '加载中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.1)'
+        text: "加载中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.1)",
       });
-      const { data } = await this.$http.get('/cloudsearch', {
+      const { data } = await this.$http.get("/cloudsearch", {
         params: {
           keywords: this.keywords,
           type: 1000,
-          limit: 30
-        }
-      })
-      this.result = data.result
+          limit: 30,
+        },
+      });
+      this.result = data.result;
       // console.log(this.result);
-      loading.close()
+      loading.close();
     },
     // 跳转到歌单详情
-    tolistdetail (id) {
+    tolistdetail(id) {
       this.$router.push(`/home/playlistpage/${id}`);
     },
   },
-  created () {
-    this.getplaylist()
+  created() {
+    this.getplaylist();
   },
   watch: {
-    keywords () {
-      this.getplaylist()
-    }
-  }
-}
+    keywords() {
+      this.getplaylist();
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
 .songlistbox {

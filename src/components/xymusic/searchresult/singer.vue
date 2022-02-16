@@ -1,13 +1,15 @@
 <template>
   <div class="singer">
-    <div class="singerlist"
-         v-for="item in result.artists"
-         :key="item.id"
-         @click="tosingerpage(item.id)">
+    <div
+      class="singerlist"
+      v-for="item in result.artists"
+      :key="item.id"
+      @click="tosingerpage(item.id)"
+    >
       <div class="cover">
         <el-image :src="item.picUrl"></el-image>
       </div>
-      <div class="singername">{{item.name}}</div>
+      <div class="singername">{{ item.name }}</div>
     </div>
   </div>
 </template>
@@ -15,47 +17,45 @@
 <script>
 export default {
   props: {
-    keywords: String
+    keywords: String,
   },
-  data () {
+  data() {
     return {
-      result: []
-    }
+      result: [],
+    };
   },
   methods: {
-    async getsingerlist () {
+    async getsingerlist() {
       const loading = this.$loading({
         lock: true,
-        text: '加载中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.1)'
+        text: "加载中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.1)",
       });
-      const { data } = await this.$http.get('/cloudsearch', {
+      const { data } = await this.$http.get("/cloudsearch", {
         params: {
           keywords: this.keywords,
           type: 100,
-          limit: 30
-        }
-      })
-      this.result = data.result
+          limit: 30,
+        },
+      });
+      this.result = data.result;
 
-      loading.close()
+      loading.close();
     },
-    tosingerpage (id) {
-      this.$router.push(`/home/singerdetail/${id}`)
-    }
-
+    tosingerpage(id) {
+      this.$router.push(`/home/singerdetail/${id}`);
+    },
   },
-  created () {
-    this.getsingerlist()
+  created() {
+    this.getsingerlist();
   },
   watch: {
-    keywords () {
-      this.getsingerlist()
-    }
-  }
-
-}
+    keywords() {
+      this.getsingerlist();
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

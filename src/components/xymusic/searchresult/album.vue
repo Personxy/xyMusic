@@ -1,13 +1,15 @@
 <template>
   <div class="album">
-    <div class="albumlist"
-         v-for="item in result.albums"
-         :key="item.id"
-         @click="toalbumpage(item.id)">
+    <div
+      class="albumlist"
+      v-for="item in result.albums"
+      :key="item.id"
+      @click="toalbumpage(item.id)"
+    >
       <div class="cover">
         <el-image :src="item.picUrl"></el-image>
       </div>
-      <div class="albumname">{{item.name}}</div>
+      <div class="albumname">{{ item.name }}</div>
     </div>
   </div>
 </template>
@@ -15,45 +17,45 @@
 <script>
 export default {
   props: {
-    keywords: String
+    keywords: String,
   },
-  data () {
+  data() {
     return {
-      result: {}
-    }
+      result: {},
+    };
   },
   methods: {
-    async getalbumlist () {
+    async getalbumlist() {
       const loading = this.$loading({
         lock: true,
-        text: '加载中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.1)'
+        text: "加载中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.1)",
       });
-      const { data } = await this.$http.get('/cloudsearch', {
+      const { data } = await this.$http.get("/cloudsearch", {
         params: {
           keywords: this.keywords,
           type: 10,
-          limit: 30
-        }
-      })
-      this.result = data.result
+          limit: 30,
+        },
+      });
+      this.result = data.result;
       // console.log(this.result);
-      loading.close()
+      loading.close();
     },
-    toalbumpage (id) {
-      this.$router.push(`/home/album/${id}`)
-    }
+    toalbumpage(id) {
+      this.$router.push(`/home/album/${id}`);
+    },
   },
-  created () {
-    this.getalbumlist()
+  created() {
+    this.getalbumlist();
   },
   watch: {
-    keywords () {
-      this.getalbumlist()
-    }
-  }
-}
+    keywords() {
+      this.getalbumlist();
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

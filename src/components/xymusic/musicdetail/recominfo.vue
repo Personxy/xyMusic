@@ -4,29 +4,37 @@
       <!-- 推荐歌单 -->
       <div class="recomplaylistbox">
         <div class="recomplaylisttitle">推荐歌单</div>
-        <div class="recomplaylist"
-             v-for="item in simisonglist"
-             :key="item.id"
-             @click="toplaylist(item.id)">
+        <div
+          class="recomplaylist"
+          v-for="item in simisonglist"
+          :key="item.id"
+          @click="toplaylist(item.id)"
+        >
           <div class="recomplaylistcover">
-            <el-image :src="item.coverImgUrl"
-                      style="width:30px;cursor:pointer"></el-image>
+            <el-image
+              :src="item.coverImgUrl"
+              style="width: 30px; cursor: pointer"
+            ></el-image>
           </div>
-          <div class="recomplaylistname">{{item.name}}</div>
+          <div class="recomplaylistname">{{ item.name }}</div>
         </div>
       </div>
       <!-- //推荐歌曲 -->
       <div class="recomsongsbox">
         <div class="recomsongstitle">推荐歌曲</div>
-        <div class="recomsongs"
-             v-for="item in simisongs"
-             :key="item.id"
-             @click="getthesong(item.id)">
+        <div
+          class="recomsongs"
+          v-for="item in simisongs"
+          :key="item.id"
+          @click="getthesong(item.id)"
+        >
           <div class="recomsongscover">
-            <el-image :src="item.album.picUrl"
-                      style="width:30px;cursor:pointer"></el-image>
+            <el-image
+              :src="item.album.picUrl"
+              style="width: 30px; cursor: pointer"
+            ></el-image>
           </div>
-          <div class="recomsongname">{{item.name}}</div>
+          <div class="recomsongname">{{ item.name }}</div>
         </div>
       </div>
     </div>
@@ -34,39 +42,38 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
-  data () {
+  data() {
     return {
       simisonglist: [],
-      simisongs: []
-    }
+      simisongs: [],
+    };
   },
   computed: {
-    ...mapGetters(['songDetails', 'cookie', 'songdetailflag'])
+    ...mapGetters(["songDetails", "cookie", "songdetailflag"]),
   },
   methods: {
     // 获取相似歌单
-    async getsimiplaylist () {
-      const { data } = await this.$http.get('/simi/playlist', {
+    async getsimiplaylist() {
+      const { data } = await this.$http.get("/simi/playlist", {
         params: {
-          id: this.songDetails.id
-        }
-      })
-      this.simisonglist = data.playlists
+          id: this.songDetails.id,
+        },
+      });
+      this.simisonglist = data.playlists;
     },
     //获取相似歌曲
-    async getsimisongs () {
-      const { data } = await this.$http.get('/simi/song',
-        {
-          params: {
-            id: this.songDetails.id
-          }
-        })
-      this.simisongs = data.songs
+    async getsimisongs() {
+      const { data } = await this.$http.get("/simi/song", {
+        params: {
+          id: this.songDetails.id,
+        },
+      });
+      this.simisongs = data.songs;
     },
     // 获取歌曲
-    async getthesong (id) {
+    async getthesong(id) {
       const res = await this.$http.get("/song/url", {
         params: {
           id: id,
@@ -80,11 +87,11 @@ export default {
       //获取歌曲详情
       const resdata = await this.$http.get("/song/detail", {
         params: {
-          ids: id
+          ids: id,
         },
       });
       //存入下一首播放列表
-      this.$store.dispatch('savenextsong', resdata.data.songs[0])
+      this.$store.dispatch("savenextsong", resdata.data.songs[0]);
       // 当前播放歌曲详情
       this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
       // //存入当前播放歌曲列表
@@ -92,26 +99,22 @@ export default {
       //当前播放状态
       this.$store.dispatch("saveplaystatus", true);
     },
-    toplaylist (id) {
-      this.$store.dispatch('savesongdetailflag', false)
+    toplaylist(id) {
+      this.$store.dispatch("savesongdetailflag", false);
       this.$router.push(`/home/playlistpage/${id}`);
-
-    }
-
+    },
   },
-  created () {
-    this.getsimiplaylist()
-    this.getsimisongs()
+  created() {
+    this.getsimiplaylist();
+    this.getsimisongs();
   },
   watch: {
-    songDetails () {
-      this.getsimiplaylist()
-      this.getsimisongs()
-    }
-  }
-
-
-}
+    songDetails() {
+      this.getsimiplaylist();
+      this.getsimisongs();
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

@@ -1,81 +1,78 @@
 <template>
   <div class="video">
-    <div class="videolist"
-         v-for="item in result.mvs"
-         :key="item.id">
+    <div class="videolist" v-for="item in result.mvs" :key="item.id">
       <div class="cover">
-        <el-image :src="item.cover"
-                  @click="tovideodetail(item.id)"></el-image>
+        <el-image :src="item.cover" @click="tovideodetail(item.id)"></el-image>
         <!-- 视频播放量 -->
         <div class="videoplaycounts">
-          <img src="../../../assets/images/歌单列表播放按钮.svg"
-               alt="" />{{
-            item.playCount  | wan
+          <img src="../../../assets/images/歌单列表播放按钮.svg" alt="" />{{
+            item.playCount | wan
           }}
         </div>
         <!-- 视频时长 -->
-        <div class="videoduration">{{item.duration/1000  | minutesformat}}</div>
+        <div class="videoduration">
+          {{ (item.duration / 1000) | minutesformat }}
+        </div>
       </div>
       <!-- 视频标题 -->
-      <div class="videotitle"
-           @click="tovideodetail(item.vid)">{{ item.name }}</div>
+      <div class="videotitle" @click="tovideodetail(item.vid)">
+        {{ item.name }}
+      </div>
       <!-- 视频作者 -->
-      <div class="videoauthor">{{item.artists[0].name}}</div>
+      <div class="videoauthor">{{ item.artists[0].name }}</div>
     </div>
-    <div class="nomore"
-         v-if="!result.mvs">没有更多结果了</div>
+    <div class="nomore" v-if="!result.mvs">没有更多结果了</div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    keywords: String
+    keywords: String,
   },
-  data () {
+  data() {
     return {
-      result: {}
-    }
+      result: {},
+    };
   },
   methods: {
-    async getvideolist () {
+    async getvideolist() {
       const loading = this.$loading({
         lock: true,
-        text: '加载中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.1)'
+        text: "加载中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.1)",
       });
-      const { data } = await this.$http.get('/cloudsearch', {
+      const { data } = await this.$http.get("/cloudsearch", {
         params: {
           keywords: this.keywords,
           type: 1004,
-          limit: 30
-        }
-      })
-      this.result = data.result
+          limit: 30,
+        },
+      });
+      this.result = data.result;
       // console.log(this.result);
-      loading.close()
+      loading.close();
     },
-    tovideodetail (id) {
+    tovideodetail(id) {
       // 传递视频参数
       this.$router.push({
-        path: '/home/videodetail',
+        path: "/home/videodetail",
         query: {
-          id: id
-        }
-      })
-    }
+          id: id,
+        },
+      });
+    },
   },
-  created () {
-    this.getvideolist()
+  created() {
+    this.getvideolist();
   },
   watch: {
-    keywords () {
-      this.getvideolist()
-    }
-  }
-
-}
+    keywords() {
+      this.getvideolist();
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

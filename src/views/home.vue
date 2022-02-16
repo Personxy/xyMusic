@@ -4,20 +4,18 @@
       <!-- 顶部导航 -->
       <el-header>
         <div class="logobox">
-          <img class="logo"
-               src="../assets/images/152053f6yy76qgeob6qqpg.jpg.icon (1).png"
-               alt="" />
+          <img
+            class="logo"
+            src="../assets/images/152053f6yy76qgeob6qqpg.jpg.icon (1).png"
+            alt=""
+          />
         </div>
-        <a class="home"
-           @click="backtohome">羊羊音乐</a>
+        <a class="home" @click="backtohome">羊羊音乐</a>
         <!-- 后退和前进按钮 -->
-        <span href=""
-              class="back"
-              @click="goBack">
+        <span href="" class="back" @click="goBack">
           <div class="arrowleft"></div>
         </span>
-        <span href=""
-              class="advance">
+        <span href="" class="advance">
           <div class="arrowlright"></div>
         </span>
         <!-- 搜索框 -->
@@ -41,7 +39,6 @@
           <musicdetail v-show="songdetailflag" />
         </transition>
         <musicplay />
-
       </el-footer>
     </el-container>
     <!-- 登录界面 -->
@@ -56,11 +53,11 @@ import Login from "@/components/xymusic/login/login";
 import loginbar from "@/components/xymusic/login/loginbar";
 import search from "@/components/xymusic/search/search";
 import musicplay from "../components/xymusic/musicplay/musicplay";
-import musicdetail from '../components/xymusic/musicdetail/musicdetail.vue';
+import musicdetail from "../components/xymusic/musicdetail/musicdetail.vue";
 export default {
   name: "xymusic",
   components: { Aside, Login, loginbar, search, musicplay, musicdetail },
-  data () {
+  data() {
     return {
       searchdata: "",
     };
@@ -68,18 +65,17 @@ export default {
   computed: {
     // 控制登录面板是否打开
 
-    ...mapGetters(["userInfo", 'songdetailflag', 'loginflag']),
+    ...mapGetters(["userInfo", "songdetailflag", "loginflag"]),
   },
 
   methods: {
-    goBack () {
+    goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
     },
-    backtohome () {
-      this.$router.push('/home/findmusic')
-      this.$store.dispatch('savesongdetailflag', false)
-    }
-
+    backtohome() {
+      this.$router.push("/home/findmusic");
+      this.$store.dispatch("savesongdetailflag", false);
+    },
   },
 };
 </script>

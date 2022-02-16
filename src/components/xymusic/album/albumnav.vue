@@ -1,13 +1,10 @@
 <template>
   <div class="albumnav">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="歌曲列表"
-                   name="songlist">
-        <albumsongslist :songs="songs"
-                        :likeplaylist="likeplaylist" />
+      <el-tab-pane label="歌曲列表" name="songlist">
+        <albumsongslist :songs="songs" :likeplaylist="likeplaylist" />
       </el-tab-pane>
-      <el-tab-pane label="评论"
-                   name="comments">
+      <el-tab-pane label="评论" name="comments">
         <albumcomments />
       </el-tab-pane>
     </el-tabs>
@@ -15,23 +12,23 @@
 </template>
 
 <script>
-import albumcomments from "../../xymusic/album/albumcomments.vue"
-import albumsongslist from "../../xymusic/album/albumsongslist.vue"
+import albumcomments from "../../xymusic/album/albumcomments.vue";
+import albumsongslist from "../../xymusic/album/albumsongslist.vue";
 export default {
   props: {
     songs: Array,
-    likeplaylist: Array
+    likeplaylist: Array,
   },
   components: {
     albumcomments,
-    albumsongslist
+    albumsongslist,
   },
-  data () {
+  data() {
     return {
       activeName: "songlist",
     };
   },
-}
+};
 </script>
 
 <style lang="less" scoped>

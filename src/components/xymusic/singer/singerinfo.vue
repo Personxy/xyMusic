@@ -1,15 +1,17 @@
 <template>
   <div class="singerinfo">
     <div class="singercover">
-      <img :src="artist.cover"
-           style="width:250px;height:240px;border-radius:5px" />
+      <img
+        :src="artist.cover"
+        style="width: 250px; height: 240px; border-radius: 5px"
+      />
     </div>
     <div class="rightinfo">
-      <span class="name">{{artist.name}}</span>
+      <span class="name">{{ artist.name }}</span>
       <div class="result">
-        <div class="singles">单曲数：{{artist.musicSize}}</div>
-        <div class="album">专辑数：{{artist.albumSize}}</div>
-        <div class="mvcount">MV数：{{artist.mvSize}}</div>
+        <div class="singles">单曲数：{{ artist.musicSize }}</div>
+        <div class="album">专辑数：{{ artist.albumSize }}</div>
+        <div class="mvcount">MV数：{{ artist.mvSize }}</div>
       </div>
     </div>
   </div>
@@ -18,18 +20,17 @@
 <script>
 export default {
   props: {
-    artist: Object
+    artist: Object,
   },
-  data () {
+  data() {
     return {
-      artistinfo: {}
-    }
+      artistinfo: {},
+    };
   },
-  created () {
-    this.artistinfo = this.artist
-  }
-
-}
+  created() {
+    this.artistinfo = this.artist;
+  },
+};
 </script>
 
 <style lang="less" scoped>

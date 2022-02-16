@@ -4,11 +4,11 @@
   </div>
 </template>
 <script>
-import singer from "../../../components/xymusic/findmusic/singer/singer.vue"
+import singer from "../../../components/xymusic/findmusic/singer/singer.vue";
 export default {
   components: {
-    singer
-  }
+    singer,
+  },
 };
 </script>
 <style lang="less" scoped></style>
