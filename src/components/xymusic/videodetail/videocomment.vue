@@ -1,44 +1,44 @@
 <template>
   <div class="videocomment">
-    <div class="comment" v-loading="loading">
+    <div class="comment"
+         v-loading="loading">
       <!-- 评论框 -->
-      <el-dialog
-        title="评论"
-        :visible.sync="centerDialogVisible"
-        width="30%"
-        center
-        v-dialogDrag
-        :modal="false"
-      >
-        <textarea
-          maxlength="140"
-          class="inputcomment"
-          :placeholder="placeholderstr"
-          v-model="commentscontent"
-        ></textarea>
+      <el-dialog title="评论"
+                 :visible.sync="centerDialogVisible"
+                 width="30%"
+                 center
+                 v-dialogDrag
+                 :modal="false">
+        <textarea maxlength="140"
+                  class="inputcomment"
+                  :placeholder="placeholderstr"
+                  v-model="commentscontent"></textarea>
         <!-- 剩余字数 -->
         <div class="remainstr">
           <span>{{ 140 - commentscontent.length }}</span>
         </div>
         <!-- 发布评论 -->
-        <div
-          :class="{
+        <div :class="{
             sendcomment: commentscontent.length == 0,
             sendcomment2: commentscontent.length != 0,
             sendcomment3: true,
           }"
-          @click="tocomment(vid.length !== 0 ? 5 : 1)"
-        >
+             @click="tocomment(vid.length !== 0 ? 5 : 1)">
           评论
         </div>
       </el-dialog>
-      <div class="opencommentdialog" @click="opencommentdialog()">
-        <img src="../../../assets/images/写评论.svg" alt="" />
+      <div class="opencommentdialog"
+           @click="opencommentdialog()">
+        <img src="../../../assets/images/写评论.svg"
+             alt="" />
         <span>写评论</span>
       </div>
-      <div class="allcomments" v-if="hotcomments && hotcomments.length !== 0">
+      <div class="allcomments"
+           v-if="hotcomments && hotcomments.length !== 0">
         <div class="allcommentstitle">精彩评论({{ total }})</div>
-        <div class="hotcomment" v-for="item in hotcomments" :key="item.id">
+        <div class="hotcomment"
+             v-for="item in hotcomments"
+             :key="item.id">
           <!-- .用户头像 -->
           <div class="commentuserimg">
             <el-image :src="item.user.avatarUrl"></el-image>
@@ -51,26 +51,20 @@
               <div class="commenttime">{{ item.timeStr }}</div>
               <div class="commentbtn">
                 <div class="likebtn">
-                  <img
-                    src="../../../assets/images/点赞.svg"
-                    alt=""
-                    @click="likecomment(item.commentId, 1)"
-                    v-if="!item.liked"
-                  />
-                  <img
-                    src="../../../assets/images/已点赞.svg"
-                    alt=""
-                    v-else
-                    @click="likecomment(item.commentId, 0)"
-                  /><span class="likedCount">{{ item.likedCount }}</span>
+                  <img src="../../../assets/images/点赞.svg"
+                       alt=""
+                       @click="likecomment(item.commentId, 1)"
+                       v-if="!item.liked" />
+                  <img src="../../../assets/images/已点赞.svg"
+                       alt=""
+                       v-else
+                       @click="likecomment(item.commentId, 0)" /><span class="likedCount">{{ item.likedCount }}</span>
                 </div>
-                <img
-                  src="../../../assets/images/评论.svg"
-                  alt=""
-                  class="combtn"
-                  @click="opencommentdialog(item.commentId, item.user.nickname)"
-                  style="cursor: pointer"
-                />
+                <img src="../../../assets/images/评论.svg"
+                     alt=""
+                     class="combtn"
+                     @click="opencommentdialog(item.commentId, item.user.nickname)"
+                     style="cursor: pointer" />
               </div>
             </div>
           </div>
@@ -84,7 +78,9 @@
       <!-- 最新评论 -->
       <div class="newcommnets">
         <div class="allcommentstitle">最新评论({{ total }})</div>
-        <div class="hotcomment" v-for="item in newcomments" :key="item.id">
+        <div class="hotcomment"
+             v-for="item in newcomments"
+             :key="item.id">
           <!-- .用户头像 -->
           <div class="commentuserimg">
             <el-image :src="item.user.avatarUrl"></el-image>
@@ -93,57 +89,47 @@
           <div class="userandcomment">
             <span class="username">{{ item.user.nickname }}:&nbsp;</span>
             <span class="commencontent">{{ item.content }}</span>
-            <div class="reply" v-if="item.beReplied[0]">
-              <span class="replayname"
-                >{{ item.beReplied[0].user.nickname }}:&nbsp;</span
-              ><span>{{ item.beReplied[0].content }}</span>
+            <div class="reply"
+                 v-if="item.beReplied[0]">
+              <span class="replayname">{{ item.beReplied[0].user.nickname }}:&nbsp;</span><span>{{ item.beReplied[0].content }}</span>
             </div>
             <div class="commentfoot">
               <div class="commenttime">{{ item.timeStr }}</div>
               <div class="commentbtn">
                 <div class="likebtn">
-                  <img
-                    src="../../../assets/images/点赞.svg"
-                    alt=""
-                    @click="likecomment(item.commentId, 1)"
-                    v-if="!item.liked"
-                  />
-                  <img
-                    src="../../../assets/images/已点赞.svg"
-                    alt=""
-                    v-else
-                    @click="likecomment(item.commentId, 0)"
-                  /><span class="likedCount">{{ item.likedCount }}</span>
+                  <img src="../../../assets/images/点赞.svg"
+                       alt=""
+                       @click="likecomment(item.commentId, 1)"
+                       v-if="!item.liked" />
+                  <img src="../../../assets/images/已点赞.svg"
+                       alt=""
+                       v-else
+                       @click="likecomment(item.commentId, 0)" /><span class="likedCount">{{ item.likedCount }}</span>
                 </div>
-                <img
-                  src="../../../assets/images/评论.svg"
-                  alt=""
-                  class="combtn"
-                  @click="opencommentdialog(item.commentId, item.user.nickname)"
-                  style="cursor: pointer"
-                />
-                <img
-                  src="../../../assets/images/垃圾箱 (2).svg"
-                  alt=""
-                  class="deletcomment"
-                  v-if="userInfo && item.user.nickname == userInfo.nickname"
-                  @click="deletcomment(item.commentId)"
-                />
+                <img src="../../../assets/images/评论.svg"
+                     alt=""
+                     class="combtn"
+                     @click="opencommentdialog(item.commentId, item.user.nickname)"
+                     style="cursor: pointer" />
+                <img src="../../../assets/images/垃圾箱 (2).svg"
+                     alt=""
+                     class="deletcomment"
+                     v-if="userInfo && item.user.nickname == userInfo.nickname"
+                     @click="deletcomment(item.commentId)" />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="nothing" v-if="newcomments.length == 0">没有更多内容了</div>
+      <div class="nothing"
+           v-if="newcomments.length == 0">没有更多内容了</div>
       <!-- 页码 -->
-      <el-pagination
-        :pager-count="9"
-        :page-size="limit"
-        layout="prev, pager, next"
-        :total="total"
-        background
-        @current-change="change"
-      >
+      <el-pagination :pager-count="9"
+                     :page-size="limit"
+                     layout="prev, pager, next"
+                     :total="total"
+                     background
+                     @current-change="change">
       </el-pagination>
     </div>
   </div>
@@ -158,7 +144,7 @@ export default {
     vid: String,
     id: Number,
   },
-  data() {
+  data () {
     return {
       hotcomments: [],
       newcomments: [],
@@ -177,17 +163,18 @@ export default {
     ...mapGetters(["songDetails", "cookie", "userInfo", "loginflag"]),
   },
   methods: {
-    async getmusiccomment() {
+    async getmusiccomment () {
       this.loading = true;
       // 获取视频评论
-      if (this.vid.length !== 0) {
+      if (this.vid.length !== 0)
+      {
         const { data } = await this.$http.get("/comment/video", {
           params: {
             id: this.vid,
             limit: this.limit,
             offset: this.offset,
             timeStamp: Date.now(),
-            cookie: this.cookie,
+            // cookie: this.cookie,
           },
         });
         this.hotcomments = data.hotComments;
@@ -196,13 +183,14 @@ export default {
         this.loading = false;
       }
       // 获取mv评论
-      else {
+      else
+      {
         const { data } = await this.$http.get("/comment/mv", {
           params: {
             id: this.id,
             limit: this.limit,
             offset: this.offset,
-            cookie: this.cookie,
+            // cookie: this.cookie,
             timeStamp: Date.now(),
           },
         });
@@ -212,24 +200,27 @@ export default {
         this.loading = false;
       }
     },
-    change(data) {
+    change (data) {
       this.offset = data - 1;
       this.getmusiccomment();
     },
     // 打开评论框
-    opencommentdialog(id, nickname) {
+    opencommentdialog (id, nickname) {
       this.commentscontent = "";
-      if (!this.userInfo) {
+      if (!this.userInfo)
+      {
         this.$store.dispatch("changeloginbar", true);
         return this.$message.error("请登录后再评论！");
       }
       this.centerDialogVisible = true;
 
-      if (nickname && id) {
+      if (nickname && id)
+      {
         this.placeholderstr = "回复  " + nickname + ":";
         this.replyid = id;
         this.t = 2;
-      } else {
+      } else
+      {
         this.placeholderstr = "发表评论";
 
         this.t = 1;
@@ -237,7 +228,7 @@ export default {
       }
     },
     // 发布评论
-    async tocomment(type) {
+    async tocomment (type) {
       const { data } = await this.$http.get("/comment", {
         params: {
           t: this.t,
@@ -245,18 +236,20 @@ export default {
           id: this.vid.length !== 0 ? this.vid : this.id,
           content: this.commentscontent,
           commentId: this.replyid,
-          cookie: this.cookie,
+          // cookie: this.cookie,
           timeStamp: Date.now(),
         },
       });
-      if (data.code == 200) {
+      if (data.code == 200)
+      {
         this.commentscontent = "";
         this.centerDialogVisible = false;
         this.$message({
           message: "评论成功！",
           type: "success",
         });
-      } else {
+      } else
+      {
         this.centerDialogVisible = false;
         this.$message.error("评论失败！请稍后再试");
       }
@@ -265,7 +258,7 @@ export default {
       }, 1000);
     },
     // 删除评论
-    async deletcomment(content) {
+    async deletcomment (content) {
       // 打开登陆框
       this.$store.dispatch("changeloginbar", true);
       if (!this.userInfo) return this.$message.error("请登录后再评论！");
@@ -275,11 +268,12 @@ export default {
           type: this.vid.length !== 0 ? 5 : 1,
           id: this.vid.length !== 0 ? this.vid : this.id,
           commentId: content,
-          cookie: this.cookie,
+          // cookie: this.cookie,
           timeStamp: Date.now(),
         },
       });
-      if (data.code == 200) {
+      if (data.code == 200)
+      {
         setTimeout(() => {
           this.getmusiccomment();
         }, 1000);
@@ -288,13 +282,15 @@ export default {
           message: "删除成功！",
           type: "success",
         });
-      } else {
+      } else
+      {
         this.$message.error("删除失败！请稍后再试");
       }
     },
     // 点赞评论
-    async likecomment(id, t) {
-      if (this.vid.length !== 0) {
+    async likecomment (id, t) {
+      if (this.vid.length !== 0)
+      {
         // 视频评论点赞
         const { data } = await this.$http.get("/comment/like", {
           params: {
@@ -302,11 +298,12 @@ export default {
             cid: id,
             t: t,
             type: 5,
-            cookie: this.cookie,
+            // cookie: this.cookie,
             timeStamp: Date.now(),
           },
         });
-        if (data.code == 200) {
+        if (data.code == 200)
+        {
           setTimeout(() => {
             this.getmusiccomment();
           }, 1000);
@@ -315,10 +312,12 @@ export default {
             message: "操作成功！",
             type: "success",
           });
-        } else {
+        } else
+        {
           this.$message.error("操作失败，请稍后再试！");
         }
-      } else {
+      } else
+      {
         // mv评论点赞
         const { data } = await this.$http.get("/comment/like", {
           params: {
@@ -326,11 +325,12 @@ export default {
             cid: id,
             t: t,
             type: 1,
-            cookie: this.cookie,
+            // cookie: this.cookie,
             timeStamp: Date.now(),
           },
         });
-        if (data.code == 200) {
+        if (data.code == 200)
+        {
           setTimeout(() => {
             this.getmusiccomment();
           }, 1000);
@@ -339,20 +339,21 @@ export default {
             message: "操作成功！",
             type: "success",
           });
-        } else {
+        } else
+        {
           this.$message.error("操作失败，请稍后再试！");
         }
       }
     },
   },
-  created() {
+  created () {
     this.getmusiccomment();
   },
   watch: {
-    vid() {
+    vid () {
       this.getmusiccomment();
     },
-    id() {
+    id () {
       this.getmusiccomment();
     },
   },

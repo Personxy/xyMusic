@@ -1,32 +1,27 @@
 <template>
   <div class="newmusic">
-    <p
-      style="
+    <p style="
         font-size: 18px;
         font-weight: bold;
         text-align: left;
         padding-left: 130px;
         cursor: pointer;
       "
-      @click="tonewmusicpage"
-    >
+       @click="tonewmusicpage">
       最新音乐 &nbsp;&nbsp;&nbsp;>
     </p>
     <div class="newsongbox">
-      <div
-        :class="[newsongsa, { active: index == current }]"
-        v-for="(item, index) in newsongs"
-        :key="item.id"
-        style="width: 360px; height: 50px"
-        @click="selectsong(index)"
-        ref="song"
-      >
+      <div :class="[newsongsa, { active: index == current }]"
+           v-for="(item, index) in newsongs"
+           :key="item.id"
+           style="width: 360px; height: 50px"
+           @click="selectsong(index)"
+           ref="song">
         <!-- 歌曲图片 -->
-        <div class="playimage" @click="playurl(item.id)">
-          <el-image
-            :src="item.picUrl"
-            style="width: 50px; height: 50px; border-radius: 5px"
-          ></el-image>
+        <div class="playimage"
+             @click="playurl(item.id)">
+          <el-image :src="item.picUrl"
+                    style="width: 50px; height: 50px; border-radius: 5px"></el-image>
         </div>
         <!-- 歌曲信息 -->
         <div class="songinfo">
@@ -34,12 +29,10 @@
           <span class="songauthor">{{ item.song.artists[0].name }}</span>
         </div>
         <!-- 播放按钮 -->
-        <img
-          src="../../../../assets/images/最新音乐播放按钮.svg"
-          alt=""
-          class="playbtn"
-          @click="playurl(item.id)"
-        />
+        <img src="../../../../assets/images/最新音乐播放按钮.svg"
+             alt=""
+             class="playbtn"
+             @click="playurl(item.id)" />
       </div>
     </div>
   </div>
@@ -48,7 +41,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  data() {
+  data () {
     return {
       newsongs: [],
       // 样式控制
@@ -58,22 +51,22 @@ export default {
     };
   },
   methods: {
-    async getnewmusic() {
+    async getnewmusic () {
       const { data } = await this.$http.get("/personalized/newsong", {
         params: {
           limit: 12,
-          cookie: this.cookie,
+          // cookie: this.cookie,
         },
       });
       // console.log(data.result);
       this.newsongs = data.result;
     },
     // 点击改变当前项颜色
-    selectsong(index) {
+    selectsong (index) {
       this.current = index;
     },
     // 点击当前项图片播放音乐
-    async playurl(id) {
+    async playurl (id) {
       const loading = this.$loading({
         lock: true,
         text: "播放资源获取中",
@@ -83,11 +76,12 @@ export default {
       const res = await this.$http.get("/song/url", {
         params: {
           id: id,
-          cookie: this.cookie,
+          // cookie: this.cookie,
         },
       });
       // console.log(res.data.data[0].url);
-      if (res.data.data[0].url == null) {
+      if (res.data.data[0].url == null)
+      {
         loading.close();
         return this.$message.error("没有版权哦！");
       }
@@ -107,14 +101,14 @@ export default {
       this.$store.dispatch("saveplaystatus", true);
       loading.close();
     },
-    tonewmusicpage() {
+    tonewmusicpage () {
       this.$router.push("/home/findmusic/newmusic");
     },
   },
-  created() {
+  created () {
     this.getnewmusic();
   },
-  mounted() {
+  mounted () {
     this.$emit("getmusicdone", true);
   },
   computed: {

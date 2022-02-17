@@ -28,7 +28,7 @@ export default {
 <style lang="less" scoped>
 .musicdetail {
   position: absolute;
-  height: 85vh;
+  height: calc(100vh - 140px);
   width: 100%;
   background: #ffffff;
   bottom: 80px;

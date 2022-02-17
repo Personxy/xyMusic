@@ -1,86 +1,71 @@
 <template>
-  <div class="playlistnow" v-if="playsonglist">
+  <div class="playlistnow"
+       v-if="playsonglist">
     <div class="playlist">
-      <div
-        style="
+      <div style="
           text-align: left;
           font-size: 24px;
           font-weight: bold;
           margin-bottom: 15px;
           margin-top: 10px;
           padding-left: 10px;
-        "
-      >
+        ">
         <span>当前播放</span>
       </div>
-      <div
-        style="
+      <div style="
           text-align: left;
           color: #cfcfcf;
           padding-left: 10px;
           font-size: 14px;
-        "
-      >
+        ">
         <span>总{{ playsonglist.length }}首</span>
-        <span
-          @click="clearcurrentlist"
-          style="margin-left: 300px; color: #507daf; cursor: pointer"
-          >清空列表</span
-        >
+        <span @click="clearcurrentlist"
+              style="margin-left: 300px; color: #507daf; cursor: pointer">清空列表</span>
       </div>
-      <el-table
-        :data="playsonglist"
-        style="border-top: 1px solid #f2f2f2; margin-top: 15px"
-        stripe
-        height="83%"
-        @row-dblclick="playmusic"
-        empty-text="你还没有添加任何歌曲"
-      >
-        <el-table-column
-          property="name"
-          label="标题"
-          width="200"
-          show-overflow-tooltip
-        >
+      <el-table :data="playsonglist"
+                style="border-top: 1px solid #f2f2f2; margin-top: 15px"
+                stripe
+                height="83%"
+                @row-dblclick="playmusic"
+                empty-text="你还没有添加任何歌曲">
+        <el-table-column property="name"
+                         label="标题"
+                         width="200"
+                         show-overflow-tooltip>
           <template slot-scope="scope">
-            <div
-              v-if="songDetails ? scope.row.id == songDetails.id : false"
-              style="color: #ec4141"
-            >
+            <div v-if="songDetails ? scope.row.id == songDetails.id : false"
+                 style="color: #ec4141">
               {{ scope.row.name }}
               <!-- 当前播放动画 -->
-              <div v-if="playstatus" style="display: inline-block">
+              <div v-if="playstatus"
+                   style="display: inline-block">
                 <playanimationa />
               </div>
               <!-- 暂停图标 -->
-              <img
-                src="../../../assets/images/列表暂停图标2.svg"
-                style="display: inline-block"
-                alt=""
-                v-else
-              />
+              <img src="../../../assets/images/列表暂停图标2.svg"
+                   style="display: inline-block"
+                   alt=""
+                   v-else />
             </div>
             <div v-else>{{ scope.row.name }}</div>
           </template>
         </el-table-column>
-        <el-table-column
-          property="ar[0].name"
-          label="歌手"
-          width="120"
-          show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column property="dt" label="时间" width="120">
+        <el-table-column property="ar[0].name"
+                         label="歌手"
+                         width="120"
+                         show-overflow-tooltip></el-table-column>
+        <el-table-column property="dt"
+                         label="时间"
+                         width="120">
           <template slot-scope="dt">
             {{ (dt.row.dt / 1000) | minutesformat }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="120">
+        <el-table-column label="操作"
+                         width="120">
           <template slot-scope="scope">
-            <span
-              @click="deleteRow(scope.$index, scope.row)"
-              style="cursor: pointer"
-              >x</span
-            >
+            <span @click="deleteRow(scope.$index, scope.row)"
+                  style="cursor: pointer">x</span>
           </template>
         </el-table-column>
       </el-table>
@@ -92,7 +77,7 @@
 import { mapGetters } from "vuex";
 import playanimationa from "../animation/currentplayanimation";
 export default {
-  data() {
+  data () {
     return {
       openflag: false,
     };
@@ -102,7 +87,7 @@ export default {
   },
   methods: {
     // 清空播放列表
-    clearcurrentlist() {
+    clearcurrentlist () {
       this.$confirm("是否清空当前播放列表?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -121,11 +106,11 @@ export default {
     },
 
     // 获取音乐和详情并播放
-    async playmusic(row) {
+    async playmusic (row) {
       const res = await this.$http.get("/song/url", {
         params: {
           id: row.id,
-          cookie: this.cookie,
+          // cookie: this.cookie,
           realIP: "116.25.146.177",
         },
       });
@@ -146,15 +131,17 @@ export default {
     },
 
     // 删除当前歌曲
-    deleteRow(index, row) {
+    deleteRow (index, row) {
       // rows.splice(index, 1);
       // 如果删除的是当前播放的歌曲 则跳到下一首歌曲
-      if (this.playsonglist[index + 1] && this.songDetails.id == row.id) {
+      if (this.playsonglist[index + 1] && this.songDetails.id == row.id)
+      {
         this.playmusic(this.playsonglist[index + 1]);
       }
       this.$store.dispatch("deletesong", index, row);
       // console.log(this.playsonglist);
-      if (this.playsonglist.length == 0) {
+      if (this.playsonglist.length == 0)
+      {
         this.$store.dispatch("clearplaysonglist");
         this.$store.dispatch("saveplaystatus", false);
         this.$store.dispatch("savesongDetails", null);

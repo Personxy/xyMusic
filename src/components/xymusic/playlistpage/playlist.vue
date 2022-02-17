@@ -1,99 +1,94 @@
 <template>
   <div class="songtablist">
-    <el-table
-      :data="newsongs"
-      stripe
-      style="width: 100%"
-      @row-dblclick="getmusic"
-      @cell-mouse-enter="hovertitle(true)"
-      @cell-mouse-leave="hovertitle(false)"
-      @cell-click="tosingerpage"
-    >
-      <el-table-column type="index" width="50"> </el-table-column>
+    <el-table :data="newsongs"
+              stripe
+              style="width: 100%"
+              @row-dblclick="getmusic"
+              @cell-mouse-enter="hovertitle(true)"
+              @cell-mouse-leave="hovertitle(false)"
+              @cell-click="tosingerpage">
+      <el-table-column type="index"
+                       width="50"> </el-table-column>
       <!-- 收藏按钮 -->
-      <el-table-column prop="likemusicflag" label="操作" width="60">
+      <el-table-column prop="likemusicflag"
+                       label="操作"
+                       width="60">
         <template slot-scope="scope">
-          <img
-            style="cursor: pointer"
-            src="../../../assets/images/爱心.svg"
-            @click="changecollectcondition(true, scope.row.id)"
-            alt=""
-            v-if="!scope.row.likemusicflag"
-          />
-          <img
-            src="../../../assets/images/爱心已收藏.svg"
-            style="cursor: pointer"
-            alt=""
-            @click="changecollectcondition(false, scope.row.id)"
-            v-if="scope.row.likemusicflag"
-          />
+          <img style="cursor: pointer"
+               src="../../../assets/images/爱心.svg"
+               @click="changecollectcondition(true, scope.row.id)"
+               alt=""
+               v-if="!scope.row.likemusicflag" />
+          <img src="../../../assets/images/爱心已收藏.svg"
+               style="cursor: pointer"
+               alt=""
+               @click="changecollectcondition(false, scope.row.id)"
+               v-if="scope.row.likemusicflag" />
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="标题" width="650" class="table-title">
+      <el-table-column prop="name"
+                       label="标题"
+                       width="650"
+                       class="table-title">
         <template slot-scope="scope">
-          <div
-            v-if="songDetails ? scope.row.id == songDetails.id : false"
-            style="color: #ec4141"
-          >
+          <div v-if="songDetails ? scope.row.id == songDetails.id : false"
+               style="color: #ec4141">
             {{ scope.row.name }}
             <!-- 当前播放动画 -->
-            <div v-if="playstatus" style="display: inline-block">
+            <div v-if="playstatus"
+                 style="display: inline-block">
               <playanimation />
             </div>
             <!-- 暂停图标 -->
-            <img
-              src="../../../assets/images/列表暂停图标1.svg"
-              style="margin-bottom: -1px"
-              alt=""
-              v-else
-            />
+            <img src="../../../assets/images/列表暂停图标1.svg"
+                 style="margin-bottom: -1px"
+                 alt=""
+                 v-else />
             <!-- 操作按钮 -->
-            <el-tooltip
-              class="item"
-              effect="light"
-              content="下一首播放"
-              placement="top-start"
-            >
-              <div class="songsaddbtn" @click="addlistnextsong(scope.row)">
-                <img
-                  src="../../../assets/images/加号.svg"
-                  alt=""
-                  v-show="showbtn"
-                />
+            <el-tooltip class="item"
+                        effect="light"
+                        content="下一首播放"
+                        placement="top-start">
+              <div class="songsaddbtn"
+                   @click="addlistnextsong(scope.row)">
+                <img src="../../../assets/images/加号.svg"
+                     alt=""
+                     v-show="showbtn" />
               </div>
             </el-tooltip>
           </div>
           <div v-else>
             {{ scope.row.name }}
             <!-- 操作按钮 -->
-            <el-tooltip
-              class="item"
-              effect="light"
-              content="下一首播放"
-              placement="top-start"
-            >
-              <div class="songsaddbtn" @click="addlistnextsong(scope.row)">
-                <img
-                  src="../../../assets/images/加号.svg"
-                  alt=""
-                  v-show="showbtn"
-                />
+            <el-tooltip class="item"
+                        effect="light"
+                        content="下一首播放"
+                        placement="top-start">
+              <div class="songsaddbtn"
+                   @click="addlistnextsong(scope.row)">
+                <img src="../../../assets/images/加号.svg"
+                     alt=""
+                     v-show="showbtn" />
               </div>
             </el-tooltip>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="歌手" width="300">
+      <el-table-column label="歌手"
+                       width="300">
         <template scope="scope">
           <span style="cursor: pointer">{{ scope.row.ar[0].name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="专辑" width="400">
+      <el-table-column label="专辑"
+                       width="400">
         <template scope="scope">
           <span style="cursor: pointer">{{ scope.row.al.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="dt" label="时间" width="60">
+      <el-table-column prop="dt"
+                       label="时间"
+                       width="60">
         <template slot-scope="dt">
           {{ (dt.row.dt / 1000) | minutesformat }}
         </template>
@@ -117,14 +112,14 @@ export default {
   components: {
     playanimation,
   },
-  data() {
+  data () {
     return {
       showbtn: false,
     };
   },
   methods: {
     // 收藏与取消收藏
-    async changecollectcondition(flag, id) {
+    async changecollectcondition (flag, id) {
       const loading = this.$loading({
         lock: true,
         text: "操作中",
@@ -135,11 +130,12 @@ export default {
         params: {
           id: id,
           like: flag,
-          cookie: this.cookie,
+          // cookie: this.cookie,
           timestamp: Date.now(),
         },
       });
-      if (res.data.code != 200) {
+      if (res.data.code != 200)
+      {
         loading.close();
         return this.$message({
           message: "操作频繁，请稍后再试！",
@@ -147,7 +143,8 @@ export default {
         });
       }
       this.newsongs.forEach((element) => {
-        if (element.id == id) {
+        if (element.id == id)
+        {
           // console.log(element.likemusicflag);
 
           element.likemusicflag = flag;
@@ -156,7 +153,7 @@ export default {
       loading.close();
     },
     //播放音乐获取音乐src和音乐详情
-    async getmusic(row) {
+    async getmusic (row) {
       const loading = this.$loading({
         lock: true,
         text: "播放资源获取中",
@@ -166,11 +163,12 @@ export default {
       const res = await this.$http.get("/song/url", {
         params: {
           id: row.id,
-          cookie: this.cookie,
+          // cookie: this.cookie,
         },
       });
       // console.log(res.data.data[0].url);
-      if (res.data.data[0].url == null) {
+      if (res.data.data[0].url == null)
+      {
         loading.close();
         return this.$message.error("没有版权哦！");
       }
@@ -191,40 +189,44 @@ export default {
       loading.close();
     },
     // 添加到播放列表
-    addlistnextsong(row) {
+    addlistnextsong (row) {
       //存入下一首播放列表
       let length = this.nextsonglist.length;
       this.$store.dispatch("savenextsonglist", row);
-      if (length + 1 == this.nextsonglist.length) {
+      if (length + 1 == this.nextsonglist.length)
+      {
         this.$message({
           message: "添加成功",
           type: "success",
         });
-      } else {
+      } else
+      {
         this.$message({
           message: "请不要重复添加",
           type: "warning",
         });
       }
     },
-    hovertitle(flag) {
+    hovertitle (flag) {
       this.showbtn = flag;
     },
     // 跳转到歌手或者专辑页面
-    tosingerpage(row, column) {
+    tosingerpage (row, column) {
       // console.log(row);
       // console.log(column);
-      if (column.label === "歌手") {
+      if (column.label === "歌手")
+      {
         this.$store.dispatch("savesongdetailflag", false);
         this.$router.push(`/home/singerdetail/${row.ar[0].id}`);
-      } else if (column.label === "专辑") {
+      } else if (column.label === "专辑")
+      {
         this.$store.dispatch("savesongdetailflag", false);
         this.$router.push(`/home/album/${row.al.id}`);
       }
     },
   },
   computed: {
-    newsongs() {
+    newsongs () {
       // 拷贝传来的songlist
       return JSON.parse(JSON.stringify(this.songs));
     },
@@ -236,7 +238,7 @@ export default {
       "playsonglist",
     ]),
   },
-  created() {},
+  created () { },
 };
 </script>
 

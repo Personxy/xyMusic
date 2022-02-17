@@ -1,14 +1,15 @@
 <template>
   <div class="video">
-    <div class="videolist" v-for="item in result.videos" :key="item.id">
+    <div class="videolist"
+         v-for="item in result.videos"
+         :key="item.id">
       <div class="cover">
-        <el-image
-          :src="item.coverUrl"
-          @click="tovideodetail(item.vid)"
-        ></el-image>
+        <el-image :src="item.coverUrl"
+                  @click="tovideodetail(item.vid)"></el-image>
         <!-- 视频播放量 -->
         <div class="videoplaycounts">
-          <img src="../../../assets/images/歌单列表播放按钮.svg" alt="" />{{
+          <img src="../../../assets/images/歌单列表播放按钮.svg"
+               alt="" />{{
             item.playTime | wan
           }}
         </div>
@@ -18,13 +19,15 @@
         </div>
       </div>
       <!-- 视频标题 -->
-      <div class="videotitle" @click="tovideodetail(item.vid)">
+      <div class="videotitle"
+           @click="tovideodetail(item.vid)">
         {{ item.title }}
       </div>
       <!-- 视频作者 -->
       <div class="videoauthor">{{ item.creator.nickname }}</div>
     </div>
-    <div class="nomore" v-if="!result.videos">没有更多结果了</div>
+    <div class="nomore"
+         v-if="!result.videos">没有更多结果了</div>
   </div>
 </template>
 
@@ -33,13 +36,13 @@ export default {
   props: {
     keywords: String,
   },
-  data() {
+  data () {
     return {
       result: {},
     };
   },
   methods: {
-    async getvideolist() {
+    async getvideolist () {
       const loading = this.$loading({
         lock: true,
         text: "加载中",
@@ -57,7 +60,7 @@ export default {
 
       loading.close();
     },
-    tovideodetail(id) {
+    tovideodetail (id) {
       // 传递视频参数
       this.$router.push({
         path: "/home/videodetail",
@@ -67,11 +70,11 @@ export default {
       });
     },
   },
-  created() {
+  created () {
     this.getvideolist();
   },
   watch: {
-    keywords() {
+    keywords () {
       this.getvideolist();
     },
   },
