@@ -72,7 +72,7 @@ export default {
   methods: {
     // 登陆后推荐的歌单
     getrecomlist () {
-      const res = this.$http
+      this.$http
         .get("/recommend/resource", {
           params: {
             timeStamp: Date.now(),
@@ -83,14 +83,10 @@ export default {
           this.recomelist = res.data.recommend;
         })
         .catch((err) => {
-          if (
-            err == "Error: Request failed with status code 301" &&
-            this.cookie
-          )
-          {
+          if (err.data.code == 301)
             this.$message.error("登陆过期，请重新登陆！");
-            // this.$store.commit("changeloginbar", true);
-          }
+          // this.$store.commit("changeloginbar", true);
+
         });
     },
     //未登录推荐的歌单
