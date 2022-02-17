@@ -4,22 +4,28 @@
       搜索 <span>{{ keywords }}</span>
     </div>
     <el-tabs v-model="activeName">
-      <el-tab-pane label="单曲" name="songs">
+      <el-tab-pane label="单曲"
+                   name="songs">
         <songs :keywords="keywords" />
       </el-tab-pane>
-      <el-tab-pane label="歌手" name="singer">
+      <el-tab-pane label="歌手"
+                   name="singer">
         <singer :keywords="keywords" />
       </el-tab-pane>
-      <el-tab-pane label="专辑" name="album">
+      <el-tab-pane label="专辑"
+                   name="album">
         <album :keywords="keywords" />
       </el-tab-pane>
-      <el-tab-pane label="视频" name="video">
+      <el-tab-pane label="视频"
+                   name="video">
         <videopage :keywords="keywords" />
       </el-tab-pane>
-      <el-tab-pane label="MV" name="MV">
+      <el-tab-pane label="MV"
+                   name="MV">
         <mvpage :keywords="keywords" />
       </el-tab-pane>
-      <el-tab-pane label="歌单" name="songlist">
+      <el-tab-pane label="歌单"
+                   name="songlist">
         <songlist :keywords="keywords" />
       </el-tab-pane>
     </el-tabs>
@@ -35,18 +41,18 @@ import mvpage from "../../components/xymusic/searchresult/mv.vue";
 import songlist from "../../components/xymusic/searchresult/songlist.vue";
 export default {
   components: { songs, singer, album, videopage, songlist, mvpage },
-  data() {
+  data () {
     return {
       keywords: "",
       activeName: "songs",
     };
   },
   methods: {},
-  created() {
+  created () {
     this.keywords = this.$route.params.keywords;
   },
   watch: {
-    $route() {
+    $route () {
       this.keywords = this.$route.params.keywords;
     },
   },
@@ -59,6 +65,27 @@ export default {
     font-weight: bold;
     text-align: left;
     margin-bottom: 20px;
+  }
+  .el-tabs {
+    margin-top: 50px;
+  }
+  /deep/.el-tabs__item {
+    color: rgb(78, 72, 72);
+  }
+  /deep/.el-tabs__item:hover {
+    color: black;
+  }
+  /deep/.el-tabs__nav-wrap::after {
+    height: 0 !important;
+  }
+  /deep/.el-tabs .el-tabs__item.is-active {
+    color: #373737 !important;
+    font-weight: bold;
+    // font-size: 20px;
+  }
+  /deep/.el-tabs__active-bar {
+    background-color: #ec4141 !important;
+    height: 3px;
   }
 }
 </style>
