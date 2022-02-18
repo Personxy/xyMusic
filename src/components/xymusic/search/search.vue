@@ -150,7 +150,7 @@ export default {
           if (data.code == 400) return
           this.searchsugarr = data.result
           this.sugopenflag = true
-          console.log(this.searchsugarr);
+          // console.log(this.searchsugarr);
         })
       }, 200);
 

@@ -29,6 +29,13 @@ axios.interceptors.request.use((config) => {
     // `withCredentials` 表示跨域请求时是否需要使用凭证
     axios.defaults.withCredentials = true;
     document.cookie = window.sessionStorage.getItem('cookie');
+    if (!config.headers.cookie) {
+      if (!config.params) {
+        config.params = { cookie: '' };
+        config.params.cookie = window.sessionStorage.getItem('cookie');
+      }
+      config.params.cookie = window.sessionStorage.getItem('cookie');
+    }
   } else {
     axios.defaults.withCredentials = false;
   }
