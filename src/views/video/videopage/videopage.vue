@@ -1,7 +1,7 @@
 <template>
   <div class="videopage">
-    <videocategory />
-    <videolist />
+    <videocategory @sendcatid="getcatid" />
+    <videolist :catId="catid" />
   </div>
 </template>
 
@@ -13,6 +13,16 @@ export default {
     videocategory,
     videolist,
   },
+  data () {
+    return {
+      catid: ''
+    }
+  },
+  methods: {
+    getcatid (data) {
+      this.catid = data
+    }
+  }
 };
 </script>
 

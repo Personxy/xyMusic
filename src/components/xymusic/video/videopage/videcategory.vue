@@ -41,7 +41,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { bus } from "../../../../plugins/bus";
+// import { bus } from "../../../../plugins/bus";
 export default {
   data () {
     return {
@@ -132,7 +132,7 @@ export default {
     },
     //传递查询参数
     sendmessage (id) {
-      bus.$emit("catid", id);
+      this.$emit("sendcatid", id);
     },
     // 点击外部关闭面板
     close: function (e) {
@@ -140,12 +140,18 @@ export default {
       this.panel = false;
     },
   },
-  created () {
+  mounted () {
     this.getlistcat();
     this.gethotcat();
   },
   computed: {
     ...mapGetters(["cookie"]),
+  },
+  watch: {
+    cookie () {
+      // console.log(1);
+      this.gethotcat();
+    }
   },
   directives: {
     // 自定义指令 能够在组件外部控制弹窗关闭

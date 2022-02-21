@@ -56,7 +56,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { bus } from "../../../../plugins/bus";
+
 export default {
   data () {
     return {
@@ -66,16 +66,37 @@ export default {
       hasmore: true,
     };
   },
+  props: {
+    catId: String
+  },
   methods: {
     // 获取所有视频列表
     async getallvideolist () {
-      const { data } = await this.$http
+      this.$http
         .get("/video/timeline/all", {
           params: {
             // cookie: this.cookie,
             offset: this.offset,
             timeStamp: Date.now(),
           },
+        }).then(({ data }) => {
+          // console.log(data);
+          this.offset = this.offset + 8;
+          if (data.hasmore == false) return (this.hasmore = false);
+          this.catlist.push.apply(this.catlist, data.datas);
+          // 清除重复
+          this.catlist = this.catlist.filter((element, index, arr) => {
+            return (
+              arr.findIndex((el) => el.data.vid == element.data.vid) === index
+            );
+          });
+          // console.log(this.catlist);
+          // 至少获取30条数据
+
+          if (this.catlist.length < 30)
+          {
+            this.getallvideolist();
+          }
         })
         .catch((err) => {
           if (
@@ -91,28 +112,7 @@ export default {
             this.$store.commit("changeloginbar", true);
           }
         });
-      // console.log(data);
-      if (data.datas)
-      {
-        // console.log(data);
-        this.offset = this.offset + 8;
-        if (data.hasmore == false) return (this.hasmore = false);
-        this.catlist.push.apply(this.catlist, data.datas);
 
-        // 清除重复
-        this.catlist = this.catlist.filter((element, index, arr) => {
-          return (
-            arr.findIndex((el) => el.data.vid == element.data.vid) === index
-          );
-        });
-        // console.log(this.catlist);
-        // 至少获取30条数据
-
-        if (this.catlist.length < 30)
-        {
-          this.getallvideolist();
-        }
-      }
     },
 
     // 根据分类id获取视频列表
@@ -120,6 +120,7 @@ export default {
       if (this.catid === "全部视频")
       {
         this.getallvideolist();
+
       } else
       {
         if (this.catid === "")
@@ -190,24 +191,36 @@ export default {
     this.getallvideolist();
   },
 
-  mounted () {
-    bus.$off("catid");
-    bus.$on("catid", (data) => {
-      this.catid = data;
-      this.offset = 0;
-      this.catlist = [];
-      this.hasmore = true;
-      this.getvideolist();
-    });
-  },
+  // mounted () {
+  //   // bus.$off("catid");
+  //   this.getallvideolist();
+  //   bus.$on("catid", (data) => {
+  //     this.catid = data;
+  //     this.offset = 0;
+  //     this.catlist = [];
+  //     this.hasmore = true;
+  //     this.getvideolist();
+  //   });
+
+  // },
+  // beforeDestroy () {
+  //   bus.$off('catid')
+  // },
   watch: {
     cookie () {
       this.getallvideolist();
     },
+    catId () {
+      this.catid = this.catId;
+      this.offset = 0;
+      this.catlist = [];
+      this.hasmore = true;
+      this.getvideolist();
+    }
   },
-  beforeDestroy () {
-    bus.$off("catid");
-  },
+  // beforeDestroy () {
+  //   bus.$off("catid");
+  // },
   computed: {
     ...mapGetters(["cookie"]),
   },
