@@ -1,24 +1,30 @@
-# xymusic
+# xymusic  vue仿网易云音乐🎧 一个 web 播放器
 
-## Project setup
+### 后端采用
+
+###### 		https://github.com/Binaryify/NeteaseCloudMusicApi 
+
+## 安装
+
+运行项目之前请保证安装了node,本项目开发node版本 是v16.13.0 其他版本未测试
+
+```
+git clone https://github.com/Personxy/xyMusic.git
+```
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 运行
+
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### 已经部署在vercel
 
-### Lints and fixes files
-```
-npm run lint
-```
+https://yangyangmusic.vercel.app/
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+部署在vercel访问比较慢 如果用自己的服务器会快一点。
+
