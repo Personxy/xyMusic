@@ -27,14 +27,16 @@
                 stripe
                 height="83%"
                 @row-dblclick="playmusic"
-                empty-text="你还没有添加任何歌曲">
+                empty-text="你还没有添加任何歌曲"
+                ref="playlist">
         <el-table-column property="name"
                          label="标题"
                          width="200"
                          show-overflow-tooltip>
           <template slot-scope="scope">
             <div v-if="songDetails ? scope.row.id == songDetails.id : false"
-                 style="color: #ec4141">
+                 style="color: #ec4141"
+                 :ref="scope.row.id+'ref'">
               {{ scope.row.name }}
               <!-- 当前播放动画 -->
               <div v-if="playstatus"
@@ -47,7 +49,8 @@
                    alt=""
                    v-else />
             </div>
-            <div v-else>{{ scope.row.name }}</div>
+            <div :ref="scope.row.id+'ref'"
+                 v-else>{{ scope.row.name }}</div>
           </template>
         </el-table-column>
         <el-table-column property="ar[0].name"
@@ -148,10 +151,54 @@ export default {
         this.$store.dispatch("savecurrenturl", "");
       }
     },
+    // 定位到当前播放的歌曲
+    changetablescroll () {
+      // console.log(this.$refs.playlist);
+      for (let i = 0; i <= this.playsonglist.length; i++)
+      {
+        if (this.playsonglist[i]?.id == this.songDetails?.id)
+        {
+          this.$refs.playlist.setCurrentRow(this.playsonglist[i])
+          let dom = this.$refs.playlist.bodyWrapper;
+          this.$nextTick(() => {
+            var top2 = this.getElementTop(this.$refs[this.playsonglist[i].id + 'ref']);
+            dom.scrollTo(0, top2 - 240);
+          });
+
+        }
+
+      }
+      // 待改进：元素看不见时，将其置为第一个看的见的，看得见时，则不做任何定位滚动操作
+
+    },
+    // 获取当前元素距离页面最顶部的距离
+    getElementTop (element) {
+      var actualTop = element.offsetTop;
+      var current = element.offsetParent;
+      while (current !== null)
+      {
+        actualTop += current.offsetTop;
+        current = current.offsetParent;
+      }
+      return actualTop;
+    }
+
   },
   computed: {
     ...mapGetters(["playsonglist", "cookie", "songDetails", "playstatus"]),
   },
+  mounted () {
+    this.changetablescroll()
+  },
+  watch: {
+    playsonglist () {
+      this.changetablescroll()
+    },
+    songDetails () {
+      this.changetablescroll()
+    }
+  }
+
 };
 </script>
 
