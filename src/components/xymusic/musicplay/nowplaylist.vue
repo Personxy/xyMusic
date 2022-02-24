@@ -25,7 +25,7 @@
       <el-table :data="playsonglist"
                 style="border-top: 1px solid #f2f2f2; margin-top: 15px"
                 stripe
-                height="83%"
+                height="calc(100% - 90px)"
                 @row-dblclick="playmusic"
                 empty-text="你还没有添加任何歌曲"
                 ref="playlist">
@@ -161,8 +161,27 @@ export default {
           this.$refs.playlist.setCurrentRow(this.playsonglist[i])
           let dom = this.$refs.playlist.bodyWrapper;
           this.$nextTick(() => {
-            var top2 = this.getElementTop(this.$refs[this.playsonglist[i].id + 'ref']);
-            dom.scrollTo(0, top2 - 240);
+            let elref = this.playsonglist[i].id + 'ref'
+            let el = this.$refs[elref].getBoundingClientRect()
+            if (el.top >= 0 &&
+              el.left >= 0 &&
+              el.bottom <=
+              (window.innerHeight - 80 || document.documentElement.clientHeight - 80) &&
+              el.right <=
+              (window.innerWidth || document.documentElement.clientWidth))
+            //判断是否在视图内
+            {
+              // console.log(el.top, '顶部');
+              // console.log(el.left, 'left');
+              // console.log(el.bottom, '底部');
+              // console.log(window.innerHeight || document.documentElement.clientHeight, 'window.innerHeight || document.documentElement.clientHeight',);
+              // console.log(el.right, 'right');
+              return
+            } else
+            {
+              var top2 = this.getElementTop(this.$refs[elref]);
+              dom.scrollTo(0, top2 - 140);
+            }
           });
 
         }
@@ -211,18 +230,19 @@ export default {
   }
   .playlist {
     width: 36vw;
-    height: calc(100% - 80px);
+    height: calc(100vh - 81px);
     max-width: 500px;
-    border-radius: 1px;
+    // border-radius: 1px;
     border-top: 1px solid #cccc;
-    border-left: 1px solid #cccc;
+    // border-left: 1px solid #cccc;
     position: fixed;
     z-index: 3000;
     // border-bottom: 1px solid #cccc;
-    box-shadow: 0 0 2px 0;
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.1);
     top: 0px;
     right: 0;
     background-color: white;
+
     /deep/.el-table {
       thead {
         .cell {
