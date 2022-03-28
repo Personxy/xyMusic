@@ -10,16 +10,22 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 // 引入Animate.css 库
 import animated from 'animate.css';
+// 引入虚拟列表
+import VueVirtualScroller from 'vue-virtual-scroller';
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 // import '@/assets/iconbofangshunxu/iconfont.css';
 //解决跨域
-import { VueJsonp } from 'vue-jsonp';
+// import { VueJsonp } from 'vue-jsonp';
 
 Vue.config.productionTip = false;
-Vue.use(VueJsonp);
+// Vue.use(VueJsonp);
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
 Vue.use(animated);
-axios.defaults.baseURL = 'https://netease-cloud-music-api-puce-iota.vercel.app/';
+Vue.use(VueVirtualScroller);
+// axios.defaults.baseURL = 'https://netease-cloud-music-api-puce-iota.vercel.app/';
+// 使用了本地代理 解决跨域 配置在vue.config.js 所以值是'/api'
+axios.defaults.baseURL = '/api';
 // api如果在本地将baseURL改成http://localhost:3000
 // axios.defaults.baseURL = 'http://localhost:3000';
 
@@ -40,6 +46,11 @@ axios.interceptors.request.use((config) => {
   } else {
     axios.defaults.withCredentials = false;
   }
+  // 获取歌曲必须加上realIP不然会出现获取不到url的情况
+  if (config.url == '/song/url') {
+    config.params.realIP = '211.161.244.70';
+  }
+
   return config;
 });
 // 添加响应拦截器
