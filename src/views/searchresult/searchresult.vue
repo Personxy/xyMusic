@@ -6,27 +6,40 @@
     <el-tabs v-model="activeName">
       <el-tab-pane label="单曲"
                    name="songs">
-        <songs :keywords="keywords" />
+        <keep-alive>
+          <songs :keywords="keywords" />
+        </keep-alive>
       </el-tab-pane>
       <el-tab-pane label="歌手"
                    name="singer">
-        <singer :keywords="keywords" />
+        <keep-alive>
+          <singer :keywords="keywords" />
+        </keep-alive>
       </el-tab-pane>
       <el-tab-pane label="专辑"
                    name="album">
-        <album :keywords="keywords" />
+        <keep-alive>
+          <album :keywords="keywords" />
+        </keep-alive>
       </el-tab-pane>
       <el-tab-pane label="视频"
                    name="video">
-        <videopage :keywords="keywords" />
+        <keep-alive>
+          <videopage :keywords="keywords" />
+        </keep-alive>
       </el-tab-pane>
       <el-tab-pane label="MV"
                    name="MV">
-        <mvpage :keywords="keywords" />
+        <keep-alive>
+          <mvpage :keywords="keywords" />
+        </keep-alive>
+
       </el-tab-pane>
       <el-tab-pane label="歌单"
                    name="songlist">
-        <songlist :keywords="keywords" />
+        <keep-alive>
+          <songlist :keywords="keywords" />
+        </keep-alive>
       </el-tab-pane>
     </el-tabs>
   </div>
