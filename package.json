@@ -19,6 +19,7 @@
     "vue-axios": "^3.4.0",
     "vue-jsonp": "^2.0.0",
     "vue-router": "^3.2.0",
+    "vue-virtual-scroller": "^1.0.10",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
