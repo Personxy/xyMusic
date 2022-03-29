@@ -4,13 +4,17 @@
       <!-- 推荐歌单 -->
       <div class="recomplaylistbox">
         <div class="recomplaylisttitle">推荐歌单</div>
-        <div class="recomplaylist"
-             v-for="item in simisonglist"
-             :key="item.id"
-             @click="toplaylist(item.id)">
+        <div
+          class="recomplaylist"
+          v-for="item in simisonglist"
+          :key="item.id"
+          @click="toplaylist(item.id)"
+        >
           <div class="recomplaylistcover">
-            <el-image :src="item.coverImgUrl"
-                      style="width: 30px; cursor: pointer"></el-image>
+            <el-image
+              :src="item.coverImgUrl"
+              style="width: 30px; cursor: pointer"
+            ></el-image>
           </div>
           <div class="recomplaylistname">{{ item.name }}</div>
         </div>
@@ -18,13 +22,17 @@
       <!-- //推荐歌曲 -->
       <div class="recomsongsbox">
         <div class="recomsongstitle">推荐歌曲</div>
-        <div class="recomsongs"
-             v-for="item in simisongs"
-             :key="item.id"
-             @click="getthesong(item.id)">
+        <div
+          class="recomsongs"
+          v-for="item in simisongs"
+          :key="item.id"
+          @click="getthesong(item.id)"
+        >
           <div class="recomsongscover">
-            <el-image :src="item.album.picUrl"
-                      style="width: 30px; cursor: pointer"></el-image>
+            <el-image
+              :src="item.album.picUrl"
+              style="width: 30px; cursor: pointer"
+            ></el-image>
           </div>
           <div class="recomsongname">{{ item.name }}</div>
         </div>
@@ -36,7 +44,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  data () {
+  data() {
     return {
       simisonglist: [],
       simisongs: [],
@@ -47,7 +55,7 @@ export default {
   },
   methods: {
     // 获取相似歌单
-    async getsimiplaylist () {
+    async getsimiplaylist() {
       const { data } = await this.$http.get("/simi/playlist", {
         params: {
           id: this.songDetails.id,
@@ -56,7 +64,7 @@ export default {
       this.simisonglist = data.playlists;
     },
     //获取相似歌曲
-    async getsimisongs () {
+    async getsimisongs() {
       const { data } = await this.$http.get("/simi/song", {
         params: {
           id: this.songDetails.id,
@@ -65,7 +73,7 @@ export default {
       this.simisongs = data.songs;
     },
     // 获取歌曲
-    async getthesong (id) {
+    async getthesong(id) {
       const res = await this.$http.get("/song/url", {
         params: {
           id: id,
@@ -91,17 +99,17 @@ export default {
       //当前播放状态
       this.$store.dispatch("saveplaystatus", true);
     },
-    toplaylist (id) {
+    toplaylist(id) {
       this.$store.dispatch("savesongdetailflag", false);
       this.$router.push(`/home/playlistpage/${id}`);
     },
   },
-  created () {
+  created() {
     this.getsimiplaylist();
     this.getsimisongs();
   },
   watch: {
-    songDetails () {
+    songDetails() {
       this.getsimiplaylist();
       this.getsimisongs();
     },

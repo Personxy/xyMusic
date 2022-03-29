@@ -1,40 +1,45 @@
 <template>
   <!-- 搜索 -->
   <div class="searchbar">
-    <el-input v-model="searchdata"
-              placeholder="搜索"
-              size="mini"
-              @focus="changesearchbox"
-              v-clickoutside="close"
-              @keyup.enter.native="search"
-              @input="searchsug"
-              ref="input"></el-input>
-    <i class="el-icon-search"
-       @click="search"
-       size="mini"></i>
-    <div class="searchbox"
-         v-show="opensearch">
-      <div v-if="sugopenflag==false">
+    <el-input
+      v-model="searchdata"
+      placeholder="搜索"
+      size="mini"
+      @focus="changesearchbox"
+      v-clickoutside="close"
+      @keyup.enter.native="search"
+      @input="searchsug"
+      ref="input"
+    ></el-input>
+    <i class="el-icon-search" @click="search" size="mini"></i>
+    <div class="searchbox" v-show="opensearch">
+      <div v-if="sugopenflag == false">
         <!-- 搜索历史 -->
         <p v-if="searchHistoryflag">
           搜索历史&nbsp;
-          <el-popconfirm confirm-button-text="确认"
-                         cancel-button-text="取消"
-                         icon="el-icon-info"
-                         icon-color="red"
-                         title="确定要删除所有搜索历史记录吗"
-                         @confirm="clearSearchData">
-            <img src="../../../assets/images/垃圾箱 (2).svg"
-                 alt=""
-                 slot="reference" />
+          <el-popconfirm
+            confirm-button-text="确认"
+            cancel-button-text="取消"
+            icon="el-icon-info"
+            icon-color="red"
+            title="确定要删除所有搜索历史记录吗"
+            @confirm="clearSearchData"
+          >
+            <img
+              src="../../../assets/images/垃圾箱 (2).svg"
+              alt=""
+              slot="reference"
+            />
           </el-popconfirm>
         </p>
         <!-- 搜索历史 -->
         <div class="searchHistory">
-          <div class="searchitem"
-               v-for="item in searchHistory"
-               :key="item.id"
-               @click="tosearch(item)">
+          <div
+            class="searchitem"
+            v-for="item in searchHistory"
+            :key="item.id"
+            @click="tosearch(item)"
+          >
             {{ item }}
             <span @click="deletesearch(item)"> x</span>
           </div>
@@ -42,47 +47,62 @@
         <!-- 热搜 -->
         <div class="hotSearch">
           <p>热搜榜</p>
-          <div class="hotSearchItem"
-               v-for="(item, i) in searchHot"
-               :key="item.id"
-               @click="tosearch(item.first)">
+          <div
+            class="hotSearchItem"
+            v-for="(item, i) in searchHot"
+            :key="item.id"
+            @click="tosearch(item.first)"
+          >
             <span class="hotnum">{{ i + 1 }}</span>
             <span class="hotname">{{ item.first }}</span>
           </div>
         </div>
       </div>
 
-      <div class="sugsearch"
-           style="color:black"
-           v-if="sugopenflag">
+      <div class="sugsearch" style="color: black" v-if="sugopenflag">
         <div class="songs">
           <div class="title">单曲</div>
-          <div class="content"
-               v-for="item in searchsugarr.songs"
-               :key="item.id"
-               @click="tosearch(item.name)">{{item.name}}</div>
+          <div
+            class="content"
+            v-for="item in searchsugarr.songs"
+            :key="item.id"
+            @click="tosearch(item.name)"
+          >
+            {{ item.name }}
+          </div>
         </div>
         <div class="album">
           <div class="title">专辑</div>
-          <div class="content"
-               v-for="item in searchsugarr.albums"
-               :key="item.id"
-               @click="tosearch(item.name)">{{item.name}}</div>
+          <div
+            class="content"
+            v-for="item in searchsugarr.albums"
+            :key="item.id"
+            @click="tosearch(item.name)"
+          >
+            {{ item.name }}
+          </div>
         </div>
         <div class="singer">
           <div class="title">歌手</div>
-          <div class="content"
-               v-for="item in searchsugarr.artists"
-               :key="item.id"
-               @click="tosearch(item.name)">{{item.name}}</div>
+          <div
+            class="content"
+            v-for="item in searchsugarr.artists"
+            :key="item.id"
+            @click="tosearch(item.name)"
+          >
+            {{ item.name }}
+          </div>
         </div>
         <div class="playlists">
           <div class="title">歌单</div>
-          <div class="content"
-               v-for="item in searchsugarr.playlists"
-               :key="item.id"
-               @click="tosearch(item.name)">{{item.name}}</div>
-
+          <div
+            class="content"
+            v-for="item in searchsugarr.playlists"
+            :key="item.id"
+            @click="tosearch(item.name)"
+          >
+            {{ item.name }}
+          </div>
         </div>
       </div>
     </div>
@@ -93,7 +113,7 @@
 import { mapGetters } from "vuex";
 export default {
   name: "search",
-  data () {
+  data() {
     return {
       searchdata: "",
       opensearch: false,
@@ -101,12 +121,12 @@ export default {
       searchHot: [],
       timeout: null,
       searchsugarr: {},
-      sugopenflag: false
+      sugopenflag: false,
     };
   },
   methods: {
     // 控制搜索面板开关且提交热搜请求
-    async changesearchbox () {
+    async changesearchbox() {
       this.opensearch = !this.opensearch;
       let res = await this.$http.get("/search/hot");
       this.searchHot = res.data.result.hots;
@@ -116,7 +136,7 @@ export default {
       this.opensearch = false;
     },
     //搜索
-    search () {
+    search() {
       this.searchHistoryflag = true;
       if (
         this.searchdata === "undefined" ||
@@ -134,45 +154,43 @@ export default {
       this.$router.push({ path: `/home/search/${this.searchdata}` });
     },
     // 搜索建议
-    searchsug () {
-
-      if (this.timeout)
-      {
-        clearTimeout(this.timeout)
+    searchsug() {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
       }
       // 防抖
       this.timeout = setTimeout(() => {
-        this.$http.get('/search/suggest', {
-          params: {
-            keywords: this.searchdata
-          }
-        }).then(({ data }) => {
-          if (data.code == 400) return
-          this.searchsugarr = data.result
-          this.sugopenflag = true
-          // console.log(this.searchsugarr);
-        })
+        this.$http
+          .get("/search/suggest", {
+            params: {
+              keywords: this.searchdata,
+            },
+          })
+          .then(({ data }) => {
+            if (data.code == 400) return;
+            this.searchsugarr = data.result;
+            this.sugopenflag = true;
+            // console.log(this.searchsugarr);
+          });
       }, 200);
-
     },
     // 清空搜索记录
-    clearSearchData () {
+    clearSearchData() {
       this.$store.dispatch("clearSearchHistory");
       this.searchHistoryflag = false;
     },
     // 点击热搜词搜索
-    tosearch (item) {
+    tosearch(item) {
       // console.log(item);
       this.searchdata = item;
       this.search();
     },
     // 删除某条搜索记录
-    deletesearch (item, e) {
+    deletesearch(item, e) {
       this.$store.dispatch("deletsearchitem", item);
       // 阻止冒泡
       window.event ? (window.event.cancelBubble = true) : e.stopPropagation();
     },
-
   },
   computed: {
     ...mapGetters(["searchHistory"]),
@@ -194,16 +212,13 @@ export default {
     },
   },
   watch: {
-    searchdata (newval) {
-      if (newval == "")
-      {
+    searchdata(newval) {
+      if (newval == "") {
         this.opensearch = true;
-        this.sugopenflag = false
+        this.sugopenflag = false;
       }
     },
-    searchsug () {
-
-    }
+    searchsug() {},
   },
 };
 </script>
@@ -240,7 +255,7 @@ export default {
   border: 1px solid #ffffff;
   box-shadow: 2px 2px 2px #aaaaaa;
   overflow-y: hidden;
-  z-index: 1000;
+  z-index: 2000;
 }
 .searchbox:hover {
   overflow: overlay;
@@ -318,7 +333,7 @@ export default {
 }
 </style>
 
-<style >
+<style>
 .sugsearch {
   text-align: left;
 }

@@ -13,16 +13,16 @@ export default {
     videocategory,
     videolist,
   },
-  data () {
+  data() {
     return {
-      catid: ''
-    }
+      catid: "",
+    };
   },
   methods: {
-    getcatid (data) {
-      this.catid = data
-    }
-  }
+    getcatid(data) {
+      this.catid = data;
+    },
+  },
 };
 </script>
 

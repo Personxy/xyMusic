@@ -1,58 +1,62 @@
 <template>
   <div class="recomlist">
-    <p style="
+    <p
+      style="
         font-size: 18px;
         font-weight: bold;
         text-align: left;
         padding-left: 60px;
         cursor: pointer;
       "
-       @click="tosongslistpage">
+      @click="tosongslistpage"
+    >
       推荐歌单&nbsp;&nbsp;&nbsp;>
     </p>
-    <div class="songlistbox"
-         style="display: flex; flex-wrap: wrap">
+    <div class="songlistbox" style="display: flex; flex-wrap: wrap">
       <!-- 每日推荐歌曲 -->
-      <div class="dailysongs"
-           @click="torecomsongspage">
-        <img style="width: 200px; height: 200px; border-radius: 5px"
-             src="../../../../assets/images/每日推荐背景图.png"
-             class="dailysongsbc" />
+      <div class="dailysongs" @click="torecomsongspage">
+        <img
+          style="width: 200px; height: 200px; border-radius: 5px"
+          src="../../../../assets/images/每日推荐背景图.png"
+          class="dailysongsbc"
+        />
         <!-- 日历 -->
         <div class="rili">
           <div class="rilibox">
-            <img src="../../../../assets/images/日历.svg"
-                 alt="" />
+            <img src="../../../../assets/images/日历.svg" alt="" />
             <span>{{ 10 > daily ? "0" + daily : daily }}</span>
           </div>
         </div>
 
         <p>每日歌曲推荐</p>
-        <img src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
-             style="width: 40px; height: 40px"
-             alt=""
-             class="dailysongsbtn" />
+        <img
+          src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
+          style="width: 40px; height: 40px"
+          alt=""
+          class="dailysongsbtn"
+        />
       </div>
       <!-- 其他推荐歌单 -->
-      <div class="ohterrecomlist"
-           v-for="item in recomelist"
-           :key="item.id">
-        <el-image :src="item.picUrl"
-                  style="width: 200px; height: 200px; border-radius: 5px"
-                  @click="changeurl(item.id)"></el-image>
+      <div class="ohterrecomlist" v-for="item in recomelist" :key="item.id">
+        <el-image
+          :src="item.picUrl"
+          style="width: 200px; height: 200px; border-radius: 5px"
+          @click="changeurl(item.id)"
+        ></el-image>
         <p>{{ item.name }}</p>
         <!-- 播放量 -->
         <div class="playcount">
-          <img src="../../../../assets/images/歌单列表播放按钮.svg"
-               alt="" />{{
+          <img src="../../../../assets/images/歌单列表播放按钮.svg" alt="" />{{
             (item.playcount || item.playCount) | wan
           }}
         </div>
         <!-- 播放显示按钮显示       -->
         <div class="playbtn">
-          <img src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
-               style="width: 40px; height: 40px"
-               alt="" />
+          <img
+            src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
+            style="width: 40px; height: 40px"
+            alt=""
+          />
         </div>
       </div>
     </div>
@@ -62,7 +66,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  data () {
+  data() {
     return {
       recomelist: [],
       dailySongs: [],
@@ -71,7 +75,7 @@ export default {
   },
   methods: {
     // 登陆后推荐的歌单
-    getrecomlist () {
+    getrecomlist() {
       this.$http
         .get("/recommend/resource", {
           params: {
@@ -86,11 +90,10 @@ export default {
           if (err.data.code == 301)
             this.$message.error("登陆过期，请重新登陆！");
           // this.$store.commit("changeloginbar", true);
-
         });
     },
     //未登录推荐的歌单
-    async getohterrecomlist () {
+    async getohterrecomlist() {
       const res = await this.$http.get("/personalized", {
         params: {
           limit: 9,
@@ -100,40 +103,36 @@ export default {
       this.recomelist = res.data.result;
     },
     // 跳转到歌单详情
-    changeurl (id) {
+    changeurl(id) {
       this.$router.push(`/home/playlistpage/${id}`);
     },
     //跳转到歌单界面
-    tosongslistpage () {
+    tosongslistpage() {
       this.$router.push("/home/findmusic/songlist");
     },
     //跳转到每日推荐歌曲详情页
-    torecomsongspage () {
+    torecomsongspage() {
       this.$router.push("/home/recomsongs");
     },
   },
-  created () {
-    if (this.userInfo)
-    {
+  created() {
+    if (this.userInfo) {
       // console.log(this.userInfo);
       this.getrecomlist();
-    } else
-    {
+    } else {
       this.getohterrecomlist();
     }
 
     // this.getrecomsongs();
   },
-  mounted () {
+  mounted() {
     this.$emit("recomlistdone", true);
   },
   watch: {
-    userInfo () {
-      if (this.userInfo)
-      {
+    userInfo() {
+      if (this.userInfo) {
         this.getrecomlist();
-      } else
-      {
+      } else {
         this.getohterrecomlist();
       }
     },

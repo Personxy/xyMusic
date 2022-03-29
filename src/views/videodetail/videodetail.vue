@@ -4,31 +4,33 @@
       <!-- 视频和视频信息区域 -->
       <div class="videoplayarea">
         <div class="videotype">
-          <span v-if="videoinfo.vid"
-                @click="tovideolistpage">&lt;&nbsp;视频详情</span>
-          <span v-if="mvinfo.id"
-                @click="tomvlistpage">&lt;&nbsp;mv详情</span>
+          <span v-if="videoinfo.vid" @click="tovideolistpage"
+            >&lt;&nbsp;视频详情</span
+          >
+          <span v-if="mvinfo.id" @click="tomvlistpage">&lt;&nbsp;mv详情</span>
         </div>
         <div class="videoplay">
-          <video :src="videourl.length != 0 ? videourl : mvurl"
-                 style="width: 620px; height: 350px"
-                 controls
-                 autoplay></video>
+          <video
+            :src="videourl.length != 0 ? videourl : mvurl"
+            style="width: 620px; height: 350px"
+            controls
+            autoplay
+          ></video>
         </div>
         <div class="videoinfo">
           <div class="videocreator">
             <div class="creatorcover">
               <!-- 作者头像 -->
-              <el-image :src="
+              <el-image
+                :src="
                   videoinfo.vid ? videoinfo.creator.avatarUrl : mvinfo.cover
-                "></el-image>
+                "
+              ></el-image>
               <!-- 作者名称 -->
-              <div class="creatorname"
-                   v-if="videoinfo.vid">
+              <div class="creatorname" v-if="videoinfo.vid">
                 {{ videoinfo.creator.nickname }}
               </div>
-              <div class="creatorname"
-                   v-if="mvinfo.id">
+              <div class="creatorname" v-if="mvinfo.id">
                 {{ mvinfo.artists[0].name }}
               </div>
             </div>
@@ -38,75 +40,84 @@
             {{ videoinfo.vid ? videoinfo.title : mvinfo.name }}
           </div>
           <div class="publish">
-            <span class="publishtime"
-                  v-if="videoinfo.vid">发布：{{ videoinfo.publishTime | dateFormat }}</span>
-            <span class="publishtime"
-                  v-if="mvinfo.id">{{
+            <span class="publishtime" v-if="videoinfo.vid"
+              >发布：{{ videoinfo.publishTime | dateFormat }}</span
+            >
+            <span class="publishtime" v-if="mvinfo.id">{{
               mvinfo.publishTime
             }}</span>
-            <span class="playcounts">播放：{{
+            <span class="playcounts"
+              >播放：{{
                 (videoinfo.vid ? videoinfo.playTime : mvinfo.playCount) | wan
-              }}次</span>
+              }}次</span
+            >
           </div>
           <!-- 视频标签 -->
-          <div class="videotag"
-               v-if="videoinfo.vid">
-            <div class="videotaglist"
-                 v-for="item in videoinfo.videoGroup"
-                 :key="item.id">
+          <div class="videotag" v-if="videoinfo.vid">
+            <div
+              class="videotaglist"
+              v-for="item in videoinfo.videoGroup"
+              :key="item.id"
+            >
               {{ item.name }}
             </div>
           </div>
           <!-- mv标签 -->
-          <div class="videotag"
-               v-if="mvinfo.id">
-            <div class="videotaglist"
-                 v-for="item in mvinfo.videoGroup"
-                 :key="item.id">
+          <div class="videotag" v-if="mvinfo.id">
+            <div
+              class="videotaglist"
+              v-for="item in mvinfo.videoGroup"
+              :key="item.id"
+            >
               {{ item.name }}
             </div>
           </div>
         </div>
         <!-- 视频按钮接口不完整 功能暂时不做 -->
-        <div class="videobtn"
-             v-if="false">
+        <div class="videobtn" v-if="false">
           <!-- 点赞 mv没有点赞api -->
-          <div class="like"
-               v-if="!videoinfo.liked">
-            <img src="../../assets/images/点赞.svg"
-                 alt=""
-                 @click="likevideo(vid, 1)"
-                 v-if="videoinfo.liked" />
-            <img src="../../assets/images/已点赞.svg"
-                 alt=""
-                 v-else
-                 @click="likevideo(vid, 0)" />
+          <div class="like" v-if="!videoinfo.liked">
+            <img
+              src="../../assets/images/点赞.svg"
+              alt=""
+              @click="likevideo(vid, 1)"
+              v-if="videoinfo.liked"
+            />
+            <img
+              src="../../assets/images/已点赞.svg"
+              alt=""
+              v-else
+              @click="likevideo(vid, 0)"
+            />
             <span>赞{{ videoinfo.praisedCount }}</span>
           </div>
           <div class="collect">
-            <img src="../../assets/images/收藏.svg"
-                 alt="" />
-            <span>收藏{{
+            <img src="../../assets/images/收藏.svg" alt="" />
+            <span
+              >收藏{{
                 videoinfo.vid ? videoinfo.subscribeCount : mvinfo.subCount
-              }}</span>
+              }}</span
+            >
           </div>
           <div class="share">
-            <img src="../../assets/images/分享.svg"
-                 alt="" />
-            <span>分享{{
+            <img src="../../assets/images/分享.svg" alt="" />
+            <span
+              >分享{{
                 videoinfo.vid ? videoinfo.shareCount : mvinfo.shareCount
-              }}</span>
+              }}</span
+            >
           </div>
         </div>
       </div>
       <!-- 推荐视频区域 -->
-      <videorecom :vid="vid"
-                  :id="id"
-                  @sendvideoid="getvideoid"
-                  @sendmvid="getmvid" />
+      <videorecom
+        :vid="vid"
+        :id="id"
+        @sendvideoid="getvideoid"
+        @sendmvid="getmvid"
+      />
     </div>
-    <videocomment :vid="vid"
-                  :id="id" />
+    <videocomment :vid="vid" :id="id" />
   </div>
 </template>
 <script>
@@ -118,7 +129,7 @@ export default {
     videorecom,
     videocomment,
   },
-  data () {
+  data() {
     return {
       // 视频ID
       vid: "",
@@ -132,7 +143,7 @@ export default {
   },
   methods: {
     // 视频详情
-    async getvideodetail () {
+    async getvideodetail() {
       const { data } = await this.$http.get("/video/detail", {
         params: {
           id: this.vid,
@@ -142,7 +153,7 @@ export default {
       this.videoinfo = data.data;
     },
     //视频地址
-    async getvideourl () {
+    async getvideourl() {
       const { data } = await this.$http.get("/video/url", {
         params: {
           id: this.vid,
@@ -151,7 +162,7 @@ export default {
       this.videourl = data.urls[0].url;
     },
     // 获取点赞过的视频
-    async getlikedvideo () {
+    async getlikedvideo() {
       // const { data } = await this.$http.get('/playlist/mylike', {
       //   params: {
       //     cookie: this.cookie,
@@ -161,7 +172,7 @@ export default {
       // // console.log(data);
     },
     // 视频点赞
-    async likevideo (id, t) {
+    async likevideo(id, t) {
       const { data } = await this.$http.get("/resource/like", {
         params: {
           id: id,
@@ -171,8 +182,7 @@ export default {
           timeStamp: Date.now(),
         },
       });
-      if (data.code == 200)
-      {
+      if (data.code == 200) {
         setTimeout(() => {
           this.getmusiccomment();
         }, 1000);
@@ -184,7 +194,7 @@ export default {
       }
     },
     //mv详情
-    async getmvdetail () {
+    async getmvdetail() {
       const { data } = await this.$http.get("/mv/detail", {
         params: {
           mvid: this.id,
@@ -194,7 +204,7 @@ export default {
       this.getmvurl();
     },
     // mv地址
-    async getmvurl () {
+    async getmvurl() {
       const { data } = await this.$http.get("/mv/url", {
         params: {
           id: this.id,
@@ -203,42 +213,40 @@ export default {
       this.mvurl = data.data.url;
     },
     // 子组件传值
-    getvideoid (data) {
+    getvideoid(data) {
       this.vid = data;
     },
-    getmvid (data) {
+    getmvid(data) {
       this.id = data;
     },
     // 跳转到视频列表
-    tovideolistpage () {
+    tovideolistpage() {
       this.$router.push("/home/video/videopage");
     },
     // 跳转到mv列表
-    tomvlistpage () {
+    tomvlistpage() {
       this.$router.push("/home/video/mvpage");
     },
   },
-  created () {
+  created() {
     this.getlikedvideo();
     this.vid = this.$route.query.vid ? this.$route.query.vid : "";
     this.id = this.$route.query.id ? parseInt(this.$route.query.id) : 0;
-    if (this.vid)
-    {
+    if (this.vid) {
       this.getvideourl();
       this.getvideodetail();
-    } else
-    {
+    } else {
       this.getmvurl();
       this.getmvdetail();
     }
   },
   watch: {
-    vid () {
+    vid() {
       this.getvideodetail();
       this.getvideourl();
       this.getlikedvideo();
     },
-    id () {
+    id() {
       this.getmvdetail();
       this.getmvurl();
       this.getlikedvideo();

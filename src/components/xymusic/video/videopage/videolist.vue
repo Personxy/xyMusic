@@ -1,24 +1,28 @@
 <template>
   <div class="videolist">
-    <div class="videolistbox"
-         v-infinite-scroll="getvideolist"
-         infinite-scroll-distance="200px"
-         infinite-scroll-delay="200">
+    <div
+      class="videolistbox"
+      v-infinite-scroll="getvideolist"
+      infinite-scroll-distance="200px"
+      infinite-scroll-delay="200"
+    >
       <!-- 视频列表 -->
 
-      <div class="videlist"
-           @click="tovideodetail(item.data)"
-           v-for="item in catlist"
-           :key="item.id">
+      <div
+        class="videlist"
+        @click="tovideodetail(item.data)"
+        v-for="item in catlist"
+        :key="item.id"
+      >
         <!-- 视频封面 -->
         <div class="viodecover">
-          <el-image :src="item.data.coverUrl"
-                    alt=""
-                    lazy></el-image>
+          <el-image :src="item.data.coverUrl" alt="" lazy></el-image>
           <!-- 视频播放量 -->
           <div class="videoplaycounts">
-            <img src="../../../../assets/images/歌单列表播放按钮.svg"
-                 alt="" />{{ (item.data.playTime || item.data.playCount) | wan }}
+            <img
+              src="../../../../assets/images/歌单列表播放按钮.svg"
+              alt=""
+            />{{ (item.data.playTime || item.data.playCount) | wan }}
           </div>
           <!-- 视频时长 -->
           <div class="videoduration">
@@ -31,24 +35,19 @@
         <!-- 视频标题 -->
         <div class="videotitle">{{ item.data.title || item.data.name }}</div>
         <!-- 视频作者 -->
-        <div class="videoauthor"
-             v-if="item.data.creator">
+        <div class="videoauthor" v-if="item.data.creator">
           {{ item.data.creator.nickname }}
         </div>
-        <div class="videoauthor"
-             v-if="item.data.artists">
+        <div class="videoauthor" v-if="item.data.artists">
           {{ item.data.artists[0].name }}
         </div>
       </div>
     </div>
-    <div class="loadbox"
-         v-if="hasmore">
-      <i class="el-icon-loading"
-         style="margin-top: 30px"></i><span style="margin-left: 10px">加载中</span>
+    <div class="loadbox" v-if="hasmore">
+      <i class="el-icon-loading" style="margin-top: 30px"></i
+      ><span style="margin-left: 10px">加载中</span>
     </div>
-    <div class="nomore"
-         v-if="!hasmore"
-         style="margin-top: 100px">
+    <div class="nomore" v-if="!hasmore" style="margin-top: 100px">
       没有更多内容了请选择其他选项
     </div>
   </div>
@@ -58,7 +57,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  data () {
+  data() {
     return {
       catid: "全部视频",
       catlist: [],
@@ -67,11 +66,11 @@ export default {
     };
   },
   props: {
-    catId: String
+    catId: String,
   },
   methods: {
     // 获取所有视频列表
-    async getallvideolist () {
+    async getallvideolist() {
       this.$http
         .get("/video/timeline/all", {
           params: {
@@ -79,7 +78,8 @@ export default {
             offset: this.offset,
             timeStamp: Date.now(),
           },
-        }).then(({ data }) => {
+        })
+        .then(({ data }) => {
           // console.log(data);
           this.offset = this.offset + 8;
           if (data.hasmore == false) return (this.hasmore = false);
@@ -93,8 +93,7 @@ export default {
           // console.log(this.catlist);
           // 至少获取30条数据
 
-          if (this.catlist.length < 30)
-          {
+          if (this.catlist.length < 30) {
             this.getallvideolist();
           }
         })
@@ -102,29 +101,22 @@ export default {
           if (
             err == "Error: Request failed with status code 301" &&
             this.cookie
-          )
-          {
+          ) {
             this.$message.error("登录失效！请重新登陆使用视频功能");
             // this.$store.commit("changeloginbar", true);
-          } else
-          {
+          } else {
             this.$message.error("请登陆后使用视频功能");
             this.$store.commit("changeloginbar", true);
           }
         });
-
     },
 
     // 根据分类id获取视频列表
-    async getvideolist () {
-      if (this.catid === "全部视频")
-      {
+    async getvideolist() {
+      if (this.catid === "全部视频") {
         this.getallvideolist();
-
-      } else
-      {
-        if (this.catid === "")
-        {
+      } else {
+        if (this.catid === "") {
           return;
         }
         const { data } = await this.$http.get("/video/group", {
@@ -138,16 +130,14 @@ export default {
         this.offset = this.offset + 8;
         this.catlist.push.apply(this.catlist, data.datas);
         // id为mv时
-        if (this.catid === 1000)
-        {
+        if (this.catid === 1000) {
           // 清除重复
           this.catlist = this.catlist.filter((element, index, arr) => {
             return (
               arr.findIndex((el) => el.data.id == element.data.id) === index
             );
           });
-        } else
-        {
+        } else {
           // 清除重复
           this.catlist = this.catlist.filter((element, index, arr) => {
             return (
@@ -156,15 +146,13 @@ export default {
           });
         }
         // 至少获取30条数据
-        if (this.catlist.length < 30)
-        {
+        if (this.catlist.length < 30) {
           this.getvideolist();
         }
       }
     },
-    tovideodetail (data) {
-      if (data.id)
-      {
+    tovideodetail(data) {
+      if (data.id) {
         // 传递mv参数
 
         this.$router.push({
@@ -173,8 +161,7 @@ export default {
             id: data.id,
           },
         });
-      } else
-      {
+      } else {
         // 传递视频参数
 
         this.$router.push({
@@ -187,7 +174,7 @@ export default {
     },
   },
 
-  created () {
+  created() {
     this.getallvideolist();
   },
 
@@ -207,16 +194,16 @@ export default {
   //   bus.$off('catid')
   // },
   watch: {
-    cookie () {
+    cookie() {
       this.getallvideolist();
     },
-    catId () {
+    catId() {
       this.catid = this.catId;
       this.offset = 0;
       this.catlist = [];
       this.hasmore = true;
       this.getvideolist();
-    }
+    },
   },
   // beforeDestroy () {
   //   bus.$off("catid");

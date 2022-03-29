@@ -4,39 +4,32 @@
       搜索 <span>{{ keywords }}</span>
     </div>
     <el-tabs v-model="activeName">
-      <el-tab-pane label="单曲"
-                   name="songs">
+      <el-tab-pane label="单曲" name="songs">
         <keep-alive>
           <songs :keywords="keywords" />
         </keep-alive>
       </el-tab-pane>
-      <el-tab-pane label="歌手"
-                   name="singer">
+      <el-tab-pane label="歌手" name="singer">
         <keep-alive>
           <singer :keywords="keywords" />
         </keep-alive>
       </el-tab-pane>
-      <el-tab-pane label="专辑"
-                   name="album">
+      <el-tab-pane label="专辑" name="album">
         <keep-alive>
           <album :keywords="keywords" />
         </keep-alive>
       </el-tab-pane>
-      <el-tab-pane label="视频"
-                   name="video">
+      <el-tab-pane label="视频" name="video">
         <keep-alive>
           <videopage :keywords="keywords" />
         </keep-alive>
       </el-tab-pane>
-      <el-tab-pane label="MV"
-                   name="MV">
+      <el-tab-pane label="MV" name="MV">
         <keep-alive>
           <mvpage :keywords="keywords" />
         </keep-alive>
-
       </el-tab-pane>
-      <el-tab-pane label="歌单"
-                   name="songlist">
+      <el-tab-pane label="歌单" name="songlist">
         <keep-alive>
           <songlist :keywords="keywords" />
         </keep-alive>
@@ -54,18 +47,18 @@ import mvpage from "../../components/xymusic/searchresult/mv.vue";
 import songlist from "../../components/xymusic/searchresult/songlist.vue";
 export default {
   components: { songs, singer, album, videopage, songlist, mvpage },
-  data () {
+  data() {
     return {
       keywords: "",
       activeName: "songs",
     };
   },
   methods: {},
-  created () {
+  created() {
     this.keywords = this.$route.params.keywords;
   },
   watch: {
-    $route () {
+    $route() {
       this.keywords = this.$route.params.keywords;
     },
   },

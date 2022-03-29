@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     // 存入session
-    saveData () {
+    saveData() {
       //用户信息
       sessionStorage.setItem("userInfo", JSON.stringify(this.userInfo));
       //搜索历史
@@ -73,14 +73,12 @@ export default {
       sessionStorage.setItem("songdetailflag", this.songdetailflag);
     },
   },
-  mounted () {
+  mounted() {
     // 判断是否兼容箭头函数
-    try
-    {
+    try {
       eval("()=>{}");
       // alert("浏览器支持箭头函数");
-    } catch (eo)
-    {
+    } catch (eo) {
       alert("本 现代浏览器进行使用");
       window.location.href = "http://browsehappy.osfipin.com/";
     }
@@ -90,10 +88,10 @@ export default {
     window.addEventListener("unload", this.saveData);
   },
   watch: {
-    userInfo () {
-      this.saveData()
-    }
-  }
+    userInfo() {
+      this.saveData();
+    },
+  },
 };
 </script>
 <style lang="scss">

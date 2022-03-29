@@ -1,12 +1,9 @@
 <template>
   <div class="albumpage">
     <!-- 歌单信息 -->
-    <albuminfo :albuminfo="albuminfo"
-               :songs="songs" />
+    <albuminfo :albuminfo="albuminfo" :songs="songs" />
     <!-- 歌单导航 -->
-    <albumnav v-loading="loading"
-              :songs="songs"
-              :likeplaylist="likeplaylist" />
+    <albumnav v-loading="loading" :songs="songs" :likeplaylist="likeplaylist" />
   </div>
 </template>
 
@@ -19,7 +16,7 @@ export default {
     albuminfo,
     albumnav,
   },
-  data () {
+  data() {
     return {
       // 歌单详情
       albuminfo: {},
@@ -31,7 +28,7 @@ export default {
   },
   methods: {
     // 获取所有歌曲和专辑详情
-    async getallalbumlist () {
+    async getallalbumlist() {
       this.loading = true;
       const { data } = await this.$http.get("/album", {
         params: {
@@ -46,7 +43,7 @@ export default {
       this.loading = false;
     },
     //获取喜欢的歌曲列表
-    async getlikelist () {
+    async getlikelist() {
       if (!this.userInfo) return;
       const res = await this.$http.get("/likelist", {
         params: {
@@ -58,25 +55,23 @@ export default {
       this.likeplaylist = res.data.ids;
     },
   },
-  created () {
+  created() {
     this.getlikelist();
     this.getallalbumlist();
   },
-  beforeUpdate () {
+  beforeUpdate() {
     // 对比喜欢的音乐和当前歌单添加 likemusicflag属性
 
     this.likeplaylist.forEach((item2, index2, arr2) => {
       this.songs.forEach((item, index, arr) => {
-        if (arr2[index2] == arr[index].id)
-        {
+        if (arr2[index2] == arr[index].id) {
           arr[index].likemusicflag = true;
           // console.log(arr[index]);
         }
       });
     });
     this.songs.forEach((element) => {
-      if (!element.likemusicflag)
-      {
+      if (!element.likemusicflag) {
         element.likemusicflag = false;
       }
     });

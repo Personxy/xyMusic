@@ -1,45 +1,50 @@
 <template>
-  <div class="ranking"
-       v-loading="loading"
-       element-loading-text="加载中"
-       element-loading-spinner="el-icon-loading">
+  <div
+    class="ranking"
+    v-loading="loading"
+    element-loading-text="加载中"
+    element-loading-spinner="el-icon-loading"
+  >
     <!-- 官方榜 -->
     <div class="top5ranking">
       <span class="title">官方榜</span>
-      <div class="top5box"
-           v-for="item in top5ranking"
-           :key="item.id">
+      <div class="top5box" v-for="item in top5ranking" :key="item.id">
         <!-- 封面 -->
         <div class="imgdiv">
-          <img :src="item.coverImgUrl"
-               alt=""
-               @click="toranklist(item.id)"
-               class="coverimg" />
-          <img src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
-               style="width: 40px; height: 40px"
-               alt=""
-               class="playbtn"
-               @click="toranklist(item.id)" />
+          <img
+            :src="item.coverImgUrl"
+            alt=""
+            @click="toranklist(item.id)"
+            class="coverimg"
+          />
+          <img
+            src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
+            style="width: 40px; height: 40px"
+            alt=""
+            class="playbtn"
+            @click="toranklist(item.id)"
+          />
         </div>
 
         <!-- 右边前五首 -->
         <div class="rightsongsbox">
-          <div :class="[
+          <div
+            :class="[
               rightsongs,
               { active: item1.id == current.index && item.id == current.id },
             ]"
-               v-for="(item1, index1) in item.tracks"
-               :key="item1.id"
-               @click="selectsong(item1.id, item.id)"
-               @dblclick="getmusic(item1)">
+            v-for="(item1, index1) in item.tracks"
+            :key="item1.id"
+            @click="selectsong(item1.id, item.id)"
+            @dblclick="getmusic(item1)"
+          >
             <div class="index_name">
               <span class="index">{{ index1 + 1 }}</span>
               <span class="name">{{ item1.name }}</span>
             </div>
             <span class="author">{{ item1.ar[0].name }}</span>
           </div>
-          <div class="checkall"
-               @click="toranklist(item.id)">
+          <div class="checkall" @click="toranklist(item.id)">
             查看全部 &nbsp;>
           </div>
         </div>
@@ -49,25 +54,24 @@
     <div class="otherranking">
       <div class="title">全球榜</div>
       <div class="otherbox">
-        <div class="ranking"
-             v-for="item in otherranking"
-             :key="item.id">
+        <div class="ranking" v-for="item in otherranking" :key="item.id">
           <!-- 封面 -->
-          <div class="othercover"
-               @click="toranklist(item.id)">
-            <img :src="item.coverImgUrl"
-                 alt=""
-                 class="othercoverimg" />
+          <div class="othercover" @click="toranklist(item.id)">
+            <img :src="item.coverImgUrl" alt="" class="othercoverimg" />
             <!-- 播放量 -->
             <div class="playcount">
-              <img src="../../../../assets/images/歌单列表播放按钮.svg"
-                   alt="" />{{ (item.playcount || item.playCount) | wan }}
+              <img
+                src="../../../../assets/images/歌单列表播放按钮.svg"
+                alt=""
+              />{{ (item.playcount || item.playCount) | wan }}
             </div>
-            <img src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
-                 style="width: 40px; height: 40px"
-                 alt=""
-                 class="playbtn"
-                 @click="toranklist(item.id)" />
+            <img
+              src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
+              style="width: 40px; height: 40px"
+              alt=""
+              class="playbtn"
+              @click="toranklist(item.id)"
+            />
           </div>
           <!-- 标题 -->
           <div class="othername">
@@ -81,7 +85,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  data () {
+  data() {
     return {
       top5ranking: [],
       otherranking: [],
@@ -95,7 +99,7 @@ export default {
     };
   },
   methods: {
-    async getallranking () {
+    async getallranking() {
       this.loading = true;
       // 获取所有榜单列表
       const { data } = await this.$http.get("/toplist");
@@ -103,8 +107,7 @@ export default {
       this.otherranking = data.list.slice(4);
       // console.log(this.top5ranking);
       //获取前五首歌曲
-      for (let index = 0; index < this.top5ranking.length; index++)
-      {
+      for (let index = 0; index < this.top5ranking.length; index++) {
         const { data } = await this.$http.get("/playlist/detail", {
           params: {
             id: this.top5ranking[index].id,
@@ -118,12 +121,12 @@ export default {
       this.loading = false;
     },
     // 点击改变当前项颜色
-    selectsong (index, id) {
+    selectsong(index, id) {
       this.current.index = index;
       this.current.id = id;
     },
     //播放音乐获取音乐src和音乐详情
-    async getmusic (item) {
+    async getmusic(item) {
       const loading = this.$loading({
         lock: true,
         text: "播放资源获取中",
@@ -137,8 +140,7 @@ export default {
         },
       });
       // console.log(res.data.data[0].url);
-      if (res.data.data[0].url == null)
-      {
+      if (res.data.data[0].url == null) {
         loading.close();
         return this.$message.error("没有版权哦！");
       }
@@ -159,11 +161,11 @@ export default {
       loading.close();
     },
     // 跳转到音乐详情
-    toranklist (id) {
+    toranklist(id) {
       this.$router.push({ path: `/home/playlistpage/${id}` });
     },
   },
-  created () {
+  created() {
     this.getallranking();
   },
   computed: {

@@ -2,35 +2,45 @@
   <div class="videcategory">
     <div class="category">
       <!-- 选择按钮 -->
-      <div class="allcatebtn"
-           @click="changecatpanel(panel)">
+      <div class="allcatebtn" @click="changecatpanel(panel)">
         <span>{{ all.name }}&nbsp;></span>
       </div>
       <!-- 热门分类 -->
       <div class="hotcat">
-        <span v-for="(item, index) in tags"
-              :key="item.id"
-              :class="{ active: index == currentindex }"
-              @click="selectcat(index, item)">{{ item.name }}</span>
+        <span
+          v-for="(item, index) in tags"
+          :key="item.id"
+          :class="{ active: index == currentindex }"
+          @click="selectcat(index, item)"
+          >{{ item.name }}</span
+        >
       </div>
       <!-- 分类列表 -->
-      <div class="catlist"
-           style="width: 600px; height: 600px; overflow-y: scroll"
-           v-show="panel"
-           v-clickoutside="close">
+      <div
+        class="catlist"
+        style="width: 600px; height: 600px; overflow-y: scroll"
+        v-show="panel"
+        v-clickoutside="close"
+      >
         <div class="top">
-          <span :class="{ spanactive: spanflag }"
-                @click="selectallcate">全部视频</span>
+          <span :class="{ spanactive: spanflag }" @click="selectallcate"
+            >全部视频</span
+          >
         </div>
         <!-- 详细分类 -->
         <div class="contain">
           <!-- 详细分类列表 -->
           <div class="abox">
-            <div :class="[catboxlist]"
-                 v-for="(item1, index1) in categories"
-                 :key="item1.id">
-              <span @click="getcatlist(index1, item1)"
-                    :class="{ currentcat: currentcatindex == index1 }">{{ item1.name }}</span>
+            <div
+              :class="[catboxlist]"
+              v-for="(item1, index1) in categories"
+              :key="item1.id"
+            >
+              <span
+                @click="getcatlist(index1, item1)"
+                :class="{ currentcat: currentcatindex == index1 }"
+                >{{ item1.name }}</span
+              >
             </div>
           </div>
         </div>
@@ -43,7 +53,7 @@
 import { mapGetters } from "vuex";
 // import { bus } from "../../../../plugins/bus";
 export default {
-  data () {
+  data() {
     return {
       // name
       all: { name: "全部视频" },
@@ -64,12 +74,10 @@ export default {
   },
   methods: {
     // 获取视频分类
-    async getlistcat () {
-      if (!this.cookie)
-      {
+    async getlistcat() {
+      if (!this.cookie) {
         this.$store.commit("changeloginbar", true);
-      } else
-      {
+      } else {
         const { data } = await this.$http.get("/video/group/list", {
           params: {
             // cookie: this.cookie,
@@ -83,12 +91,10 @@ export default {
       }
     },
     // 热门视频分类
-    async gethotcat () {
-      if (!this.cookie)
-      {
+    async gethotcat() {
+      if (!this.cookie) {
         this.$store.commit("changeloginbar", true);
-      } else
-      {
+      } else {
         const { data } = await this.$http.get("/video/category/list", {
           params: {
             // cookie: this.cookie,
@@ -100,7 +106,7 @@ export default {
     },
 
     //点击全部分类
-    selectallcate () {
+    selectallcate() {
       this.spanflag = true;
       this.currentcatindex = 1000;
       this.currentindex = 1000;
@@ -109,7 +115,7 @@ export default {
       this.all.name = "全部视频";
     },
     // 热门分类点击
-    selectcat (index, item) {
+    selectcat(index, item) {
       this.currentindex = index;
       this.currentcatindex = 1000;
       this.spanflag = false;
@@ -118,7 +124,7 @@ export default {
       this.panel = false;
     },
     //分类点击
-    getcatlist (index1, item) {
+    getcatlist(index1, item) {
       this.currentcatindex = index1;
       this.currentindex = 1000;
       this.spanflag = false;
@@ -127,11 +133,11 @@ export default {
       this.all.name = item.name;
     },
     // 面板开关控制
-    changecatpanel (panel) {
+    changecatpanel(panel) {
       this.panel = !panel;
     },
     //传递查询参数
-    sendmessage (id) {
+    sendmessage(id) {
       this.$emit("sendcatid", id);
     },
     // 点击外部关闭面板
@@ -140,7 +146,7 @@ export default {
       this.panel = false;
     },
   },
-  mounted () {
+  mounted() {
     this.getlistcat();
     this.gethotcat();
   },
@@ -148,10 +154,10 @@ export default {
     ...mapGetters(["cookie"]),
   },
   watch: {
-    cookie () {
+    cookie() {
       // console.log(1);
       this.gethotcat();
-    }
+    },
   },
   directives: {
     // 自定义指令 能够在组件外部控制弹窗关闭

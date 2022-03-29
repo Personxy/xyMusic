@@ -1,58 +1,76 @@
 <template>
   <div class="loginbox">
     <!-- 关闭按钮 -->
-    <i class="el-icon-close"
-       @click="closelogin(false)"></i>
-    <img src="../../../assets/images/手机.svg"
-         alt=""
-         id="phoneico" />
+    <i class="el-icon-close" @click="closelogin(false)"></i>
+    <img src="../../../assets/images/手机.svg" alt="" id="phoneico" />
     <!-- 登陆方式切换 -->
     <div class="logintype">
-      <span :class="{ logintypechose: logintype == 0 }"
-            @click="changelogintype(0)">密码登陆</span>
-      <span :class="{ logintypechose: logintype == 1 }"
-            @click="changelogintype(1)">验证码登陆</span>
+      <span
+        :class="{ logintypechose: logintype == 0 }"
+        @click="changelogintype(0)"
+        >密码登陆</span
+      >
+      <span
+        :class="{ logintypechose: logintype == 1 }"
+        @click="changelogintype(1)"
+        >验证码登陆</span
+      >
     </div>
     <!-- 登陆表单 -->
-    <el-form :model="logindata"
-             :rules="rules"
-             ref="ruleForm"
-             label-width="100px"
-             class="demo-ruleForm"
-             @keyup.enter.native="sublogin">
+    <el-form
+      :model="logindata"
+      :rules="rules"
+      ref="ruleForm"
+      label-width="100px"
+      class="demo-ruleForm"
+      @keyup.enter.native="sublogin"
+    >
       <el-form-item prop="phonenum">
-        <el-input v-model="logindata.phonenum"
-                  placeholder="请输入手机号"
-                  prefix-icon="el-icon-mobile"
-                  v-if="logintype === 0"></el-input>
-        <el-input v-model="logindata.phonenum"
-                  placeholder="请输入手机号"
-                  prefix-icon="el-icon-mobile"
-                  v-if="logintype === 1"></el-input>
+        <el-input
+          v-model="logindata.phonenum"
+          placeholder="请输入手机号"
+          prefix-icon="el-icon-mobile"
+          v-if="logintype === 0"
+        ></el-input>
+        <el-input
+          v-model="logindata.phonenum"
+          placeholder="请输入手机号"
+          prefix-icon="el-icon-mobile"
+          v-if="logintype === 1"
+        ></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <!-- 密码输入框 -->
-        <el-input v-model="logindata.password"
-                  type="password"
-                  placeholder="请输入密码"
-                  prefix-icon="el-icon-lock"
-                  v-if="logintype === 0"></el-input>
+        <el-input
+          v-model="logindata.password"
+          type="password"
+          placeholder="请输入密码"
+          prefix-icon="el-icon-lock"
+          v-if="logintype === 0"
+        ></el-input>
         <!-- 验证码输入框 -->
-        <el-input v-model="logindata.identification"
-                  placeholder="请输入验证码"
-                  v-if="logintype === 1">
-          <el-button slot="append"
-                     class="identification"
-                     @click="getidentification"
-                     v-if="beforeidentification">{{ getidentificationcontent }}</el-button>
-          <el-button slot="append"
-                     class="identificationafter"
-                     v-if="!beforeidentification"
-                     :disabled="btndisabled">可重新获取{{ countdown }}s</el-button>
+        <el-input
+          v-model="logindata.identification"
+          placeholder="请输入验证码"
+          v-if="logintype === 1"
+        >
+          <el-button
+            slot="append"
+            class="identification"
+            @click="getidentification"
+            v-if="beforeidentification"
+            >{{ getidentificationcontent }}</el-button
+          >
+          <el-button
+            slot="append"
+            class="identificationafter"
+            v-if="!beforeidentification"
+            :disabled="btndisabled"
+            >可重新获取{{ countdown }}s</el-button
+          >
         </el-input>
       </el-form-item>
-      <el-button type="primary"
-                 @click="sublogin">登录</el-button>
+      <el-button type="primary" @click="sublogin">登录</el-button>
     </el-form>
   </div>
 </template>
@@ -62,7 +80,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "Login",
   components: {},
-  data () {
+  data() {
     return {
       //登录数据
       logindata: {
@@ -90,27 +108,23 @@ export default {
   },
   methods: {
     // 登录
-    async sublogin () {
+    async sublogin() {
       const loading = this.$loading({
         lock: true,
         text: "登录中",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.1)",
       });
-      if (this.logintype == 0)
-      {
+      if (this.logintype === 0) {
         let res = await this.$http.post("/login/cellphone", {
           phone: this.logindata.phonenum,
           password: this.logindata.password,
         });
-        if (res.data.code !== 200)
-
-          this.$message.error("账户或者密码错误！");
-        loading.close()
+        if (res.data.code !== 200) this.$message.error("账户或者密码错误！");
+        loading.close();
         // console.log(res);
         this.saveinfo(res);
-      } else if (this.logintype == 1)
-      {
+      } else if (this.logintype === 1) {
         // 验证验证码
         const { data } = await this.$http.get("/captcha/verify", {
           params: {
@@ -121,16 +135,14 @@ export default {
         });
         // console.log({ data });
         // this.saveinfo(res);
-        if (data.code !== 200)
-          this.$message.error("验证码错误！");
-        loading.close()
+        if (data.code !== 200) this.$message.error("验证码错误！");
+        loading.close();
         let res = await this.$http.post("/login/cellphone", {
           phone: this.logindata.phonenum,
           captcha: this.logindata.identification,
         });
-        if (res.data.code !== 200)
-          this.$message.error("账户或者密码错误！");
-        loading.close()
+        if (res.data.code !== 200) this.$message.error("账户或者密码错误！");
+        loading.close();
         // console.log(res);
         this.saveinfo(res);
         this.getidentificationcontent = "获取验证码";
@@ -138,7 +150,7 @@ export default {
     },
 
     // 保存个人信息和登录信息
-    async saveinfo (res) {
+    async saveinfo(res) {
       //保存用户个人信息
       this.$store.dispatch("saveUserInfo", res.data.profile);
       // window.sessionStorage.setItem('userInfo', res.data.profile)
@@ -165,15 +177,15 @@ export default {
       this.$store.dispatch("saveplayListCollect", this.playListc);
     },
     // 登录面板状态
-    closelogin (loginflag) {
+    closelogin(loginflag) {
       this.$store.commit("changeloginbar", loginflag);
     },
     // 登陆模式改变
-    changelogintype (type) {
+    changelogintype(type) {
       this.logintype = type;
     },
     // 验证码获取
-    async getidentification () {
+    async getidentification() {
       this.beforeidentification = false;
       const { data } = await this.$http.get("/captcha/sent", {
         params: {
@@ -181,14 +193,12 @@ export default {
         },
       });
       console.log(data);
-      if (this.timer)
-      {
+      if (this.timer) {
         clearInterval(this.timer);
       }
       this.timer = setInterval(() => {
         this.countdown--;
-        if (this.countdown == 0)
-        {
+        if (this.countdown == 0) {
           clearInterval(this.timer);
           this.getidentificationcontent = "重新获取验证码";
           this.beforeidentification = true;
@@ -198,7 +208,7 @@ export default {
     },
   },
   computed: {
-    userInfo () {
+    userInfo() {
       return this.$store.state.userInfo;
     },
     ...mapGetters(["playListMine", "playListCollect", "cookie"]),

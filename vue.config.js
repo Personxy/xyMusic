@@ -2,7 +2,7 @@ module.exports = {
   productionSourceMap: false,
   publicPath: './',
   devServer: {
-    host: '0.0.0.0',
+    host: 'localhost',
     proxy: {
       // 代理
       '^/api': {
