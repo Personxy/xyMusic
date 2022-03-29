@@ -44,7 +44,8 @@
       "node": true
     },
     "rules": {
-      "eslint-disable-next-line": 0
+      "prettier/prettier": "off",
+      "no-unused-vars": 0
     },
     "extends": [
       "plugin:vue/essential",
