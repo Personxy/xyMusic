@@ -1,65 +1,27 @@
 <template>
   <div class="songtablist">
     <div class="tablehead">
-      <div class="likehead">操2</div>
+      <div class="likehead">操作</div>
       <div class="songtitle">标题</div>
       <div class="singer">歌手</div>
       <div class="albumtitle">专辑</div>
       <div class="songstimetitle">时间</div>
     </div>
-    <RecycleScroller
-      class="scroller"
-      :items="newsongs"
-      :item-size="50"
-      key-field="id"
-      v-slot="{ item, index }"
-    >
-      <div
-        class="songrow"
-        @dblclick="getmusic(item)"
-        @mouseover="hoveron(true, index)"
-        @mouseleave="hoverleave(false)"
-      >
+    <RecycleScroller class="scroller" :items="newsongs" :item-size="50" key-field="id" v-slot="{ item, index }">
+      <div class="songrow" @dblclick="getmusic(item)" @mouseover="hoveron(true, index)" @mouseleave="hoverleave(false)">
         <div class="songindex">
-          {{ index + 1 >= 10 ? index + 1 : "0" + (index + 1) }}
+          {{ index + 1 >= 10 ? index + 1 : '0' + (index + 1) }}
         </div>
         <div class="likesong">
-          <img
-            style="cursor: pointer"
-            src="../../../assets/images/爱心.svg"
-            @click="changecollectcondition(true, item.id)"
-            alt=""
-            v-if="!item.likemusicflag"
-          />
-          <img
-            src="../../../assets/images/爱心已收藏.svg"
-            style="cursor: pointer"
-            alt=""
-            @click="changecollectcondition(false, item.id)"
-            v-if="item.likemusicflag"
-          />
+          <img style="cursor: pointer" src="../../../assets/images/爱心.svg" @click="changecollectcondition(true, item.id)" alt="" v-if="!item.likemusicflag" />
+          <img src="../../../assets/images/爱心已收藏.svg" style="cursor: pointer" alt="" @click="changecollectcondition(false, item.id)" v-if="item.likemusicflag" />
         </div>
-        <div
-          class="songname"
-          :style="
-            songDetails && item.id == songDetails.id
-              ? currentplaycolor
-              : othercolor
-          "
-        >
+        <div class="songname" :style="songDetails && item.id == songDetails.id ? currentplaycolor : othercolor">
           {{ item.name }}
-          <div
-            v-if="playstatus && songDetails && item.id == songDetails.id"
-            style="display: inline-block"
-          >
+          <div v-if="playstatus && songDetails && item.id == songDetails.id" style="display: inline-block">
             <playanimation />
           </div>
-          <img
-            src="../../../assets/images/列表暂停图标1.svg"
-            style="margin-bottom: -1px"
-            alt=""
-            v-if="!playstatus && songDetails && item.id == songDetails.id"
-          />
+          <img src="../../../assets/images/列表暂停图标1.svg" style="margin-bottom: -1px" alt="" v-if="!playstatus && songDetails && item.id == songDetails.id" />
           <!-- 添加下一首 -->
           <!-- <el-tooltip class="item" effect="light" content="下一首播放" placement="top-start">
             <div class="songsaddbtn" @click="addlistnextsong(item)">
@@ -80,8 +42,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import playanimation from "../animation/currentplayanimation";
+import { mapGetters } from 'vuex';
+import playanimation from '../animation/currentplayanimation';
 export default {
   props: {
     songs: Array,
@@ -94,10 +56,10 @@ export default {
     return {
       showbtn: false,
       currentplaycolor: {
-        color: "#ec4141",
+        color: '#ec4141',
       },
       othercolor: {
-        color: "black",
+        color: 'black',
       },
       currentindex: Number,
     };
@@ -107,11 +69,11 @@ export default {
     async changecollectcondition(flag, id) {
       const loading = this.$loading({
         lock: true,
-        text: "操作中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.1)",
+        text: '操作中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.1)',
       });
-      const res = await this.$http.get("/like", {
+      const res = await this.$http.get('/like', {
         params: {
           id: id,
           like: flag,
@@ -122,8 +84,8 @@ export default {
       if (res.data.code != 200) {
         loading.close();
         return this.$message({
-          message: "操作频繁，请稍后再试！",
-          type: "warning",
+          message: '操作频繁，请稍后再试！',
+          type: 'warning',
         });
       }
       this.newsongs.forEach((element) => {
@@ -139,11 +101,11 @@ export default {
     async getmusic(row) {
       const loading = this.$loading({
         lock: true,
-        text: "播放资源获取中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0,0)",
+        text: '播放资源获取中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0,0)',
       });
-      const res = await this.$http.get("/song/url", {
+      const res = await this.$http.get('/song/url', {
         params: {
           id: row.id,
           // cookie: this.cookie,
@@ -152,38 +114,38 @@ export default {
       // console.log(res.data.data[0].url);
       if (res.data.data[0].url == null) {
         loading.close();
-        return this.$message.error("没有版权哦！");
+        return this.$message.error('没有版权哦！');
       }
 
-      this.$store.dispatch("savecurrenturl", res.data.data[0].url);
+      this.$store.dispatch('savecurrenturl', res.data.data[0].url);
       //获取歌曲详情
-      const resdata = await this.$http.get("/song/detail", {
+      const resdata = await this.$http.get('/song/detail', {
         params: {
           ids: row.id,
         },
       });
       //存入下一首播放列表
-      this.$store.dispatch("savenextsong", resdata.data.songs[0]);
+      this.$store.dispatch('savenextsong', resdata.data.songs[0]);
       // 当前播放歌曲详情
-      this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
+      this.$store.dispatch('savesongDetails', resdata.data.songs[0]);
       //当前播放状态
-      this.$store.dispatch("saveplaystatus", true);
+      this.$store.dispatch('saveplaystatus', true);
       loading.close();
     },
     // 添加到播放列表
     addlistnextsong(row) {
       //存入下一首播放列表
       let length = this.nextsonglist.length;
-      this.$store.dispatch("savenextsonglist", row);
+      this.$store.dispatch('savenextsonglist', row);
       if (length + 1 == this.nextsonglist.length) {
         this.$message({
-          message: "添加成功",
-          type: "success",
+          message: '添加成功',
+          type: 'success',
         });
       } else {
         this.$message({
-          message: "请不要重复添加",
-          type: "warning",
+          message: '请不要重复添加',
+          type: 'warning',
         });
       }
     },
@@ -196,11 +158,11 @@ export default {
     },
     //
     tosingerpage(item) {
-      this.$store.dispatch("savesongdetailflag", false);
+      this.$store.dispatch('savesongdetailflag', false);
       this.$router.push(`/home/singerdetail/${item.ar[0].id}`);
     },
     toalbumpage(item) {
-      this.$store.dispatch("savesongdetailflag", false);
+      this.$store.dispatch('savesongdetailflag', false);
       this.$router.push(`/home/album/${item.al.id}`);
     },
   },
@@ -209,13 +171,7 @@ export default {
       // 拷贝传来的songlist
       return JSON.parse(JSON.stringify(this.songs));
     },
-    ...mapGetters([
-      "cookie",
-      "songDetails",
-      "playstatus",
-      "nextsonglist",
-      "playsonglist",
-    ]),
+    ...mapGetters(['cookie', 'songDetails', 'playstatus', 'nextsonglist', 'playsonglist']),
   },
   created() {},
 };

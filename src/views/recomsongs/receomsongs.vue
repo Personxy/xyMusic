@@ -14,15 +14,7 @@
     </div>
     <!-- 播放列表 -->
     <div class="recomtable">
-      <el-table
-        :data="dailySongs"
-        stripe
-        style="width: 100%"
-        @row-dblclick="getmusic"
-        @cell-mouse-enter="hovertitle(true)"
-        @cell-mouse-leave="hovertitle(false)"
-        @cell-click="tosingerpage"
-      >
+      <el-table :data="dailySongs" stripe style="width: 100%" @row-dblclick="getmusic" @cell-mouse-enter="hovertitle(true)" @cell-mouse-leave="hovertitle(false)" @cell-click="tosingerpage">
         <el-table-column type="index" width="50"> </el-table-column>
         <!-- 收藏按钮
         <el-table-column prop="likemusicflag"
@@ -41,72 +33,41 @@
                  v-if="scope.row.likemusicflag" />
           </template>
         </el-table-column> -->
-        <el-table-column
-          prop="name"
-          label="标题"
-          width="650"
-          class="table-title"
-        >
+        <el-table-column prop="name" label="标题" width="650" class="table-title">
           <template slot-scope="scope">
-            <div
-              v-if="songDetails ? scope.row.id == songDetails.id : false"
-              style="color: #ec4141"
-            >
+            <div v-if="songDetails ? scope.row.id == songDetails.id : false" style="color: #ec4141">
               {{ scope.row.name }}
               <!-- 当前播放动画 -->
               <div v-if="playstatus" style="display: inline-block">
                 <playanimation />
               </div>
               <!-- 暂停图标 -->
-              <img
-                src="../../assets/images/列表暂停图标1.svg"
-                style="margin-bottom: -1px"
-                alt=""
-                v-else
-              />
+              <img src="../../assets/images/列表暂停图标1.svg" style="margin-bottom: -1px" alt="" v-else />
               <!-- 操作按钮 -->
-              <el-tooltip
-                class="item"
-                effect="light"
-                content="下一首播放"
-                placement="top-start"
-              >
+              <el-tooltip class="item" effect="light" content="下一首播放" placement="top-start">
                 <div class="songsaddbtn" @click="addlistnextsong(scope.row)">
-                  <img
-                    src="../../assets/images/加号.svg"
-                    alt=""
-                    v-show="showbtn"
-                  />
+                  <img src="../../assets/images/加号.svg" alt="" v-show="showbtn" />
                 </div>
               </el-tooltip>
             </div>
             <div v-else>
               {{ scope.row.name }}
               <!-- 操作按钮 -->
-              <el-tooltip
-                class="item"
-                effect="light"
-                content="下一首播放"
-                placement="top-start"
-              >
+              <el-tooltip class="item" effect="light" content="下一首播放" placement="top-start">
                 <div class="songsaddbtn" @click="addlistnextsong(scope.row)">
-                  <img
-                    src="../../assets/images/加号.svg"
-                    alt=""
-                    v-show="showbtn"
-                  />
+                  <img src="../../assets/images/加号.svg" alt="" v-show="showbtn" />
                 </div>
               </el-tooltip>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="歌手" width="300">
-          <template scope="scope">
+          <template slot-scope="scope">
             <span style="cursor: pointer">{{ scope.row.ar[0].name }}</span>
           </template>
         </el-table-column>
         <el-table-column label="专辑" width="400">
-          <template scope="scope">
+          <template slot-scope="scope">
             <span style="cursor: pointer">{{ scope.row.al.name }}</span>
           </template>
         </el-table-column>
@@ -125,8 +86,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import playanimation from "../../components/xymusic/animation/currentplayanimation.vue";
+import { mapGetters } from 'vuex';
+import playanimation from '../../components/xymusic/animation/currentplayanimation.vue';
 export default {
   data() {
     return {
@@ -144,11 +105,11 @@ export default {
       const loading = this.$loading({
         lock: true,
         // text: "",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.1)",
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.1)',
       });
       this.$http
-        .get("/recommend/songs")
+        .get('/recommend/songs')
         .then((data) => {
           this.dailySongs = data.data.data.dailySongs;
           loading.close();
@@ -165,17 +126,17 @@ export default {
       // loading
       const loading = this.$loading({
         lock: true,
-        text: "操作中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.1)",
+        text: '操作中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.1)',
       });
       // 清除当前播放列表
-      this.$store.dispatch("clearplaysonglist");
+      this.$store.dispatch('clearplaysonglist');
       // console.log(this.playsonglist);
-      this.$store.dispatch("saveplaysonglist", this.dailySongs);
+      this.$store.dispatch('saveplaysonglist', this.dailySongs);
 
       // 获取当前列表第一首
-      const res = await this.$http.get("/song/url", {
+      const res = await this.$http.get('/song/url', {
         params: {
           id: this.dailySongs[this.index].id,
           // cookie: this.cookie,
@@ -184,21 +145,21 @@ export default {
       // console.log(res.data.data[0].url);
       if (!res.data.data[0].url) {
         this.index++;
-        this.$message.error("没有版权即将播放下一首！");
+        this.$message.error('没有版权即将播放下一首！');
         this.playallmusic();
         loading.close();
       } else {
-        this.$store.dispatch("savecurrenturl", res.data.data[0].url);
-        this.$store.dispatch("saveplaystatus", true);
+        this.$store.dispatch('savecurrenturl', res.data.data[0].url);
+        this.$store.dispatch('saveplaystatus', true);
         //获取歌曲详情
-        const resdata = await this.$http.get("/song/detail", {
+        const resdata = await this.$http.get('/song/detail', {
           params: {
             ids: this.dailySongs[this.index].id,
           },
         });
         // console.log(resdata);
         // 存入歌曲详情
-        this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
+        this.$store.dispatch('savesongDetails', resdata.data.songs[0]);
         this.index = 0;
         loading.close();
       }
@@ -206,18 +167,18 @@ export default {
     //添加当前歌单到播放列表
     addsheettoplaylist() {
       // console.log(this.songs);
-      this.$store.dispatch("saveplaysonglist", this.songs);
-      return this.$message.success("添加成功！");
+      this.$store.dispatch('saveplaysonglist', this.songs);
+      return this.$message.success('添加成功！');
     },
     // 收藏与取消收藏
     async changecollectcondition(flag, id) {
       const loading = this.$loading({
         lock: true,
-        text: "操作中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.1)",
+        text: '操作中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.1)',
       });
-      const res = await this.$http.get("/like", {
+      const res = await this.$http.get('/like', {
         params: {
           id: id,
           like: flag,
@@ -228,8 +189,8 @@ export default {
       if (res.data.code != 200) {
         loading.close();
         return this.$message({
-          message: "操作频繁，请稍后再试！",
-          type: "warning",
+          message: '操作频繁，请稍后再试！',
+          type: 'warning',
         });
       }
       this.newsongs.forEach((element) => {
@@ -244,11 +205,11 @@ export default {
     async getmusic(row) {
       const loading = this.$loading({
         lock: true,
-        text: "播放资源获取中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0,0)",
+        text: '播放资源获取中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0,0)',
       });
-      const res = await this.$http.get("/song/url", {
+      const res = await this.$http.get('/song/url', {
         params: {
           id: row.id,
           // cookie: this.cookie,
@@ -257,40 +218,40 @@ export default {
       // console.log(res.data.data[0].url);
       if (res.data.data[0].url == null) {
         loading.close();
-        return this.$message.error("没有版权哦！");
+        return this.$message.error('没有版权哦！');
       }
 
-      this.$store.dispatch("savecurrenturl", res.data.data[0].url);
+      this.$store.dispatch('savecurrenturl', res.data.data[0].url);
       //获取歌曲详情
-      const resdata = await this.$http.get("/song/detail", {
+      const resdata = await this.$http.get('/song/detail', {
         params: {
           ids: row.id,
         },
       });
       //存入下一首播放列表
-      this.$store.dispatch("savenextsong", resdata.data.songs[0]);
+      this.$store.dispatch('savenextsong', resdata.data.songs[0]);
       // 当前播放歌曲详情
-      this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
+      this.$store.dispatch('savesongDetails', resdata.data.songs[0]);
       // //存入当前播放歌曲列表
       // this.$store.dispatch("saveplaysonglist", resdata.data.songs[0]);
       //当前播放状态
-      this.$store.dispatch("saveplaystatus", true);
+      this.$store.dispatch('saveplaystatus', true);
       loading.close();
     },
     // 添加到播放列表
     addlistnextsong(row) {
       //存入下一首播放列表
       let length = this.nextsonglist.length;
-      this.$store.dispatch("savenextsonglist", row);
+      this.$store.dispatch('savenextsonglist', row);
       if (length + 1 == this.nextsonglist.length) {
         this.$message({
-          message: "添加成功",
-          type: "success",
+          message: '添加成功',
+          type: 'success',
         });
       } else {
         this.$message({
-          message: "请不要重复添加",
-          type: "warning",
+          message: '请不要重复添加',
+          type: 'warning',
         });
       }
     },
@@ -301,11 +262,11 @@ export default {
     tosingerpage(row, column) {
       // console.log(row);
       // console.log(column);
-      if (column.label === "歌手") {
-        this.$store.dispatch("savesongdetailflag", false);
+      if (column.label === '歌手') {
+        this.$store.dispatch('savesongdetailflag', false);
         this.$router.push(`/home/singerdetail/${row.ar[0].id}`);
-      } else if (column.label === "专辑") {
-        this.$store.dispatch("savesongdetailflag", false);
+      } else if (column.label === '专辑') {
+        this.$store.dispatch('savesongdetailflag', false);
         this.$router.push(`/home/album/${row.al.id}`);
       }
     },
@@ -314,14 +275,7 @@ export default {
     this.getrecomsongs();
   },
   computed: {
-    ...mapGetters([
-      "cookie",
-      "songDetails",
-      "playstatus",
-      "nextsonglist",
-      "playsonglist",
-      "userInfo",
-    ]),
+    ...mapGetters(['cookie', 'songDetails', 'playstatus', 'nextsonglist', 'playsonglist', 'userInfo']),
   },
   watch: {
     userInfo() {
