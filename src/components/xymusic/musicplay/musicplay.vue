@@ -12,7 +12,7 @@
       <div class="musicInfo" v-if="songDetails && !songdetailflag">
         <!-- 歌曲图片 -->
         <div class="songspic" @click="opendetail(!songdetailflag)" style="width: 6.8vh; cursor: pointer; height: 6.8vh">
-          <el-image :src="songDetails.al.picUrl" alt="" style="width: 6.8vh"> </el-image>
+          <el-image :src="songDetails.al.picUrl" alt="" style="width: 6.8vh; height: 6.8vh"> </el-image>
           <div class="songpictrangle"></div>
         </div>
         <!-- 歌曲名和歌手名 -->
