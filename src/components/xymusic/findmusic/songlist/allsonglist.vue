@@ -13,7 +13,7 @@
         </div>
         <!-- 播放显示按钮显示       -->
         <div class="playbtn">
-          <img src="../../../../assets/images/红色播放按钮.svg" style="width: 55%; height: 55%; margin-left: 13.1%; margin-top: 21.5%" alt="" />
+          <img src="../../../../assets/images/红色播放按钮.svg" style="" alt="" />
         </div>
       </div>
     </div>
@@ -86,7 +86,7 @@ export default {
     flex-wrap: wrap;
   }
   .catlist:hover .playbtn {
-    display: block;
+    opacity: 1;
   }
   .catlist {
     cursor: pointer;
@@ -114,17 +114,25 @@ export default {
       position: absolute;
       right: 20px;
       bottom: 60px;
-      display: none;
-      height: 13%;
-      width: 17%;
-      background: #fafafb;
+      opacity: 0;
+      width: 40px;
+      height: 40px;
       // -webkit-backdrop-filter: blur(8px);
       // backdrop-filter: blur(8px);
-      // background: hsla(0, 0%, 100%, 0.14);
+      background: rgba(255, 255, 255, 0.8);
       border: 1px solid hsla(0, 0%, 100%, 0.08);
       border-radius: 50%;
       // cursor: default;
-      transition: 0.2s;
+      transition: 0.5s;
+      img {
+        width: 22px;
+        height: 22px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -11px; /* 高度的一半 */
+        margin-left: -9px; /* 宽度的一半 */
+      }
     }
     span {
       display: block;
