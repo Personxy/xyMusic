@@ -15,10 +15,10 @@ import VueVirtualScroller from 'vue-virtual-scroller';
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 // import '@/assets/iconbofangshunxu/iconfont.css';
 //解决跨域
-import { VueJsonp } from 'vue-jsonp';
+// import { VueJsonp } from 'vue-jsonp';
 
 Vue.config.productionTip = false;
-Vue.use(VueJsonp);
+// Vue.use(VueJsonp);
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
 Vue.use(animated);
@@ -29,7 +29,6 @@ axios.defaults.baseURL = '/api';
 if (process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = 'https://netease-cloud-music-api-puce-iota.vercel.app/';
 }
-
 // api如果在本地将baseURL改成http://localhost:3000
 // axios.defaults.baseURL = 'http://localhost:3000';
 
