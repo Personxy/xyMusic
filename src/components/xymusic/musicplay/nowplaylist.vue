@@ -1,32 +1,12 @@
 <template>
   <div class="playlistnow" v-if="playsonglist">
     <div class="playlist">
-      <div
-        style="
-          text-align: left;
-          font-size: 24px;
-          font-weight: bold;
-          margin-bottom: 15px;
-          margin-top: 10px;
-          padding-left: 10px;
-        "
-      >
+      <div style="text-align: left; font-size: 24px; font-weight: bold; margin-bottom: 15px; margin-top: 10px; padding-left: 10px">
         <span>当前播放</span>
       </div>
-      <div
-        style="
-          text-align: left;
-          color: #cfcfcf;
-          padding-left: 10px;
-          font-size: 14px;
-        "
-      >
+      <div style="text-align: left; color: #cfcfcf; padding-left: 10px; font-size: 14px">
         <span>总{{ playsonglist.length }}首</span>
-        <span
-          @click="clearcurrentlist"
-          style="margin-left: 300px; color: #507daf; cursor: pointer"
-          >清空列表</span
-        >
+        <span @click="clearcurrentlist" style="margin-left: 300px; color: #507daf; cursor: pointer">清空列表</span>
       </div>
       <el-table
         :data="playsonglist"
@@ -37,40 +17,21 @@
         empty-text="你还没有添加任何歌曲"
         ref="playlist"
       >
-        <el-table-column
-          property="name"
-          label="标题"
-          width="200"
-          show-overflow-tooltip
-        >
+        <el-table-column property="name" label="标题" width="200" show-overflow-tooltip>
           <template slot-scope="scope">
-            <div
-              v-if="songDetails ? scope.row.id == songDetails.id : false"
-              style="color: #ec4141"
-              :ref="scope.row.id + 'ref'"
-            >
+            <div v-if="songDetails ? scope.row.id == songDetails.id : false" style="color: #ec4141" :ref="scope.row.id + 'ref'">
               {{ scope.row.name }}
               <!-- 当前播放动画 -->
               <div v-if="playstatus" style="display: inline-block">
                 <playanimationa />
               </div>
               <!-- 暂停图标 -->
-              <img
-                src="../../../assets/images/列表暂停图标2.svg"
-                style="display: inline-block"
-                alt=""
-                v-else
-              />
+              <img src="../../../assets/images/列表暂停图标2.svg" style="display: inline-block" alt="" v-else />
             </div>
             <div :ref="scope.row.id + 'ref'" v-else>{{ scope.row.name }}</div>
           </template>
         </el-table-column>
-        <el-table-column
-          property="ar[0].name"
-          label="歌手"
-          width="120"
-          show-overflow-tooltip
-        ></el-table-column>
+        <el-table-column property="ar[0].name" label="歌手" width="120" show-overflow-tooltip></el-table-column>
         <el-table-column property="dt" label="时间" width="120">
           <template slot-scope="dt">
             {{ (dt.row.dt / 1000) | minutesformat }}
@@ -78,11 +39,7 @@
         </el-table-column>
         <el-table-column label="操作" width="120">
           <template slot-scope="scope">
-            <span
-              @click="deleteRow(scope.$index, scope.row)"
-              style="cursor: pointer"
-              >x</span
-            >
+            <span @click="deleteRow(scope.$index, scope.row)" style="cursor: pointer">x</span>
           </template>
         </el-table-column>
       </el-table>
@@ -91,8 +48,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import playanimationa from "../animation/currentplayanimation";
+import { mapGetters } from 'vuex';
+import playanimationa from '../animation/currentplayanimation';
 export default {
   data() {
     return {
@@ -105,17 +62,17 @@ export default {
   methods: {
     // 清空播放列表
     clearcurrentlist() {
-      this.$confirm("是否清空当前播放列表?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm('是否清空当前播放列表?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
       })
         .then(() => {
-          this.$store.dispatch("clearplaysonglist");
-          this.$store.dispatch("saveplaystatus", false);
-          this.$store.dispatch("savesongDetails", null);
-          this.$store.dispatch("savecurrenturl", "");
-          this.$store.dispatch("clearnextsonglist");
+          this.$store.dispatch('clearplaysonglist');
+          this.$store.dispatch('saveplaystatus', false);
+          this.$store.dispatch('savesongDetails', null);
+          this.$store.dispatch('savecurrenturl', '');
+          this.$store.dispatch('clearnextsonglist');
         })
         .catch(() => {
           return;
@@ -124,27 +81,27 @@ export default {
 
     // 获取音乐和详情并播放
     async playmusic(row) {
-      const res = await this.$http.get("/song/url", {
+      const res = await this.$http.get('/song/url', {
         params: {
           id: row.id,
           // cookie: this.cookie,
-          realIP: "116.25.146.177",
+          realIP: '116.25.146.177',
         },
       });
       // console.log(res.data.data[0].url);
-      if (!res.data.data[0].url) return this.$message.error("没有播放来源！");
-      this.$store.dispatch("savecurrenturl", res.data.data[0].url);
-      this.$store.dispatch("saveplaystatus", true);
+      if (!res.data.data[0].url) return this.$message.error('没有播放来源！');
+      this.$store.dispatch('savecurrenturl', res.data.data[0].url);
+      this.$store.dispatch('saveplaystatus', true);
 
       //获取歌曲详情
-      const resdata = await this.$http.get("/song/detail", {
+      const resdata = await this.$http.get('/song/detail', {
         params: {
           ids: row.id,
         },
       });
       // console.log(resdata);
       // 存入歌曲详情
-      this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
+      this.$store.dispatch('savesongDetails', resdata.data.songs[0]);
     },
 
     // 删除当前歌曲
@@ -154,13 +111,13 @@ export default {
       if (this.playsonglist[index + 1] && this.songDetails.id == row.id) {
         this.playmusic(this.playsonglist[index + 1]);
       }
-      this.$store.dispatch("deletesong", index, row);
+      this.$store.dispatch('deletesong', index, row);
       // console.log(this.playsonglist);
       if (this.playsonglist.length == 0) {
-        this.$store.dispatch("clearplaysonglist");
-        this.$store.dispatch("saveplaystatus", false);
-        this.$store.dispatch("savesongDetails", null);
-        this.$store.dispatch("savecurrenturl", "");
+        this.$store.dispatch('clearplaysonglist');
+        this.$store.dispatch('saveplaystatus', false);
+        this.$store.dispatch('savesongDetails', null);
+        this.$store.dispatch('savecurrenturl', '');
       }
     },
     // 定位到当前播放的歌曲
@@ -171,27 +128,26 @@ export default {
           this.$refs.playlist.setCurrentRow(this.playsonglist[i]);
           let dom = this.$refs.playlist.bodyWrapper;
           this.$nextTick(() => {
-            let elref = this.playsonglist[i].id + "ref";
-            let el = this.$refs[elref].getBoundingClientRect();
-            if (
-              el.top >= 0 &&
-              el.left >= 0 &&
-              el.bottom <=
-                (window.innerHeight - 80 ||
-                  document.documentElement.clientHeight - 80) &&
-              el.right <=
-                (window.innerWidth || document.documentElement.clientWidth)
-            ) {
-              //判断是否在视图内
-              // console.log(el.top, '顶部');
-              // console.log(el.left, 'left');
-              // console.log(el.bottom, '底部');
-              // console.log(window.innerHeight || document.documentElement.clientHeight, 'window.innerHeight || document.documentElement.clientHeight',);
-              // console.log(el.right, 'right');
-              return;
-            } else {
-              var top2 = this.getElementTop(this.$refs[elref]);
-              dom.scrollTo(0, top2 - 140);
+            let elref = this?.playsonglist[i]?.id + 'ref';
+            let el = this?.$refs[elref]?.getBoundingClientRect();
+            if (el) {
+              if (
+                el.top >= 0 &&
+                el.left >= 0 &&
+                el.bottom <= (window.innerHeight - 80 || document.documentElement.clientHeight - 80) &&
+                el.right <= (window.innerWidth || document.documentElement.clientWidth)
+              ) {
+                //判断是否在视图内
+                // console.log(el.top, '顶部');
+                // console.log(el.left, 'left');
+                // console.log(el.bottom, '底部');
+                // console.log(window.innerHeight || document.documentElement.clientHeight, 'window.innerHeight || document.documentElement.clientHeight',);
+                // console.log(el.right, 'right');
+                return;
+              } else {
+                var top2 = this.getElementTop(this.$refs[elref]);
+                dom.scrollTo(0, top2 - 140);
+              }
             }
           });
         }
@@ -210,7 +166,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["playsonglist", "cookie", "songDetails", "playstatus"]),
+    ...mapGetters(['playsonglist', 'cookie', 'songDetails', 'playstatus']),
   },
   mounted() {
     this.changetablescroll();
