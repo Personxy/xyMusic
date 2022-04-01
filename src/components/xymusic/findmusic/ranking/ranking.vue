@@ -1,38 +1,19 @@
 <template>
-  <div
-    class="ranking"
-    v-loading="loading"
-    element-loading-text="加载中"
-    element-loading-spinner="el-icon-loading"
-  >
+  <div class="ranking" v-loading="loading" element-loading-text="加载中" element-loading-spinner="el-icon-loading">
     <!-- 官方榜 -->
     <div class="top5ranking">
       <span class="title">官方榜</span>
       <div class="top5box" v-for="item in top5ranking" :key="item.id">
         <!-- 封面 -->
         <div class="imgdiv">
-          <img
-            :src="item.coverImgUrl"
-            alt=""
-            @click="toranklist(item.id)"
-            class="coverimg"
-          />
-          <img
-            src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
-            style="width: 40px; height: 40px"
-            alt=""
-            class="playbtn"
-            @click="toranklist(item.id)"
-          />
+          <img :src="item.coverImgUrl" alt="" @click="toranklist(item.id)" class="coverimg" />
+          <img src="../../../../assets/images/hover显示在歌单列表上的按钮.svg" style="width: 40px; height: 40px" alt="" class="playbtn" @click="toranklist(item.id)" />
         </div>
 
         <!-- 右边前五首 -->
         <div class="rightsongsbox">
           <div
-            :class="[
-              rightsongs,
-              { active: item1.id == current.index && item.id == current.id },
-            ]"
+            :class="[rightsongs, { active: item1.id == current.index && item.id == current.id }]"
             v-for="(item1, index1) in item.tracks"
             :key="item1.id"
             @click="selectsong(item1.id, item.id)"
@@ -44,9 +25,7 @@
             </div>
             <span class="author">{{ item1.ar[0].name }}</span>
           </div>
-          <div class="checkall" @click="toranklist(item.id)">
-            查看全部 &nbsp;>
-          </div>
+          <div class="checkall" @click="toranklist(item.id)">查看全部 &nbsp;></div>
         </div>
       </div>
     </div>
@@ -59,19 +38,8 @@
           <div class="othercover" @click="toranklist(item.id)">
             <img :src="item.coverImgUrl" alt="" class="othercoverimg" />
             <!-- 播放量 -->
-            <div class="playcount">
-              <img
-                src="../../../../assets/images/歌单列表播放按钮.svg"
-                alt=""
-              />{{ (item.playcount || item.playCount) | wan }}
-            </div>
-            <img
-              src="../../../../assets/images/hover显示在歌单列表上的按钮.svg"
-              style="width: 40px; height: 40px"
-              alt=""
-              class="playbtn"
-              @click="toranklist(item.id)"
-            />
+            <div class="playcount"><img src="../../../../assets/images/歌单列表播放按钮.svg" alt="" />{{ (item.playcount || item.playCount) | wan }}</div>
+            <img src="../../../../assets/images/hover显示在歌单列表上的按钮.svg" style="width: 40px; height: 40px" alt="" class="playbtn" @click="toranklist(item.id)" />
           </div>
           <!-- 标题 -->
           <div class="othername">
@@ -83,14 +51,14 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
       top5ranking: [],
       otherranking: [],
       // class
-      rightsongs: "rightsongs",
+      rightsongs: 'rightsongs',
       current: {
         index: 1000,
         id: 0,
@@ -102,23 +70,32 @@ export default {
     async getallranking() {
       this.loading = true;
       // 获取所有榜单列表
-      const { data } = await this.$http.get("/toplist");
+      const { data } = await this.$http.get('/toplist');
       this.top5ranking = data.list.slice(0, 4);
       this.otherranking = data.list.slice(4);
       // console.log(this.top5ranking);
       //获取前五首歌曲
+      // for (let index = 0; index < this.top5ranking.length; index++) {
+      //   const { data } = await this.$http.get("/playlist/detail", {
+      //     params: {
+      //       id: this.top5ranking[index].id,
+      //     },
+      //   });
+      //   // console.log(this.top5ranking[index]);
+      //   // 把前五首放到榜单里
+      //   this.top5ranking[index]["tracks"] = data.playlist.tracks.slice(0, 5);
+      //   // console.log(this.top5ranking[index]);
+      // }
+      let requestarr = [];
       for (let index = 0; index < this.top5ranking.length; index++) {
-        const { data } = await this.$http.get("/playlist/detail", {
-          params: {
-            id: this.top5ranking[index].id,
-          },
-        });
-        // console.log(this.top5ranking[index]);
-        // 把前五首放到榜单里
-        this.top5ranking[index]["tracks"] = data.playlist.tracks.slice(0, 5);
-        // console.log(this.top5ranking[index]);
+        requestarr.push(`/playlist/detail/?id=${this.top5ranking[index].id}`);
       }
-      this.loading = false;
+      this.$http.all([this.$http.get(requestarr[0]), this.$http.get(requestarr[1]), this.$http.get(requestarr[2]), this.$http.get(requestarr[3])]).then((res) => {
+        res.forEach((e, index) => {
+          this.top5ranking[index]['tracks'] = e.data.playlist.tracks.slice(0, 5);
+        });
+        this.loading = false;
+      });
     },
     // 点击改变当前项颜色
     selectsong(index, id) {
@@ -129,11 +106,11 @@ export default {
     async getmusic(item) {
       const loading = this.$loading({
         lock: true,
-        text: "播放资源获取中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0,0)",
+        text: '播放资源获取中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0,0)',
       });
-      const res = await this.$http.get("/song/url", {
+      const res = await this.$http.get('/song/url', {
         params: {
           id: item.id,
           // cookie: this.cookie,
@@ -142,22 +119,22 @@ export default {
       // console.log(res.data.data[0].url);
       if (res.data.data[0].url == null) {
         loading.close();
-        return this.$message.error("没有版权哦！");
+        return this.$message.error('没有版权哦！');
       }
-      this.$store.dispatch("savecurrenturl", res.data.data[0].url);
+      this.$store.dispatch('savecurrenturl', res.data.data[0].url);
       //获取歌曲详情
-      const resdata = await this.$http.get("/song/detail", {
+      const resdata = await this.$http.get('/song/detail', {
         params: {
           ids: item.id,
         },
       });
       // console.log(resdata);
       //存入下一首播放列表
-      this.$store.dispatch("savenextsong", resdata.data.songs[0]);
+      this.$store.dispatch('savenextsong', resdata.data.songs[0]);
       // 当前播放歌曲详情
-      this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
+      this.$store.dispatch('savesongDetails', resdata.data.songs[0]);
       //当前播放状态
-      this.$store.dispatch("saveplaystatus", true);
+      this.$store.dispatch('saveplaystatus', true);
       loading.close();
     },
     // 跳转到音乐详情
@@ -169,7 +146,7 @@ export default {
     this.getallranking();
   },
   computed: {
-    ...mapGetters(["cookie"]),
+    ...mapGetters(['cookie']),
   },
 };
 </script>
