@@ -31,7 +31,11 @@
 
 <script>
 import { bus } from '../../../../plugins/bus';
+
 export default {
+  props: {
+    loading: Boolean,
+  },
   data() {
     return {
       // name
@@ -117,6 +121,7 @@ export default {
     this.getlistcat();
     this.gethotcat();
   },
+
   directives: {
     // 自定义指令 能够在组件外部控制弹窗关闭
     // https://www.cnblogs.com/yangzhou33/p/10023410.html

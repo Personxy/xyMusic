@@ -3,8 +3,8 @@
     <!-- 采用v-infinite-scroll无限加载 -->
     <div v-infinite-scroll="getcatlist" infinite-scroll-distance="200px" infinite-scroll-delay="500" class="songlistbox">
       <div class="catlist" v-for="item in catlist" :key="item.id" @click="tolistdetail(item.id)">
-        <img :src="item.coverImgUrl" style="width: 240px; height: 250px; border-radius: 5px" />
-        <div class="shadowmask" style="width: 240px; height: 250px; border-radius: 5px"></div>
+        <el-image :src="item.coverImgUrl" style="width: 240px; height: 250px; border-radius: 5px"></el-image>
+        <div class="shadowmask" style="width: 240px; height: 250px; border-radius: 5px" v-if="maskflag"></div>
         <span>{{ item.name }}</span>
         <!-- 播放量 -->
         <div class="playcount">
@@ -17,22 +17,26 @@
         </div>
       </div>
     </div>
-    <div class="" v-if="loading" style="margin-top: 20px; font-size: 15px">加载中<i class="el-icon-loading" style="margin-left: 5px"></i></div>
+    <div class="" v-if="loadingflag" style="margin-top: 20px; font-size: 15px">加载中<i class="el-icon-loading" style="margin-left: 5px"></i></div>
   </div>
 </template>
 
 <script>
 import { bus } from '../../../../plugins/bus';
 export default {
+  props: {
+    loading: Boolean,
+  },
   data() {
     return {
-      // 歌单分类名
+      // 歌单分类名transition
       catname: '',
       // 歌单列表
       catlist: [],
       offset: 0,
-      loading: false,
+      loadingflag: false,
       total: 1000,
+      maskflag: false,
     };
   },
   methods: {
@@ -45,13 +49,12 @@ export default {
           limit: 50,
         },
       });
-      this.loading = true;
+
       this.catlist.push.apply(this.catlist, data.playlists);
       // 清除重复
       this.catlist = this.catlist.filter((element, index, arr) => {
         return arr.findIndex((el) => el.id == element.id) === index;
       });
-      // console.log(this.catlist);
       this.total = data.total;
       this.offset = this.offset + 50;
     },
@@ -64,12 +67,26 @@ export default {
     this.getcatlist();
   },
   mounted() {
+    this.maskflag = false;
+  },
+  beforeUpdate() {
     // 获取歌单分类名
+
     bus.$on('catname', (data) => {
       this.catname = data;
       this.offset = 0;
       this.catlist = [];
+      this.maskflag = false;
       this.getcatlist();
+    });
+  },
+  updated() {
+    this.$nextTick(function () {
+      this.$emit('loadingmethod', false);
+      this.loadingflag = true;
+      setTimeout(() => {
+        this.maskflag = true;
+      }, 500);
     });
   },
   beforeDestroy() {
