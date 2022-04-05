@@ -8,7 +8,7 @@
       <div class="songstimetitle">时间</div>
     </div>
     <RecycleScroller class="scroller" :items="newsongs" :item-size="50" key-field="id" v-slot="{ item, index }">
-      <div class="songrow" @dblclick="getmusic(item)" @mouseover="hoveron(true, index)" @mouseleave="hoverleave(false)">
+      <div class="songrow" @dblclick="getmusic(item)" @mouseover="hoveron(true, index)" @mouseleave="hoverleave(false)" @contextmenu.prevent="rightClick($event, item)">
         <div class="songindex">
           {{ index + 1 >= 10 ? index + 1 : '0' + (index + 1) }}
         </div>
@@ -22,12 +22,6 @@
             <playanimation />
           </div>
           <img src="../../../assets/images/列表暂停图标1.svg" style="margin-bottom: -1px" alt="" v-if="!playstatus && songDetails && item.id == songDetails.id" />
-          <!-- 添加下一首 -->
-          <!-- <el-tooltip class="item" effect="light" content="下一首播放" placement="top-start">
-            <div class="songsaddbtn" @click="addlistnextsong(item)">
-              <img src="../../../assets/images/加号.svg" alt="" v-show="showbtn" />
-            </div>
-          </el-tooltip> -->
         </div>
         <div class="singer">
           <span @click="tosingerpage(item)">{{ item.ar[0].name }}</span>
@@ -38,6 +32,21 @@
         <div class="songtime">{{ (item.dt / 1000) | minutesformat }}</div>
       </div>
     </RecycleScroller>
+    <!-- 右键菜单 -->
+    <div class="rightmenu" v-show="showrightmenu" ref="rightmenu" @click="closeMenu">
+      <div class="rightmenuitem" @click="getmusic(rightmenuitem)">
+        <span>播放</span>
+      </div>
+      <div class="rightmenuitem" @click="addlistnextsong()">
+        <!-- <img src="../../../assets/images/加号.svg" alt="" /> -->
+        <span>添加到下一首播放</span>
+      </div>
+
+      <div class="rightmenuitem">
+        <!-- <img src="../../../assets/images/加号.svg" alt="" /> -->
+        <span>添加到收藏列表</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -62,6 +71,8 @@ export default {
         color: 'black',
       },
       currentindex: Number,
+      showrightmenu: false,
+      rightmenuitem: {},
     };
   },
   methods: {
@@ -97,8 +108,33 @@ export default {
       });
       loading.close();
     },
+    // 右键点击
+    rightClick(e, item) {
+      this.showrightmenu = true;
+      this.rightmenuitem = item;
+      console.log(this.rightmenuitem);
+      this.$nextTick(
+        function () {
+          let largesetwidth = window.innerWidth - this.$refs.rightmenu.offsetWidth - 20;
+          let largeestheight = window.innerHeight - this.$refs.rightmenu.offsetHeight - 80;
+          if (e.x > largesetwidth) {
+            this.$refs.rightmenu.style.left = largesetwidth + 'px';
+          } else {
+            this.$refs.rightmenu.style.left = e.x + 'px';
+          }
+          if (e.y > largeestheight) {
+            this.$refs.rightmenu.style.top = largeestheight + 'px';
+          } else {
+            this.$refs.rightmenu.style.top = e.y + 'px';
+          }
+        }.bind(this)
+      );
+    },
+    closeMenu() {
+      this.showrightmenu = false;
+    },
     //播放音乐获取音乐src和音乐详情
-    async getmusic(row) {
+    async getmusic(item) {
       const loading = this.$loading({
         lock: true,
         text: '播放资源获取中',
@@ -107,7 +143,7 @@ export default {
       });
       const res = await this.$http.get('/song/url', {
         params: {
-          id: row.id,
+          id: item.id,
           // cookie: this.cookie,
         },
       });
@@ -121,7 +157,7 @@ export default {
       //获取歌曲详情
       const resdata = await this.$http.get('/song/detail', {
         params: {
-          ids: row.id,
+          ids: item.id,
         },
       });
       //存入下一首播放列表
@@ -133,10 +169,10 @@ export default {
       loading.close();
     },
     // 添加到播放列表
-    addlistnextsong(row) {
+    addlistnextsong() {
       //存入下一首播放列表
       let length = this.nextsonglist.length;
-      this.$store.dispatch('savenextsonglist', row);
+      this.$store.dispatch('savenextsonglist', this.rightmenuitem);
       if (length + 1 == this.nextsonglist.length) {
         this.$message({
           message: '添加成功',
@@ -174,6 +210,12 @@ export default {
     ...mapGetters(['cookie', 'songDetails', 'playstatus', 'nextsonglist', 'playsonglist']),
   },
   created() {},
+  mounted() {
+    //点击其他地方隐藏右键菜单
+    document.onclick = function () {
+      this.closeMenu();
+    }.bind(this);
+  },
 };
 </script>
 
@@ -261,6 +303,39 @@ export default {
 /deep/.vue-recycle-scroller__item-view:hover {
   background: #f0f1f2;
 }
+.rightmenu {
+  position: fixed;
+  width: 240px;
+  background: #fff;
+  border-left: 1px solid #e5e5e5;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 6px 12px -4px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(12px);
+  border-radius: 8px;
+  padding: 6px;
+  z-index: 999;
+  .rightmenuitem {
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    padding-left: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    img {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      background: #f0f1f2;
+    }
+  }
+}
+
 .songsaddbtn {
   float: right;
   margin-right: 50px;
