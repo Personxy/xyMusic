@@ -34,25 +34,25 @@
     </RecycleScroller>
     <!-- 右键菜单 -->
     <div class="rightmenu" v-show="showrightmenu" ref="rightmenu" @click="closeMenu">
+      <div class="rightmenuitemname">{{ rightmenuitem.name }}</div>
       <div class="rightmenuitem" @click="getmusic(rightmenuitem)">
         <span>播放</span>
       </div>
       <div class="rightmenuitem" @click="addlistnextsong()">
-        <!-- <img src="../../../assets/images/加号.svg" alt="" /> -->
         <span>添加到下一首播放</span>
       </div>
-
-      <div class="rightmenuitem">
-        <!-- <img src="../../../assets/images/加号.svg" alt="" /> -->
+      <div class="rightmenuitem" @click="opencollectlist">
         <span>添加到收藏列表</span>
       </div>
     </div>
+    <collectionlist v-show="collectflag" @closecollectlist="toclosecollectlist" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import playanimation from '../animation/currentplayanimation';
+import collectionlist from './collectionlist.vue';
 export default {
   props: {
     songs: Array,
@@ -60,6 +60,7 @@ export default {
   },
   components: {
     playanimation,
+    collectionlist,
   },
   data() {
     return {
@@ -73,6 +74,7 @@ export default {
       currentindex: Number,
       showrightmenu: false,
       rightmenuitem: {},
+      collectflag: false,
     };
   },
   methods: {
@@ -112,7 +114,6 @@ export default {
     rightClick(e, item) {
       this.showrightmenu = true;
       this.rightmenuitem = item;
-      console.log(this.rightmenuitem);
       this.$nextTick(
         function () {
           let largesetwidth = window.innerWidth - this.$refs.rightmenu.offsetWidth - 20;
@@ -133,6 +134,13 @@ export default {
     closeMenu() {
       this.showrightmenu = false;
     },
+    opencollectlist() {
+      this.showrightmenu = false;
+      this.collectflag = true;
+    },
+    toclosecollectlist() {
+      this.collectflag = false;
+    },
     //播放音乐获取音乐src和音乐详情
     async getmusic(item) {
       const loading = this.$loading({
@@ -152,7 +160,6 @@ export default {
         loading.close();
         return this.$message.error('没有版权哦！');
       }
-
       this.$store.dispatch('savecurrenturl', res.data.data[0].url);
       //获取歌曲详情
       const resdata = await this.$http.get('/song/detail', {
@@ -171,18 +178,14 @@ export default {
     // 添加到播放列表
     addlistnextsong() {
       //存入下一首播放列表
-      let length = this.nextsonglist.length;
       this.$store.dispatch('savenextsonglist', this.rightmenuitem);
-      if (length + 1 == this.nextsonglist.length) {
-        this.$message({
-          message: '添加成功',
-          type: 'success',
-        });
-      } else {
-        this.$message({
-          message: '请不要重复添加',
-          type: 'warning',
-        });
+
+      this.$message({
+        message: '添加成功',
+        type: 'success',
+      });
+      if (this.playsonglist.length === 0) {
+        this.getmusic(this.rightmenuitem);
       }
     },
     hoveron(flag, index) {
@@ -305,7 +308,7 @@ export default {
 }
 .rightmenu {
   position: fixed;
-  width: 240px;
+  width: 235px;
   background: #fff;
   border-left: 1px solid #e5e5e5;
   background: rgba(255, 255, 255, 0.88);
@@ -314,14 +317,30 @@ export default {
   backdrop-filter: blur(12px);
   border-radius: 8px;
   padding: 6px;
+
   z-index: 999;
+  .rightmenuitemname {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 6px;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #ccc;
+    width: 210px;
+    padding-left: 5px;
+    margin-left: 12px;
+    margin-right: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .rightmenuitem {
     height: 40px;
     line-height: 40px;
+    padding-left: 12px;
     text-align: left;
     font-size: 14px;
     color: #333;
-    padding-left: 12px;
     cursor: pointer;
     display: flex;
     align-items: center;

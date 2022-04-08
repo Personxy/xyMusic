@@ -39,7 +39,7 @@
         </el-table-column>
         <el-table-column label="操作" width="120">
           <template slot-scope="scope">
-            <span @click="deleteRow(scope.$index, scope.row)" style="cursor: pointer">x</span>
+            <span @click="deleteRow(scope.$index, scope.row)" style="cursor: pointer"><img src="../../../assets/images/叉号.svg" alt="" style="width: 10px" /></span>
           </template>
         </el-table-column>
       </el-table>
@@ -169,6 +169,9 @@ export default {
     ...mapGetters(['playsonglist', 'cookie', 'songDetails', 'playstatus']),
   },
   mounted() {
+    this.changetablescroll();
+  },
+  updated() {
     this.changetablescroll();
   },
   watch: {

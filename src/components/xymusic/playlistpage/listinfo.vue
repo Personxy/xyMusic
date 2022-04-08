@@ -32,11 +32,7 @@
           </div>
           <!-- 收藏按钮 -->
           <div>
-            <div
-              class="collect"
-              v-if="userInfo && playlist.creator.userId == userInfo.userId"
-              style="width: 110px; color: #b2b2b2"
-            >
+            <div class="collect" v-if="userInfo && playlist.creator.userId == userInfo.userId" style="width: 110px; color: #b2b2b2">
               <img src="../../../assets/images/收藏.svg" alt="" />
               收藏(0)
             </div>
@@ -53,14 +49,7 @@
             trigger="click"
           >
             <div slot="reference">
-              <div
-                class="collect"
-                v-if="
-                  userInfo &&
-                  playlist.subscribed &&
-                  playlist.creator.userId != userInfo.userId
-                "
-              >
+              <div class="collect" v-if="userInfo && playlist.subscribed && playlist.creator.userId != userInfo.userId">
                 <img src="../../../assets/images/已收藏.svg" alt="" />
                 已收藏({{ playlist.subscribedCount | wan }})
               </div>
@@ -68,15 +57,7 @@
           </el-popconfirm>
 
           <!-- 显示未收藏 -->
-          <div
-            class="collect"
-            @click="changcollect"
-            v-if="
-              userInfo &&
-              !playlist.subscribed &&
-              playlist.creator.userId != userInfo.userId
-            "
-          >
+          <div class="collect" @click="changcollect" v-if="userInfo && !playlist.subscribed && playlist.creator.userId != userInfo.userId">
             <img src="../../../assets/images/收藏.svg" alt="" />
             收藏({{ playlist.subscribedCount | wan }})
           </div>
@@ -85,25 +66,17 @@
         <div class="playlistTag">
           <span>标签:</span>
           <p>
-            <span v-for="(item, i) in playlist.tags" :key="i.id"
-              >&nbsp;{{ item }}&nbsp;/</span
-            >
+            <span v-for="(item, i) in playlist.tags" :key="i.id">&nbsp;{{ item }}&nbsp;/</span>
           </p>
         </div>
         <!-- 歌曲总数与总播放量 -->
         <div class="playCount">
-          <span
-            >歌曲:&nbsp;{{ playlist.trackCount }}&nbsp;&nbsp;播放:&nbsp;{{
-              playlist.playCount | wan
-            }}</span
-          >
+          <span>歌曲:&nbsp;{{ playlist.trackCount }}&nbsp;&nbsp;播放:&nbsp;{{ playlist.playCount | wan }}</span>
         </div>
         <!-- 简介 -->
         <div class="brief-introduction" v-if="playlist.description">
           <el-collapse>
-            <el-collapse-item
-              :title="playlist.description.substring(0, 5) + '...'"
-            >
+            <el-collapse-item :title="playlist.description.substring(0, 5) + '...'">
               <div>{{ playlist.description }}</div>
             </el-collapse-item>
           </el-collapse>
@@ -113,21 +86,14 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
   props: {
     playlist: Object,
     songs: Array,
   },
   computed: {
-    ...mapGetters([
-      "userInfo",
-      "cookie",
-      "currentactive",
-      "playListCollect",
-      "currenturl",
-      "playsonglist",
-    ]),
+    ...mapGetters(['userInfo', 'cookie', 'currentactive', 'playListCollect', 'currenturl', 'playsonglist']),
   },
   data() {
     return {
@@ -139,13 +105,13 @@ export default {
     async changcollect() {
       const loading = this.$loading({
         lock: true,
-        text: "操作中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.1)",
+        text: '操作中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.1)',
       });
       if (this.playlist.subscribed) {
         // 取消收藏歌单
-        const res = await this.$http.get("/playlist/subscribe", {
+        const res = await this.$http.get('/playlist/subscribe', {
           params: {
             t: 2,
             id: this.playlist.id,
@@ -162,7 +128,7 @@ export default {
         }
       } else {
         // 收藏歌单
-        const resa = await this.$http.get("/playlist/subscribe", {
+        const resa = await this.$http.get('/playlist/subscribe', {
           params: {
             t: 1,
             id: this.playlist.id,
@@ -181,7 +147,7 @@ export default {
     },
     // 更新歌单
     async updateplaylist() {
-      let resdata = await this.$http.get("/user/playlist", {
+      let resdata = await this.$http.get('/user/playlist', {
         // 一定要加时间戳和cooke不然获取不到最新的歌单列表
         params: {
           uid: this.userInfo.userId,
@@ -204,8 +170,8 @@ export default {
       // });
       // console.log("------");
       // 保存歌单
-      this.$store.dispatch("saveplayListMine", playListm);
-      this.$store.dispatch("saveplayListCollect", playListc);
+      this.$store.dispatch('saveplayListMine', playListm);
+      this.$store.dispatch('saveplayListCollect', playListc);
       // this.$store.dispatch("savecurrentactive", "")
     },
     // 播放当前歌单所有歌曲 替换当前列表
@@ -213,17 +179,19 @@ export default {
       // loading
       const loading = this.$loading({
         lock: true,
-        text: "操作中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.1)",
+        text: '操作中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.1)',
       });
       // 清除当前播放列表
-      this.$store.dispatch("clearplaysonglist");
+      this.$store.dispatch('clearplaysonglist');
+      //清空下一首播放列表
+      this.$store.dispatch('clearnextsonglist');
       // console.log(this.playsonglist);
-      this.$store.dispatch("saveplaysonglist", this.songs);
+      this.$store.dispatch('saveplaysonglist', this.songs);
 
       // 获取当前列表第一首
-      const res = await this.$http.get("/song/url", {
+      const res = await this.$http.get('/song/url', {
         params: {
           id: this.songs[this.index].id,
           cookie: this.cookie,
@@ -232,7 +200,7 @@ export default {
       // console.log(res.data.data[0].url);
       if (!res.data.data[0].url) {
         this.index++;
-        this.$message.error("没有版权即将播放下一首！");
+        this.$message.error('没有版权即将播放下一首！');
         const timer = setTimeout(() => {
           this.playallmusic();
           // console.log(this.index);
@@ -241,17 +209,17 @@ export default {
         clearInterval(timer);
         loading.close();
       } else {
-        this.$store.dispatch("savecurrenturl", res.data.data[0].url);
-        this.$store.dispatch("saveplaystatus", true);
+        this.$store.dispatch('savecurrenturl', res.data.data[0].url);
+        this.$store.dispatch('saveplaystatus', true);
         //获取歌曲详情
-        const resdata = await this.$http.get("/song/detail", {
+        const resdata = await this.$http.get('/song/detail', {
           params: {
             ids: this.songs[this.index].id,
           },
         });
         // console.log(resdata);
         // 存入歌曲详情
-        this.$store.dispatch("savesongDetails", resdata.data.songs[0]);
+        this.$store.dispatch('savesongDetails', resdata.data.songs[0]);
         this.index = 0;
         loading.close();
       }
@@ -259,8 +227,8 @@ export default {
     //添加当前歌单到播放列表
     addsheettoplaylist() {
       // console.log(this.songs);
-      this.$store.dispatch("saveplaysonglist", this.songs);
-      return this.$message.success("添加成功！");
+      this.$store.dispatch('saveplaysonglist', this.songs);
+      return this.$message.success('添加成功！');
     },
   },
 };
