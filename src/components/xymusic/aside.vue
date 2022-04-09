@@ -4,12 +4,7 @@
       class="el-menu-vertical-demo"
       text-color="#535353"
       active-text-color="#313131"
-      :default-active="
-        '/' +
-        this.$route.path.split('/')[1] +
-        '/' +
-        this.$route.path.split('/')[2]
-      "
+      :default-active="'/' + this.$route.path.split('/')[1] + '/' + this.$route.path.split('/')[2]"
       :router="true"
     >
       <el-menu-item index="/home/findmusic">
@@ -40,37 +35,17 @@
       </el-menu-item> -->
       <el-submenu index="1" class="createplaylist">
         <template slot="title">创建的歌单</template>
-        <el-menu-item
-          :index="'/home/playlistpage/' + item.id"
-          class="otheritem"
-          v-for="(item, index) in (playListMine || []).slice(0, 1)"
-          :key="index.id"
-          ><img src="../../assets/images/爱心.svg" alt="" />{{
-            item.name
-          }}</el-menu-item
+        <el-menu-item :index="'/home/playlistpage/' + item.id" class="otheritem" v-for="(item, index) in (playListMine || []).slice(0, 1)" :key="index.id"
+          ><img src="../../assets/images/爱心.svg" alt="" />{{ item.name }}</el-menu-item
         >
-        <el-menu-item
-          :index="'/home/playlistpage/' + item.id"
-          class="otheritem"
-          v-for="item in playListMine == null
-            ? []
-            : playListMine.slice(1, playListMine.length - 1)"
-          :key="item.id"
-          ><img src="../../assets/images/音乐.svg" alt="" />{{
-            item.name
-          }}</el-menu-item
+        <el-menu-item :index="'/home/playlistpage/' + item.id" class="otheritem" v-for="item in playListMine == null ? [] : playListMine.slice(1)" :key="item.id"
+          ><img src="../../assets/images/音乐.svg" alt="" />{{ item.name }}</el-menu-item
         >
       </el-submenu>
       <el-submenu index="2" ref="menu">
         <template slot="title">收藏的歌单</template>
-        <el-menu-item
-          :index="'/home/playlistpage/' + item.id"
-          class="otheritem"
-          v-for="item in playListCollect"
-          :key="item.id"
-          ><img src="../../assets/images/音乐.svg" alt="" />{{
-            item.name
-          }}</el-menu-item
+        <el-menu-item :index="'/home/playlistpage/' + item.id" class="otheritem" v-for="item in playListCollect" :key="item.id"
+          ><img src="../../assets/images/音乐.svg" alt="" />{{ item.name }}</el-menu-item
         >
       </el-submenu>
     </el-menu>
@@ -78,18 +53,18 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 export default {
-  name: "Aside",
+  name: 'Aside',
   props: {},
   data() {
     return {
-      current: "",
+      current: '',
     };
   },
   methods: {},
   computed: {
-    ...mapGetters(["playListMine", "playListCollect", "currentactive"]),
+    ...mapGetters(['playListMine', 'playListCollect', 'currentactive']),
   },
 };
 </script>
@@ -170,7 +145,7 @@ export default {
   background-color: #ffffff;
 }
 /deep/.el-submenu__icon-arrow.el-icon-arrow-down::before {
-  content: "\e791";
+  content: '\e791';
 }
 /deep/.el-submenu.is-opened > .el-submenu__title .el-submenu__icon-arrow {
   transform: rotateZ(90deg);
