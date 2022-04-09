@@ -39,13 +39,14 @@
         <span>播放</span>
       </div>
       <div class="rightmenuitem" @click="addlistnextsong()">
-        <span>添加到下一首播放</span>
+        <span>下一首播放</span>
       </div>
-      <div class="rightmenuitem" @click="opencollectlist">
-        <span>添加到收藏列表</span>
+      <div class="rightmenuitem" @click="openaddtocollectlist">
+        <span>添加到歌单</span>
       </div>
     </div>
-    <collectionlist v-show="collectflag" @closecollectlist="toclosecollectlist" />
+    <collectionlist v-show="collectflag" @closecollectlist="toclosecollectlist" @tocreateadialog="createcollectlist" />
+    <creatcollectionlist v-show="createflag" @closecreate="toclosecreate" />
   </div>
 </template>
 
@@ -53,6 +54,7 @@
 import { mapGetters } from 'vuex';
 import playanimation from '../animation/currentplayanimation';
 import collectionlist from './collectionlist.vue';
+import creatcollectionlist from './creatcollectionlist.vue';
 export default {
   props: {
     songs: Array,
@@ -61,6 +63,7 @@ export default {
   components: {
     playanimation,
     collectionlist,
+    creatcollectionlist,
   },
   data() {
     return {
@@ -75,6 +78,7 @@ export default {
       showrightmenu: false,
       rightmenuitem: {},
       collectflag: false,
+      createflag: false,
     };
   },
   methods: {
@@ -134,12 +138,19 @@ export default {
     closeMenu() {
       this.showrightmenu = false;
     },
-    opencollectlist() {
+    createcollectlist() {
+      this.collectflag = false;
+      this.createflag = true;
+    },
+    openaddtocollectlist() {
       this.showrightmenu = false;
       this.collectflag = true;
     },
     toclosecollectlist() {
       this.collectflag = false;
+    },
+    toclosecreate() {
+      this.createflag = false;
     },
     //播放音乐获取音乐src和音乐详情
     async getmusic(item) {
