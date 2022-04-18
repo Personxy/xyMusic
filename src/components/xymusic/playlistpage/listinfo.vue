@@ -12,7 +12,7 @@
           </div>
         </div>
         <!-- 歌单创建时间和创建者 -->
-        <div class="creator">
+        <div class="creator" v-show="playlist.creator.nickname && playlist.createTime">
           <img :src="playlist.creator.avatarUrl" alt="" />
           <!-- 创建者 -->
           <p>{{ playlist.creator.nickname }}</p>

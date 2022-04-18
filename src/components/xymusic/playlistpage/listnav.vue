@@ -5,19 +5,15 @@
         <playlist :songs="songs" :likeplaylist="likeplaylist"></playlist>
       </el-tab-pane>
       <el-tab-pane :label="commentlabel" name="comments">
-        <comment
-          :songs="songs"
-          :playlist="playlist"
-          @sendtotal="gettotal"
-        ></comment>
+        <comment :songs="songs" :playlist="playlist" @sendtotal="gettotal"></comment>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import playlist from "./playlist.vue";
-import comment from "./comment.vue";
+import playlist from './playlist.vue';
+import comment from './comment.vue';
 export default {
   components: {
     playlist,
@@ -30,13 +26,13 @@ export default {
   },
   methods: {
     gettotal(data) {
-      this.commentlabel = "评论(" + data + ")";
+      this.commentlabel = `评论(${data ? data : 0})`;
     },
   },
   data() {
     return {
-      activeName: "songlist",
-      commentlabel: "",
+      activeName: 'songlist',
+      commentlabel: '',
     };
   },
 };
