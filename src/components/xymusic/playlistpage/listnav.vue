@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="listnav">
+    <Listsearch  @search="getsearchdata" />
     <el-tabs v-model="activeName">
       <el-tab-pane label="歌曲列表" name="songlist">
         <playlist :songs="songs" :likeplaylist="likeplaylist"></playlist>
@@ -14,10 +15,12 @@
 <script>
 import playlist from './playlist.vue';
 import comment from './comment.vue';
+import Listsearch from './listsearch.vue';
 export default {
   components: {
     playlist,
     comment,
+    Listsearch,
   },
   props: {
     songs: Array,
@@ -27,6 +30,9 @@ export default {
   methods: {
     gettotal(data) {
       this.commentlabel = `评论(${data ? data : 0})`;
+    },
+    getsearchdata(data) {
+     this.$emit('togetsearchdata', data);
     },
   },
   data() {
@@ -39,6 +45,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.listnav {
+  position: relative;
+}
 .el-tabs {
   margin-top: 50px;
 }

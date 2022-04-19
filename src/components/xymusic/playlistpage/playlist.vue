@@ -46,7 +46,8 @@
       </div>
     </div>
     <collectionlist v-show="collectflag" @closecollectlist="toclosecollectlist" @tocreateadialog="createcollectlist" />
-    <creatcollectionlist v-show="createflag" @closecreate="toclosecreate" />
+    <creatcollectionlist v-show="createflag" @closecreate="toclosecreate" :rightmenuitem="rightmenuitem" />
+    <cover v-show="coverflag" />
   </div>
 </template>
 
@@ -55,6 +56,8 @@ import { mapGetters } from 'vuex';
 import playanimation from '../animation/currentplayanimation';
 import collectionlist from './collectionlist.vue';
 import creatcollectionlist from './creatcollectionlist.vue';
+import cover from './cover.vue';
+
 export default {
   props: {
     songs: Array,
@@ -64,6 +67,7 @@ export default {
     playanimation,
     collectionlist,
     creatcollectionlist,
+    cover,
   },
   data() {
     return {
@@ -79,6 +83,7 @@ export default {
       rightmenuitem: {},
       collectflag: false,
       createflag: false,
+      coverflag: false,
     };
   },
   methods: {
@@ -140,18 +145,23 @@ export default {
     },
     createcollectlist() {
       this.collectflag = false;
+      this.coverflag = true;
       this.createflag = true;
     },
     openaddtocollectlist() {
       this.showrightmenu = false;
+      this.coverflag = true;
       this.collectflag = true;
     },
     toclosecollectlist() {
       this.collectflag = false;
+      this.coverflag = false;
     },
     toclosecreate() {
       this.createflag = false;
+      this.coverflag = false;
     },
+
     //播放音乐获取音乐src和音乐详情
     async getmusic(item) {
       const loading = this.$loading({
