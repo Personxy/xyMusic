@@ -36,12 +36,12 @@ export default {
   border: 0;
   text-indent: 12px;
   color: #363636;
-  z-index: 999999999;
+  z-index: 1800;
   background-color: #f7f7f7;
 }
 .el-input {
   width: 10vw;
-  z-index: 999999999;
+  z-index: 1800;
 }
 /deep/ input::-webkit-input-placeholder {
   color: #c8c8c8;
@@ -51,7 +51,7 @@ export default {
   position: absolute;
   left: 25px;
   top: 8px;
-  z-index: 999999999;
+  z-index: 1800;
   color: #4a4a4a;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="listnav">
-    <Listsearch  @search="getsearchdata" />
+    <Listsearch  @search="getsearchdata"  v-show="activeName=='songlist'"/>
     <el-tabs v-model="activeName">
       <el-tab-pane label="歌曲列表" name="songlist">
         <playlist :songs="songs" :likeplaylist="likeplaylist"></playlist>

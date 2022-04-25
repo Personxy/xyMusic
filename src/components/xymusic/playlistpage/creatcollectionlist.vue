@@ -18,6 +18,14 @@
 <script>
 import { mapGetters } from 'vuex';
 export default {
+  props: {
+    rightmenuitem: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+  },
   data() {
     return {
       collectionname: '',
@@ -31,40 +39,57 @@ export default {
       this.$emit('closecreate', false);
     },
     async createcollect() {
-      const loading = this.$loading({
-        lock: true,
-        text: '创建中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.1)',
-      });
       if (this.collectionname) {
+        const loading = this.$loading({
+          lock: true,
+          text: '创建中',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.1)',
+        });
         const { data } = await this.$http.get('/playlist/create', {
           params: {
             name: this.collectionname,
             privacy: this.checked ? 1 : 0,
           },
         });
+        console.log(data);
         if (data.code == 200) {
           const { data: listdata } = await this.$http.get('/user/playlist', {
             params: { uid: this.userInfo.userId, limit: 40, timeStamp: Date.now() },
           });
-          // 找出个人歌单
-          this.playListm = listdata.playlist.filter((element) => {
-            return element.userId == this.userInfo.userId;
-          });
-          // 找出收藏歌单
-          this.playListc = listdata.playlist.filter((element) => {
-            return element.userId !== this.userInfo.userId;
-          });
-          // 保存歌单
-          this.$store.dispatch('saveplayListMine', this.playListm);
-          this.$store.dispatch('saveplayListCollect', this.playListc);
-          loading.close();
-          this.$emit('closecreate', false);
-          this.$message({
-            message: '创建成功',
-            type: 'success',
-          });
+          if (listdata.code == 200) {
+            const { data: addsong } = await this.$http.get('/playlist/tracks', {
+              params: {
+                op: 'add',
+                pid: data.playlist.id,
+                tracks: this.rightmenuitem.id,
+                timeStamp: Date.now(),
+              },
+            });
+            // 找出个人歌单
+            this.playListm = listdata.playlist.filter((element) => {
+              return element.userId == this.userInfo.userId;
+            });
+            // 找出收藏歌单
+            this.playListc = listdata.playlist.filter((element) => {
+              return element.userId !== this.userInfo.userId;
+            });
+            // 保存歌单
+            this.$store.dispatch('saveplayListMine', this.playListm);
+            this.$store.dispatch('saveplayListCollect', this.playListc);
+            loading.close();
+            this.$emit('closecreate', false);
+            this.$message({
+              message: '创建成功',
+              type: 'success',
+            });
+          } else {
+            loading.close();
+            this.$message({
+              message: ` 创建失败,${listdata.code}`,
+              type: 'error',
+            });
+          }
         } else {
           loading.close();
           this.$message({
@@ -91,7 +116,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 999;
+  z-index: 1802;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   .title {
